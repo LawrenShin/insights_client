@@ -273,6 +273,11 @@ CREATE INDEX company_lei_idx
     ON public.company USING hash
     (lei COLLATE pg_catalog."default")
     TABLESPACE pg_default;
+	
+CREATE INDEX company_legal_name_idx
+    ON public.company USING btree
+    (legal_name COLLATE pg_catalog."default" ASC NULLS LAST)
+    TABLESPACE pg_default;
 
 --Code for Company Name table
 
@@ -281,7 +286,7 @@ DROP TABLE IF EXISTS company_name CASCADE;
 CREATE TABLE IF NOT EXISTS company_name
 (
 	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id),
+	company_id INT REFERENCES company(id) ON DELETE CASCADE,
 	name VARCHAR(400) NOT NULL,
 	type VARCHAR(50) NOT NULL,
 	effective_from TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
@@ -307,7 +312,7 @@ DROP TABLE IF EXISTS company_extended_data CASCADE;
 CREATE TABLE IF NOT EXISTS company_extended_data
 (
 	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id),
+	company_id INT REFERENCES company(id) ON DELETE CASCADE,
 	below_national_avg_income DOUBLE PRECISION DEFAULT NULL,
 	disabled_employees DOUBLE PRECISION DEFAULT NULL,
 	hierarchy_level INT DEFAULT NULL,
@@ -335,7 +340,7 @@ DROP TABLE IF EXISTS company_operation CASCADE;
 CREATE TABLE IF NOT EXISTS company_operation
 (
 	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id),
+	company_id INT REFERENCES company(id) ON DELETE CASCADE,
 	country_id INT REFERENCES country(id),
 	ticker VARCHAR(10) NOT NULL,
 	is_primary BOOLEAN NOT NULL,
@@ -362,7 +367,7 @@ DROP TABLE IF EXISTS company_country;
 CREATE TABLE IF NOT EXISTS company_country
 (
 	company_country_id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id),
+	company_id INT REFERENCES company(id) ON DELETE CASCADE,
 	country_id INT REFERENCES country(id),
 	company_country_legal_operation VARCHAR(9) NULL DEFAULT NULL,
 	company_country_effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -386,7 +391,7 @@ DROP TABLE IF EXISTS company_industry;
 CREATE TABLE IF NOT EXISTS company_industry
 (
 	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id),
+	company_id INT REFERENCES company(id) ON DELETE CASCADE,
 	industry_id INT REFERENCES industry(id),
 	primary_secondary CHAR(1) NOT NULL,
 	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -399,7 +404,7 @@ DROP TABLE IF EXISTS company_questionnaire;
 CREATE TABLE IF NOT EXISTS company_questionnaire
 (
 	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id),
+	company_id INT REFERENCES company(id) ON DELETE CASCADE,
 	question SMALLINT NOT NULL,
 	answer INT NOT NULL,
 	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -476,7 +481,7 @@ DROP TABLE IF EXISTS person_country;
 CREATE TABLE IF NOT EXISTS person_country
 (
 	person_country_id SERIAL PRIMARY KEY,
-	person_id INT REFERENCES person(id),
+	person_id INT REFERENCES person(id) ON DELETE CASCADE,
 	country_id INT REFERENCES country(id),
 	person_country_effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -488,7 +493,7 @@ DROP TABLE IF EXISTS role;
 CREATE TABLE IF NOT EXISTS role
 (
 	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id),
+	company_id INT REFERENCES company(id) ON DELETE CASCADE,
 	person_id INT REFERENCES person(id),
 	is_effective SMALLINT NULL DEFAULT NULL,
 	role_type CHAR(15) NOT NULL,
@@ -506,7 +511,7 @@ CREATE TABLE IF NOT EXISTS company_match
 (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(400) NOT NULL,
-	company_id INT REFERENCES company(id) DEFAULT NULL,
+	company_id INT REFERENCES company(id) ON DELETE CASCADE DEFAULT NULL,
 	effective_from TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
 );
 

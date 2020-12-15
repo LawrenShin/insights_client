@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -25,7 +26,9 @@ namespace DigitalInsights.DB.Silver.Entities
         public string LegalJurisdiction { get; set; }
         public string Status { get; set; }
         public int? NumEmployees { get; set; }
+        [JsonIgnore]
         public int? LegalId { get; set; }
+        [JsonIgnore]
         public int? HqId { get; set; }
         public DateTime? EffectiveFrom { get; set; }
 
@@ -34,6 +37,7 @@ namespace DigitalInsights.DB.Silver.Entities
         public virtual ICollection<CompanyCountry> CompanyCountries { get; set; }
         public virtual ICollection<CompanyExtendedData> CompanyExtendedData { get; set; }
         public virtual ICollection<CompanyIndustry> CompanyIndustries { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CompanyMatch> CompanyMatches { get; set; }
         public virtual ICollection<CompanyName> CompanyNames { get; set; }
         public virtual ICollection<CompanyOperation> CompanyOperations { get; set; }

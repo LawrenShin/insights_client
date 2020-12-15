@@ -1,7 +1,7 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Transform": "AWS::Serverless-2016-10-31",
-  "Description": "An AWS Serverless Application.",
+  "Description": "REST API for Silver dashboard.",
   "Resources": {
     "GetCompanies": {
       "Type": "AWS::Serverless::Function",
@@ -26,11 +26,50 @@
           "RootGet": {
             "Type": "Api",
             "Properties": {
-              "Path": "/",
+              "Path": "/Companies/",
               "Method": "GET",
               "RequestParameters" : [
-                "method.request.querystring.pageSize",
-                "method.request.querystring.pageIndex"
+                "method.request.querystring.page_size",
+                "method.request.querystring.page_index",
+                "method.request.querystring.search_prefix"
+              ] 
+            }
+          }
+        }
+      },
+      "Metadata": {
+        "Dockerfile": "Dockerfile",
+        "DockerContext": ".",
+        "DockerTag": ""
+      }
+    },
+    "DeleteCompany": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "PackageType": "Image",
+        "ImageConfig": {
+          "EntryPoint": [
+            "/lambda-entrypoint.sh"
+          ],
+          "Command": [
+            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::DeleteCompany"
+          ]
+        },
+        "ImageUri": "",
+        "MemorySize": 256,
+        "Timeout": 60,
+        "Role": null,
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/Companies/",
+              "Method": "DELETE",
+              "RequestParameters" : [
+                "method.request.querystring.id"
               ] 
             }
           }
@@ -45,7 +84,7 @@
   },
   "Outputs": {
     "ApiURL": {
-      "Description": "API endpoint URL for Prod environment",
+      "Description": "API endpoint URL for Silver dashboard",
       "Value": {
         "Fn::Sub": "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
       }

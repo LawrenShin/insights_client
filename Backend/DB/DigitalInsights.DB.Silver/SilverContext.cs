@@ -161,11 +161,13 @@ namespace DigitalInsights.DB.Silver
                 entity.HasOne(d => d.Hq)
                     .WithMany(p => p.CompanyHqs)
                     .HasForeignKey(d => d.HqId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("company_hq_id_fkey");
 
                 entity.HasOne(d => d.Legal)
                     .WithMany(p => p.CompanyLegals)
                     .HasForeignKey(d => d.LegalId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("company_legal_id_fkey");
             });
 
@@ -191,6 +193,7 @@ namespace DigitalInsights.DB.Silver
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.CompanyCountries)
                     .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("company_country_company_id_fkey");
 
                 entity.HasOne(d => d.Country)
@@ -229,6 +232,7 @@ namespace DigitalInsights.DB.Silver
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.CompanyExtendedData)
                     .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("company_extended_data_company_id_fkey");
             });
 
@@ -253,6 +257,7 @@ namespace DigitalInsights.DB.Silver
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.CompanyIndustries)
                     .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("company_industry_company_id_fkey");
 
                 entity.HasOne(d => d.Industry)
@@ -284,6 +289,7 @@ namespace DigitalInsights.DB.Silver
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.CompanyMatches)
                     .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("company_match_company_id_fkey");
             });
 
@@ -317,6 +323,7 @@ namespace DigitalInsights.DB.Silver
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.CompanyNames)
                     .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("company_name_company_id_fkey");
             });
 
@@ -349,6 +356,7 @@ namespace DigitalInsights.DB.Silver
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.CompanyOperations)
                     .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("company_operation_company_id_fkey");
 
                 entity.HasOne(d => d.Country)
@@ -388,6 +396,7 @@ namespace DigitalInsights.DB.Silver
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.CompanyQuestionnaires)
                     .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("company_questionnaire_company_id_fkey");
             });
 

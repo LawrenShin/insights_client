@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -17,6 +18,7 @@ namespace DigitalInsights.DB.Silver.Entities
         public string IncentiveOptions { get; set; }
         public DateTime EffectiveFrom { get; set; }
 
+        [JsonIgnore]
         public virtual Company Company { get; set; }
         public virtual Person Person { get; set; }
     }

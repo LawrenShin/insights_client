@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -13,6 +14,7 @@ namespace DigitalInsights.DB.Silver.Entities
         public DateTime PersonCountryEffectiveFrom { get; set; }
 
         public virtual Country Country { get; set; }
+        [JsonIgnore]
         public virtual Person Person { get; set; }
     }
 }

@@ -111,67 +111,67 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
 
                 // The following code is used to dump all relevant DB data except countries - it saves time to reload ready data structures from hard drive
 
-                BinaryFormatter bf = new BinaryFormatter();
+                //BinaryFormatter bf = new BinaryFormatter();
 
-                using (var fs = new FileStream("C:\\temp\\legal_names.txt", FileMode.Create, FileAccess.Write))
-                {
-                    bf.Serialize(fs, legalNames);
-                }
+                //using (var fs = new FileStream("C:\\temp\\legal_names.txt", FileMode.Create, FileAccess.Write))
+                //{
+                //    bf.Serialize(fs, legalNames);
+                //}
 
-                using (var fs = new FileStream("C:\\temp\\legal_names.txt", FileMode.Open, FileAccess.Read))
-                {
-                    legalNames = (List<Tuple<string, string>>)bf.Deserialize(fs);
-                }
+                //using (var fs = new FileStream("C:\\temp\\legal_names.txt", FileMode.Open, FileAccess.Read))
+                //{
+                //    legalNames = (List<Tuple<string, string>>)bf.Deserialize(fs);
+                //}
 
-                using (var fs = new FileStream("C:\\temp\\legal_dict.txt", FileMode.Create, FileAccess.Write))
-                {
-                    bf.Serialize(fs, legalNameToId);
-                }
+                //using (var fs = new FileStream("C:\\temp\\legal_dict.txt", FileMode.Create, FileAccess.Write))
+                //{
+                //    bf.Serialize(fs, legalNameToId);
+                //}
 
-                using (var fs = new FileStream("C:\\temp\\legal_dict.txt", FileMode.Open, FileAccess.Read))
-                {
-                    legalNameToId = (Dictionary<string, int>)bf.Deserialize(fs);
-                }
+                //using (var fs = new FileStream("C:\\temp\\legal_dict.txt", FileMode.Open, FileAccess.Read))
+                //{
+                //    legalNameToId = (Dictionary<string, int>)bf.Deserialize(fs);
+                //}
 
-                using (var fs = new FileStream("C:\\temp\\transliterated_names.txt", FileMode.Create, FileAccess.Write))
-                {
-                    bf.Serialize(fs, transliteratedNames);
-                }
+                //using (var fs = new FileStream("C:\\temp\\transliterated_names.txt", FileMode.Create, FileAccess.Write))
+                //{
+                //    bf.Serialize(fs, transliteratedNames);
+                //}
 
-                using (var fs = new FileStream("C:\\temp\\transliterated_names.txt", FileMode.Open, FileAccess.Read))
-                {
-                    transliteratedNames = (List<Tuple<string, string>>)bf.Deserialize(fs);
-                }
+                //using (var fs = new FileStream("C:\\temp\\transliterated_names.txt", FileMode.Open, FileAccess.Read))
+                //{
+                //    transliteratedNames = (List<Tuple<string, string>>)bf.Deserialize(fs);
+                //}
 
-                using (var fs = new FileStream("C:\\temp\\transliterated_dict.txt", FileMode.Create, FileAccess.Write))
-                {
-                    bf.Serialize(fs, transliteratedNameToId);
-                }
+                //using (var fs = new FileStream("C:\\temp\\transliterated_dict.txt", FileMode.Create, FileAccess.Write))
+                //{
+                //    bf.Serialize(fs, transliteratedNameToId);
+                //}
 
-                using (var fs = new FileStream("C:\\temp\\transliterated_dict.txt", FileMode.Open, FileAccess.Read))
-                {
-                    transliteratedNameToId = (Dictionary<string, int>)bf.Deserialize(fs);
-                }
+                //using (var fs = new FileStream("C:\\temp\\transliterated_dict.txt", FileMode.Open, FileAccess.Read))
+                //{
+                //    transliteratedNameToId = (Dictionary<string, int>)bf.Deserialize(fs);
+                //}
 
-                using (var fs = new FileStream("C:\\temp\\other_names.txt", FileMode.Create, FileAccess.Write))
-                {
-                    bf.Serialize(fs, akaNames);
-                }
+                //using (var fs = new FileStream("C:\\temp\\other_names.txt", FileMode.Create, FileAccess.Write))
+                //{
+                //    bf.Serialize(fs, akaNames);
+                //}
 
-                using (var fs = new FileStream("C:\\temp\\other_names.txt", FileMode.Open, FileAccess.Read))
-                {
-                    akaNames = (List<Tuple<string, string>>)bf.Deserialize(fs);
-                }
+                //using (var fs = new FileStream("C:\\temp\\other_names.txt", FileMode.Open, FileAccess.Read))
+                //{
+                //    akaNames = (List<Tuple<string, string>>)bf.Deserialize(fs);
+                //}
 
-                using (var fs = new FileStream("C:\\temp\\other_dict.txt", FileMode.Create, FileAccess.Write))
-                {
-                    bf.Serialize(fs, akaNameToId);
-                }
+                //using (var fs = new FileStream("C:\\temp\\other_dict.txt", FileMode.Create, FileAccess.Write))
+                //{
+                //    bf.Serialize(fs, akaNameToId);
+                //}
 
-                using (var fs = new FileStream("C:\\temp\\other_dict.txt", FileMode.Open, FileAccess.Read))
-                {
-                    akaNameToId = (Dictionary<string, int>)bf.Deserialize(fs);
-                }
+                //using (var fs = new FileStream("C:\\temp\\other_dict.txt", FileMode.Open, FileAccess.Read))
+                //{
+                //    akaNameToId = (Dictionary<string, int>)bf.Deserialize(fs);
+                //}
 
 
                 using (var fileReader = new StreamReader(filename))

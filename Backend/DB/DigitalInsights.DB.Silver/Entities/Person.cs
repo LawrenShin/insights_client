@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -34,8 +35,10 @@ namespace DigitalInsights.DB.Silver.Entities
         public bool? Urban { get; set; }
         public DateTime EffectiveFrom { get; set; }
 
+        [JsonIgnore]
         public virtual Address AddressNavigation { get; set; }
         public virtual ICollection<PersonCountry> PersonCountries { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Role> Roles { get; set; }
     }
 }
