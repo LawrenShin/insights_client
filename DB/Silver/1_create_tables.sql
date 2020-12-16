@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS country
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(45) NOT NULL,
 	code VARCHAR(3) NOT NULL,
-	di_score FLOAT NOT NULL,
 	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -334,32 +333,6 @@ CREATE INDEX company_extended_data_company_id_idx
     (company_id ASC NULLS LAST)
     TABLESPACE pg_default;
 
---Code for Company Operation table
-DROP TABLE IF EXISTS company_operation CASCADE;
-
-CREATE TABLE IF NOT EXISTS company_operation
-(
-	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id) ON DELETE CASCADE,
-	country_id INT REFERENCES country(id),
-	ticker VARCHAR(10) NOT NULL,
-	is_primary BOOLEAN NOT NULL,
-	effective_from TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE UNIQUE INDEX company_operation_id_pk
-    ON public.company_operation USING btree
-    (id ASC NULLS LAST)
-    TABLESPACE pg_default;
-
-ALTER TABLE public.company_operation
-    CLUSTER ON company_operation_id_pk;
-	
-CREATE INDEX company_operation_company_id_idx
-    ON public.company_operation USING btree
-    (company_id ASC NULLS LAST)
-    TABLESPACE pg_default;
-	
 --Code for country Company table
 
 DROP TABLE IF EXISTS company_country;
@@ -369,7 +342,9 @@ CREATE TABLE IF NOT EXISTS company_country
 	company_country_id SERIAL PRIMARY KEY,
 	company_id INT REFERENCES company(id) ON DELETE CASCADE,
 	country_id INT REFERENCES country(id),
-	company_country_legal_operation VARCHAR(9) NULL DEFAULT NULL,
+	legal_jurisdiction BOOLEAN NOT NULL,
+	ticker VARCHAR(10) DEFAULT NULL,
+	is_primary BOOLEAN NOT NULL,
 	company_country_effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -496,7 +471,7 @@ CREATE TABLE IF NOT EXISTS role
 	company_id INT REFERENCES company(id) ON DELETE CASCADE,
 	person_id INT REFERENCES person(id),
 	is_effective SMALLINT NULL DEFAULT NULL,
-	role_type CHAR(15) NOT NULL,
+	role_type SMALLINT NOT NULL,
 	title VARCHAR(200) NOT NULL,
 	base_salary INT NULL DEFAULT NULL,
 	incentive_options VARCHAR(45) NULL DEFAULT NULL,

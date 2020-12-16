@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DigitalInsights.DB.Silver.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +13,7 @@ namespace DigitalInsights.DB.Silver.Entities
         public int? CompanyId { get; set; }
         public int? PersonId { get; set; }
         public short? IsEffective { get; set; }
-        public string RoleType { get; set; }
+        public RoleType RoleType { get; set; }
         public string Title { get; set; }
         public int? BaseSalary { get; set; }
         public string IncentiveOptions { get; set; }

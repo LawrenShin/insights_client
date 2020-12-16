@@ -13,6 +13,7 @@ using System.Text;
 using Newtonsoft.Json;
 using DigitalInsights.DB.Silver.Entities;
 using Microsoft.EntityFrameworkCore;
+using DigitalInsights.DB.Silver.Enums;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
@@ -36,6 +37,91 @@ namespace DigitalInsights.API.SilverDashboard
         /// </summary>
         public SilverDashboardAPI()
         {
+        }
+
+        public APIGatewayProxyResponse GetRoleTypes(APIGatewayProxyRequest request, ILambdaContext context)
+        {
+            try
+            {
+                context.Logger.LogLine("Get Request\n");
+
+
+                var response = new APIGatewayProxyResponse
+                {
+                    StatusCode = (int)HttpStatusCode.OK,
+
+                    Body = JsonConvert.SerializeObject(Enum.GetValues<RoleType>().Select(x => new { Id = (int)x, Name = x.ToString() }).ToArray()),
+                    Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+                };
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                return new APIGatewayProxyResponse
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                    Body = $"Bad query: {ex}",
+                    Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
+                };
+            }
+        }
+
+        public APIGatewayProxyResponse GetCountries(APIGatewayProxyRequest request, ILambdaContext context)
+        {
+            try
+            {
+                context.Logger.LogLine("Get Request\n");
+
+
+                var response = new APIGatewayProxyResponse
+                {
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Body = JsonConvert.SerializeObject(silverContext.Countries.ToList()),
+                    Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+                };
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                return new APIGatewayProxyResponse
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                    Body = $"Bad query: {ex}",
+                    Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
+                };
+            }
+        }
+
+        public APIGatewayProxyResponse GetIndustries(APIGatewayProxyRequest request, ILambdaContext context)
+        {
+            try
+            {
+                context.Logger.LogLine("Get Request\n");
+
+
+                var response = new APIGatewayProxyResponse
+                {
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Body = JsonConvert.SerializeObject(silverContext.Industries.ToList()),
+                    Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+                };
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                return new APIGatewayProxyResponse
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                    Body = $"Bad query: {ex}",
+                    Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
+                };
+            }
         }
 
 
@@ -96,8 +182,6 @@ namespace DigitalInsights.API.SilverDashboard
                     Body = JsonConvert.SerializeObject(companies),
                     Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
                 };
-
-                context.Logger.LogLine(response.Body);
 
                 return response;
 
@@ -162,8 +246,6 @@ namespace DigitalInsights.API.SilverDashboard
                     StatusCode = (int)HttpStatusCode.OK,
                     Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
                 };
-
-                context.Logger.LogLine(response.Body);
 
                 return response;
 

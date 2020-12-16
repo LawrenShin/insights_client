@@ -3,6 +3,111 @@
   "Transform": "AWS::Serverless-2016-10-31",
   "Description": "REST API for Silver dashboard.",
   "Resources": {
+    "GetCountries": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "PackageType": "Image",
+        "ImageConfig": {
+          "EntryPoint": [
+            "/lambda-entrypoint.sh"
+          ],
+          "Command": [
+            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetCountries"
+          ]
+        },
+        "ImageUri": "",
+        "MemorySize": 512,
+        "Timeout": 60,
+        "Role": null,
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/Countries/",
+              "Method": "GET"
+            }
+          }
+        }
+      },
+      "Metadata": {
+        "Dockerfile": "Dockerfile",
+        "DockerContext": ".",
+        "DockerTag": ""
+      }
+    },
+    "GetIndustries": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "PackageType": "Image",
+        "ImageConfig": {
+          "EntryPoint": [
+            "/lambda-entrypoint.sh"
+          ],
+          "Command": [
+            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetIndustries"
+          ]
+        },
+        "ImageUri": "",
+        "MemorySize": 512,
+        "Timeout": 60,
+        "Role": null,
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/Industries/",
+              "Method": "GET"
+            }
+          }
+        }
+      },
+      "Metadata": {
+        "Dockerfile": "Dockerfile",
+        "DockerContext": ".",
+        "DockerTag": ""
+      }
+    },
+    "GetRoleTypes": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "PackageType": "Image",
+        "ImageConfig": {
+          "EntryPoint": [
+            "/lambda-entrypoint.sh"
+          ],
+          "Command": [
+            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetRoleTypes"
+          ]
+        },
+        "ImageUri": "",
+        "MemorySize": 256,
+        "Timeout": 60,
+        "Role": null,
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/RoleTypes/",
+              "Method": "GET"
+            }
+          }
+        }
+      },
+      "Metadata": {
+        "Dockerfile": "Dockerfile",
+        "DockerContext": ".",
+        "DockerTag": ""
+      }
+    },
     "GetCompanies": {
       "Type": "AWS::Serverless::Function",
       "Properties": {

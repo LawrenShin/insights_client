@@ -55,6 +55,7 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader
                 countries["UAE"] = countries["United Arab Emirates"];
                 countries["Russia"] = countries["Russian Federation"];
                 countries["England"] = countries["United Kingdom"];
+                countries["Guernsey"] = countries["United Kingdom"];
                 countries["Great Britain"] = countries["United Kingdom"];
                 countries["Hong Kong"] = countries["China"];
                 countries["Palestine"] = countries["State of Palestine"];

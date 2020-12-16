@@ -34,7 +34,6 @@ namespace DigitalInsights.DB.Silver
         public virtual DbSet<CompanyIndustry> CompanyIndustries { get; set; }
         public virtual DbSet<CompanyMatch> CompanyMatches { get; set; }
         public virtual DbSet<CompanyName> CompanyNames { get; set; }
-        public virtual DbSet<CompanyOperation> CompanyOperations { get; set; }
         public virtual DbSet<Entities.CompanyQuestion> CompanyQuestionnaires { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<CountryAge> CountryAges { get; set; }
@@ -135,11 +134,6 @@ namespace DigitalInsights.DB.Silver
 
                 entity.Property(e => e.LegalId).HasColumnName("legal_id");
 
-                entity.Property(e => e.LegalJurisdiction)
-                    .HasMaxLength(6)
-                    .HasColumnName("legal_jurisdiction")
-                    .HasDefaultValueSql("NULL::character varying");
-
                 entity.Property(e => e.LegalName)
                     .HasMaxLength(400)
                     .HasColumnName("legal_name")
@@ -181,14 +175,18 @@ namespace DigitalInsights.DB.Silver
                     .HasColumnName("company_country_effective_from")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.CompanyCountryLegalOperation)
-                    .HasMaxLength(9)
-                    .HasColumnName("company_country_legal_operation")
-                    .HasDefaultValueSql("NULL::character varying");
-
                 entity.Property(e => e.CompanyId).HasColumnName("company_id");
 
                 entity.Property(e => e.CountryId).HasColumnName("country_id");
+
+                entity.Property(e => e.IsPrimary).HasColumnName("is_primary");
+
+                entity.Property(e => e.LegalJurisdiction).HasColumnName("legal_jurisdiction");
+
+                entity.Property(e => e.Ticker)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .HasColumnName("ticker");
 
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.CompanyCountries)
@@ -327,44 +325,6 @@ namespace DigitalInsights.DB.Silver
                     .HasConstraintName("company_name_company_id_fkey");
             });
 
-            modelBuilder.Entity<CompanyOperation>(entity =>
-            {
-                entity.ToTable("company_operation");
-
-                entity.HasIndex(e => e.CompanyId, "company_operation_company_id_idx");
-
-                entity.HasIndex(e => e.Id, "company_operation_id_pk")
-                    .IsUnique();
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.CompanyId).HasColumnName("company_id");
-
-                entity.Property(e => e.CountryId).HasColumnName("country_id");
-
-                entity.Property(e => e.EffectiveFrom)
-                    .HasColumnName("effective_from")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.Property(e => e.IsPrimary).HasColumnName("is_primary");
-
-                entity.Property(e => e.Ticker)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .HasColumnName("ticker");
-
-                entity.HasOne(d => d.Company)
-                    .WithMany(p => p.CompanyOperations)
-                    .HasForeignKey(d => d.CompanyId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("company_operation_company_id_fkey");
-
-                entity.HasOne(d => d.Country)
-                    .WithMany(p => p.CompanyOperations)
-                    .HasForeignKey(d => d.CountryId)
-                    .HasConstraintName("company_operation_country_id_fkey");
-            });
-
             modelBuilder.Entity<Entities.CompanyQuestion>(entity =>
             {
                 entity.ToTable("company_questionnaire");
@@ -410,8 +370,6 @@ namespace DigitalInsights.DB.Silver
                     .IsRequired()
                     .HasMaxLength(3)
                     .HasColumnName("code");
-
-                entity.Property(e => e.DiScore).HasColumnName("di_score");
 
                 entity.Property(e => e.EffectiveFrom)
                     .HasColumnName("effective_from")
@@ -997,11 +955,15 @@ namespace DigitalInsights.DB.Silver
 
                 entity.Property(e => e.PersonId).HasColumnName("person_id");
 
+                var converter = new ValueConverter<RoleType, int>(
+                    v => (int)v,
+                    v => (RoleType)v
+                    );
+
                 entity.Property(e => e.RoleType)
                     .IsRequired()
-                    .HasMaxLength(15)
                     .HasColumnName("role_type")
-                    .IsFixedLength(true);
+                    .HasConversion(converter); ;
 
                 entity.Property(e => e.Title)
                     .IsRequired()

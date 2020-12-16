@@ -1,4 +1,5 @@
 ﻿using DigitalInsights.DB.Silver.Entities.CountryData;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +13,6 @@ namespace DigitalInsights.DB.Silver.Entities
         {
             Addresses = new HashSet<Address>();
             CompanyCountries = new HashSet<CompanyCountry>();
-            CompanyOperations = new HashSet<CompanyOperation>();
             CountryAges = new HashSet<CountryAge>();
             CountryDemographics = new HashSet<CountryDemographic>();
             CountryDisabilities = new HashSet<CountryDisability>();
@@ -31,24 +31,39 @@ namespace DigitalInsights.DB.Silver.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-        public double DiScore { get; set; }
+
+        [JsonIgnore]
         public DateTime EffectiveFrom { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Address> Addresses { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CompanyCountry> CompanyCountries { get; set; }
-        public virtual ICollection<CompanyOperation> CompanyOperations { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CountryAge> CountryAges { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CountryDemographic> CountryDemographics { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CountryDisability> CountryDisabilities { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CountryEconomy> CountryEconomies { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CountryEdu> CountryEdus { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CountryGender> CountryGenders { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CountryPolitical> CountryPoliticals { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CountryRace> CountryRaces { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CountryReligion> CountryReligions { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CountrySex> CountrySexes { get; set; }
+        [JsonIgnore]
         public virtual ICollection<CountryUrban> CountryUrbans { get; set; }
+        [JsonIgnore]
         public virtual ICollection<IndustryCountry> IndustryCountries { get; set; }
+        [JsonIgnore]
         public virtual ICollection<PersonCountry> PersonCountries { get; set; }
     }
 }

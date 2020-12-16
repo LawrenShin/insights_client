@@ -15,7 +15,6 @@ namespace DigitalInsights.DB.Silver.Entities
             CompanyIndustries = new HashSet<CompanyIndustry>();
             CompanyMatches = new HashSet<CompanyMatch>();
             CompanyNames = new HashSet<CompanyName>();
-            CompanyOperations = new HashSet<CompanyOperation>();
             CompanyQuestionnaires = new HashSet<CompanyQuestion>();
             Roles = new HashSet<Role>();
         }
@@ -23,7 +22,6 @@ namespace DigitalInsights.DB.Silver.Entities
         public int Id { get; set; }
         public string Lei { get; set; }
         public string LegalName { get; set; }
-        public string LegalJurisdiction { get; set; }
         public string Status { get; set; }
         public int? NumEmployees { get; set; }
         [JsonIgnore]
@@ -40,7 +38,6 @@ namespace DigitalInsights.DB.Silver.Entities
         [JsonIgnore]
         public virtual ICollection<CompanyMatch> CompanyMatches { get; set; }
         public virtual ICollection<CompanyName> CompanyNames { get; set; }
-        public virtual ICollection<CompanyOperation> CompanyOperations { get; set; }
         public virtual ICollection<CompanyQuestion> CompanyQuestionnaires { get; set; }
         public virtual ICollection<Role> Roles { get; set; }
     }

@@ -122,6 +122,13 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
                     //var targetEntity = silverContext.Company.Where(x => x.Lei == entity.Lei).FirstOrDefault();
                     //if (targetEntity == null)
                     //{
+
+                    if (!countries.ContainsKey(entity.LegalJurisdiction.Split('-')[0]))
+                    {
+                        // we have no country data for it
+                        continue;
+                    }
+
                     var targetEntity = new Company();
                     companiesToSave.Add(targetEntity);
                     //}
@@ -144,7 +151,6 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
                     }
 
                     targetEntity.Status = entity.Status;
-                    targetEntity.LegalJurisdiction = entity.LegalJurisdiction;
                     targetEntity.Lei = entity.Lei;
 
                     var legalAddress = entity.GleifAddresses.Where(x => x.Type == "LEGAL").First();
@@ -197,6 +203,14 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
                         + (string.IsNullOrEmpty(hqAddress.Additionaladdressline3) ? string.Empty : " " + hqAddress.Additionaladdressline3);
                     targetHqAddress.AddressLine = targetHqAddress.AddressLine ?? string.Empty;
 
+                    targetEntity.CompanyCountries.Add(
+                        new CompanyCountry()
+                        {
+                            IsPrimary = true,
+                            LegalJurisdiction = true,
+                            Company = targetEntity,
+                            CountryId = countries[entity.LegalJurisdiction.Split('-')[0]].Id
+                        });
                 }
 
                 silverContext.SaveChanges();

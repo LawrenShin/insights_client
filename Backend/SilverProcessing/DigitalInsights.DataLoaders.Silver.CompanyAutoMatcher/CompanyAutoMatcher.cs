@@ -67,17 +67,17 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
                 countries = dbContext.Countries.AsNoTracking().ToList();
 
                 var names = dbContext.CompanyNames.AsNoTracking()
-                    .Include(x => x.Company)
-                    .Select(x => new { x.Name, x.Type, x.Id, x.Company.LegalJurisdiction }).ToList(); // note that ID is internal to our DB, it's different from LEI
+                    .Include(x => x.Company).ThenInclude(x=>x.CompanyCountries.Where(x=>x.LegalJurisdiction)).ThenInclude(x=>x.Country)
+                    .Select(x => new { x.Name, x.Type, x.Id, LegalJurisdiction = x.Company.CompanyCountries }).ToList(); // note that ID is internal to our DB, it's different from LEI
 
-                Action<string, string, int, List<Tuple<string, string>>, Dictionary<string, int>> add = (name, code, id, namesList, namesDictionary) =>
+                Action<string, ICollection<CompanyCountry>, int, List<Tuple<string, string>>, Dictionary<string, int>> add = (name, code, id, namesList, namesDictionary) =>
                 {
                     var standard = Standardize(name);
                     if (!string.IsNullOrEmpty(standard) && standard.Length > 1)
                     {
                         if (!namesDictionary.ContainsKey(standard))
                         {
-                            namesList.Add(Tuple.Create(standard, code.Split('-')[0])); // the split is to handle codes like "US-WI", "CA-ON".
+                            namesList.Add(Tuple.Create(standard, code.First().Country.Code));
                             namesDictionary[standard] = id;
                         }
                         else
@@ -102,7 +102,9 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
                     }
                 }
 
-                var companies = dbContext.Companies.AsNoTracking().Select(x => new { x.LegalName, x.LegalJurisdiction, x.Id }).ToList();
+                var companies = dbContext.Companies.AsNoTracking()
+                    .Include(x => x.CompanyCountries.Where(x => x.LegalJurisdiction)).ThenInclude(x => x.Country)
+                    .Select(x => new { x.LegalName, LegalJurisdiction = x.CompanyCountries, x.Id }).ToList();
 
                 foreach (var n in companies)
                 {
