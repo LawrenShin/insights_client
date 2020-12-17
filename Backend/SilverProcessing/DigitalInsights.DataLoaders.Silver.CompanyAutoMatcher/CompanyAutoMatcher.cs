@@ -92,13 +92,13 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
                 {
                     if (n.Type == "TRADING_OR_OPERATING_NAME")
                     {
-                        add(n.Name, n.LegalJurisdiction, n.Id, akaNames, akaNameToId);
+                        add(n.Name, n.LegalJurisdiction, n.Id.Value, akaNames, akaNameToId);
                     }
                     else if (n.Type == "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME" ||
                         n.Type == "PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME" ||
                         n.Type == "ALTERNATIVE_LANGUAGE_LEGAL_NAME")
                     {
-                        add(n.Name, n.LegalJurisdiction, n.Id, transliteratedNames, transliteratedNameToId);
+                        add(n.Name, n.LegalJurisdiction, n.Id.Value, transliteratedNames, transliteratedNameToId);
                     }
                 }
 
@@ -108,7 +108,7 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
 
                 foreach (var n in companies)
                 {
-                    add(n.LegalName, n.LegalJurisdiction, n.Id, legalNames, legalNameToId);
+                    add(n.LegalName, n.LegalJurisdiction, n.Id.Value, legalNames, legalNameToId);
                 }
 
                 // The following code is used to dump all relevant DB data except countries - it saves time to reload ready data structures from hard drive

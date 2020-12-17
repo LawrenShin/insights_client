@@ -7,7 +7,7 @@ namespace DigitalInsights.DB.Silver.Entities
 {
     public partial class CompanyQuestion
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public int? CompanyId { get; set; }
         public Enums.CompanyQuestion Question { get; set; }
         public int Answer { get; set; }
