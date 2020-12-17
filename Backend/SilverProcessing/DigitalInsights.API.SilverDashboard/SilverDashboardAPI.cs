@@ -30,6 +30,8 @@ namespace DigitalInsights.API.SilverDashboard
         // Delete company query string parameters
         const string ID = "id";
 
+        const string AUTH_HEADER = "x-api-token";
+
         SilverContext silverContext = new SilverContext();
 
         /// <summary>
@@ -39,7 +41,53 @@ namespace DigitalInsights.API.SilverDashboard
         {
         }
 
-        public APIGatewayProxyResponse Authorize(APIGatewayProxyRequest request, ILambdaContext context)
+        //public APIGatewayCustomAuthorizerResponse Authorize(APIGatewayCustomAuthorizerRequest request, ILambdaContext context)
+        //{
+        //    var defaultAnswer =
+        //        new APIGatewayCustomAuthorizerResponse()
+        //        {
+        //            PolicyDocument = new APIGatewayCustomAuthorizerPolicy
+        //            {
+        //                Version = "2012-10-17",
+        //                Statement = new List<APIGatewayCustomAuthorizerPolicy.IAMPolicyStatement>() {
+        //                    new APIGatewayCustomAuthorizerPolicy.IAMPolicyStatement()
+        //                    {
+        //                        Action = new HashSet<string>(){"execute-api:Invoke"},
+        //                        Effect = "Deny",
+        //                        Resource = new HashSet<string>(){  request.MethodArn }
+        //                    }
+        //                }
+        //            }
+        //        };
+
+        //    try
+        //    {
+        //        context.Logger.LogLine("Get Request\n");
+
+        //        if (request.Headers != null && request.Headers.ContainsKey(AUTH_HEADER))
+        //        {
+        //            var result = JWTHelper.ValidateToken(request.Headers[AUTH_HEADER]);
+
+        //            defaultAnswer.PolicyDocument.Statement.First().Effect = result ? "Allow" : "Deny";
+        //        }
+        //    }
+        //    catch
+        //    {
+
+        //    }
+        //    return defaultAnswer;
+        //}
+
+        private bool ValidateRequest(APIGatewayProxyRequest request)
+        {
+            if (request.Headers != null && request.Headers.ContainsKey(AUTH_HEADER))
+            {
+                return JWTHelper.ValidateToken(request.Headers[AUTH_HEADER]);
+            }
+            return false;
+        }
+
+        public APIGatewayProxyResponse Login(APIGatewayProxyRequest request, ILambdaContext context)
         {
             try
             {
@@ -47,12 +95,23 @@ namespace DigitalInsights.API.SilverDashboard
 
                 var authInfo = JsonConvert.DeserializeObject<AuthInfo>(request.Body);
 
+                if(authInfo == null)
+                {
+                    return new APIGatewayProxyResponse
+                    {
+                        StatusCode = (int)HttpStatusCode.BadRequest,
+
+                        Body = $"Bad formatting of the request body: {request.Body}.\n Consider {JsonConvert.SerializeObject(new AuthInfo() { UserName = "Sample", Password = "Sample" })}",
+                        Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
+                    };
+                }
+
                 var response = new APIGatewayProxyResponse
                 {
                     StatusCode = (int)HttpStatusCode.OK,
 
                     Body = JWTHelper.CreateToken(authInfo),
-                    Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+                    Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
                 };
 
                 return response;
@@ -63,7 +122,7 @@ namespace DigitalInsights.API.SilverDashboard
                 return new APIGatewayProxyResponse
                 {
                     StatusCode = (int)HttpStatusCode.BadRequest,
-                    Body = $"Bad query: {ex}",
+                    Body = $"Bad query: {ex}.\n Consider {JsonConvert.SerializeObject(new AuthInfo() { UserName = "Sample", Password = "Sample" })}",
                     Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
                 };
             }
@@ -75,6 +134,14 @@ namespace DigitalInsights.API.SilverDashboard
             {
                 context.Logger.LogLine("Get Request\n");
 
+                if (!ValidateRequest(request))
+                {
+                    return new APIGatewayProxyResponse
+                    {
+                        StatusCode = (int)HttpStatusCode.Forbidden,
+                        Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
+                    };
+                }
 
                 var response = new APIGatewayProxyResponse
                 {
@@ -104,6 +171,14 @@ namespace DigitalInsights.API.SilverDashboard
             {
                 context.Logger.LogLine("Get Request\n");
 
+                if (!ValidateRequest(request))
+                {
+                    return new APIGatewayProxyResponse
+                    {
+                        StatusCode = (int)HttpStatusCode.Forbidden,
+                        Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
+                    };
+                }
 
                 var response = new APIGatewayProxyResponse
                 {
@@ -132,6 +207,14 @@ namespace DigitalInsights.API.SilverDashboard
             {
                 context.Logger.LogLine("Get Request\n");
 
+                if (!ValidateRequest(request))
+                {
+                    return new APIGatewayProxyResponse
+                    {
+                        StatusCode = (int)HttpStatusCode.Forbidden,
+                        Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
+                    };
+                }
 
                 var response = new APIGatewayProxyResponse
                 {
@@ -165,6 +248,15 @@ namespace DigitalInsights.API.SilverDashboard
             try
             {
                 context.Logger.LogLine("Get Request\n");
+
+                if (!ValidateRequest(request))
+                {
+                    return new APIGatewayProxyResponse
+                    {
+                        StatusCode = (int)HttpStatusCode.Forbidden,
+                        Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
+                    };
+                }
 
                 int pageSize;
                 int pageIndex;
@@ -232,6 +324,15 @@ namespace DigitalInsights.API.SilverDashboard
             try
             {
                 context.Logger.LogLine("Get Request\n");
+
+                if (!ValidateRequest(request))
+                {
+                    return new APIGatewayProxyResponse
+                    {
+                        StatusCode = (int)HttpStatusCode.Forbidden,
+                        Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
+                    };
+                }
 
                 int id;
 
