@@ -39,6 +39,36 @@ namespace DigitalInsights.API.SilverDashboard
         {
         }
 
+        public APIGatewayProxyResponse Authorize(APIGatewayProxyRequest request, ILambdaContext context)
+        {
+            try
+            {
+                context.Logger.LogLine("Get Request\n");
+
+                var authInfo = JsonConvert.DeserializeObject<AuthInfo>(request.Body);
+
+                var response = new APIGatewayProxyResponse
+                {
+                    StatusCode = (int)HttpStatusCode.OK,
+
+                    Body = JWTHelper.CreateToken(authInfo),
+                    Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+                };
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                return new APIGatewayProxyResponse
+                {
+                    StatusCode = (int)HttpStatusCode.BadRequest,
+                    Body = $"Bad query: {ex}",
+                    Headers = new Dictionary<string, string> { { "Content-Type", "text/plain" } }
+                };
+            }
+        }
+
         public APIGatewayProxyResponse GetRoleTypes(APIGatewayProxyRequest request, ILambdaContext context)
         {
             try

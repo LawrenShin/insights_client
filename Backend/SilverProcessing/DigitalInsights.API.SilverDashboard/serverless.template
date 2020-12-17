@@ -3,6 +3,41 @@
   "Transform": "AWS::Serverless-2016-10-31",
   "Description": "REST API for Silver dashboard.",
   "Resources": {
+    "Authorize": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "PackageType": "Image",
+        "ImageConfig": {
+          "EntryPoint": [
+            "/lambda-entrypoint.sh"
+          ],
+          "Command": [
+            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::Authorize"
+          ]
+        },
+        "ImageUri": "",
+        "MemorySize": 256,
+        "Timeout": 60,
+        "Role": null,
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/Login/",
+              "Method": "POST"
+            }
+          }
+        }
+      },
+      "Metadata": {
+        "Dockerfile": "Dockerfile",
+        "DockerContext": ".",
+        "DockerTag": ""
+      }
+    },
     "GetCountries": {
       "Type": "AWS::Serverless::Function",
       "Properties": {
