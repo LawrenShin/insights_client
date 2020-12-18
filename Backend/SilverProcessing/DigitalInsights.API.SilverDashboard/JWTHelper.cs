@@ -32,7 +32,7 @@ namespace DigitalInsights.API.SilverDashboard
 			return tokenHandler.WriteToken(token);
 		}
 
-        internal bool ValidateToken(string token)
+        internal static bool ValidateToken(string token)
         {
 			var tokenHandler = new JwtSecurityTokenHandler();
 			try

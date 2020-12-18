@@ -3,7 +3,7 @@
   "Transform": "AWS::Serverless-2016-10-31",
   "Description": "REST API for Silver dashboard.",
   "Resources": {
-    "Authorize": {
+    "Login": {
       "Type": "AWS::Serverless::Function",
       "Properties": {
         "PackageType": "Image",
@@ -12,7 +12,7 @@
             "/lambda-entrypoint.sh"
           ],
           "Command": [
-            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::Authorize"
+            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::Login"
           ]
         },
         "ImageUri": "",
@@ -40,7 +40,7 @@
     },
     "GetCountries": {
       "Type": "AWS::Serverless::Function",
-      "Properties": {
+      "Properties": { 
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
@@ -211,6 +211,41 @@
               "RequestParameters" : [
                 "method.request.querystring.id"
               ] 
+            }
+          }
+        }
+      },
+      "Metadata": {
+        "Dockerfile": "Dockerfile",
+        "DockerContext": ".",
+        "DockerTag": ""
+      }
+    },
+    "SaveCompany": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "PackageType": "Image",
+        "ImageConfig": {
+          "EntryPoint": [
+            "/lambda-entrypoint.sh"
+          ],
+          "Command": [
+            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::SaveCompany"
+          ]
+        },
+        "ImageUri": "",
+        "MemorySize": 512,
+        "Timeout": 60,
+        "Role": null,
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/Companies/",
+              "Method": "POST"
             }
           }
         }

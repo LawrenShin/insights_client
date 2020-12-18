@@ -101,7 +101,7 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader
                 var companyIds = companies.Where(x => matches.ContainsKey(x)).Select(x => matches[x]).Where(x => x != -1).ToList();
                 Dictionary<int, Company> companiesLookup =
                     dbContext.Companies.AsQueryable().Include(x => x.Roles).Where(x => companyIds.Contains(x.Id))
-                    .ToDictionary(x => x.Id, x => x);
+                    .ToDictionary(x => x.Id.Value, x => x);
 
                 using (var fileReader = new StreamReader(filename))
                 {

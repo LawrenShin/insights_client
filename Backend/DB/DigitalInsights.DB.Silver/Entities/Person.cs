@@ -15,7 +15,7 @@ namespace DigitalInsights.DB.Silver.Entities
             Roles = new HashSet<Role>();
         }
 
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public int? Address { get; set; }
         public string Name { get; set; }
         public short? Age { get; set; }
