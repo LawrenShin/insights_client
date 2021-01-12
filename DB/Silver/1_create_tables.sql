@@ -469,7 +469,7 @@ CREATE TABLE IF NOT EXISTS role
 (
 	id SERIAL PRIMARY KEY,
 	company_id INT REFERENCES company(id) ON DELETE CASCADE,
-	person_id INT REFERENCES person(id),
+	person_id INT REFERENCES person(id) ON DELETE CASCADE,
 	is_effective SMALLINT NULL DEFAULT NULL,
 	role_type SMALLINT NOT NULL,
 	title VARCHAR(200) NOT NULL,
