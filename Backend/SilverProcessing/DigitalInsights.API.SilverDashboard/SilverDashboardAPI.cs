@@ -115,8 +115,8 @@ namespace DigitalInsights.API.SilverDashboard
 
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
-                    .WithPlainTextContent()
-                    .WithBody(JWTHelper.CreateToken(authInfo))
+                    .WithJsonContent()
+                    .WithBody(JsonConvert.SerializeObject(new AuthResponseDTO() { Token = JWTHelper.CreateToken(authInfo) }))
                     .Build();
             }
             catch (Exception ex)
