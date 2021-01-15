@@ -45,8 +45,9 @@ namespace DigitalInsights.DataLoaders.Silver.CountryLoader
 
                 Logger.Log("Configuring DB context.");
                 SilverContext dbContext = new SilverContext();
-                dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
                 dbContext.ChangeTracker.LazyLoadingEnabled = true;
+
+                var countries = dbContext.Countries.ToList();
 
                 using (var fileReader = new StreamReader(filename))
                 {
@@ -71,62 +72,62 @@ namespace DigitalInsights.DataLoaders.Silver.CountryLoader
                     {
                         var country = csvReader.GetRecord<Country>();
 
+                        var targetCountry = countries.First(x => x.Name == country.Name.Trim());
+
                         var countryAge = csvReader.GetRecord<CountryAge>();
-                        countryAge.Country = country;
-                        country.CountryAges.Add(countryAge);
+                        countryAge.Country = targetCountry;
+                        targetCountry.CountryAges.Add(countryAge);
                         dbContext.Add(countryAge);
 
-                        var countryDemographic = csvReader.GetRecord<CountryDemographic>();
-                        countryDemographic.Country = country;
-                        country.CountryDemographics.Add(countryDemographic);
+                        var countryDemographic = csvReader.GetRecord<CountryDemographics>();
+                        countryDemographic.Country = targetCountry;
+                        targetCountry.CountryDemographics.Add(countryDemographic);
                         dbContext.Add(countryDemographic);
 
                         var countryDisability = csvReader.GetRecord<CountryDisability>();
-                        countryDisability.Country = country;
-                        country.CountryDisabilities.Add(countryDisability);
+                        countryDisability.Country = targetCountry;
+                        targetCountry.CountryDisabilities.Add(countryDisability);
                         dbContext.Add(countryDisability);
 
                         var countryEconomy = csvReader.GetRecord<CountryEconomy>();
-                        countryEconomy.Country = country;
-                        country.CountryEconomies.Add(countryEconomy);
+                        countryEconomy.Country = targetCountry;
+                        targetCountry.CountryEconomies.Add(countryEconomy);
                         dbContext.Add(countryEconomy);
 
                         var countryEdu = csvReader.GetRecord<CountryEdu>();
-                        countryEdu.Country = country;
-                        country.CountryEdus.Add(countryEdu);
+                        countryEdu.Country = targetCountry;
+                        targetCountry.CountryEdus.Add(countryEdu);
                         dbContext.Add(countryEdu);
 
                         var countryGender = csvReader.GetRecord<CountryGender>();
-                        countryGender.Country = country;
-                        country.CountryGenders.Add(countryGender);
+                        countryGender.Country = targetCountry;
+                        targetCountry.CountryGenders.Add(countryGender);
                         dbContext.Add(countryGender);
 
                         var countryPolitical = csvReader.GetRecord<CountryPolitical>();
-                        countryPolitical.Country = country;
-                        country.CountryPoliticals.Add(countryPolitical);
+                        countryPolitical.Country = targetCountry;
+                        targetCountry.CountryPoliticals.Add(countryPolitical);
                         dbContext.Add(countryPolitical);
 
                         var countryRace = csvReader.GetRecord<CountryRace>();
-                        countryRace.Country = country;
-                        country.CountryRaces.Add(countryRace);
+                        countryRace.Country = targetCountry;
+                        targetCountry.CountryRaces.Add(countryRace);
                         dbContext.Add(countryRace);
 
                         var countryReligion = csvReader.GetRecord<CountryReligion>();
-                        countryReligion.Country = country;
-                        country.CountryReligions.Add(countryReligion);
+                        countryReligion.Country = targetCountry;
+                        targetCountry.CountryReligions.Add(countryReligion);
                         dbContext.Add(countryReligion);
 
                         var countrySex = csvReader.GetRecord<CountrySex>();
-                        countrySex.Country = country;
-                        country.CountrySexes.Add(countrySex);
+                        countrySex.Country = targetCountry;
+                        targetCountry.CountrySexes.Add(countrySex);
                         dbContext.Add(countrySex);
 
                         var countryUrban = csvReader.GetRecord<CountryUrban>();
-                        countryUrban.Country = country;
-                        country.CountryUrbans.Add(countryUrban);
+                        countryUrban.Country = targetCountry;
+                        targetCountry.CountryUrbans.Add(countryUrban);
                         dbContext.Add(countryUrban);
-
-                        dbContext.Add(country);
                     }
                 }
 

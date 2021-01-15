@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using DigitalInsights.DB.Common.Enums;
 using System;
 using System.Collections.Generic;
 
@@ -11,34 +11,29 @@ namespace DigitalInsights.DB.Silver.Entities
         public Person()
         {
             PersonCountries = new HashSet<PersonCountry>();
-
             Roles = new HashSet<Role>();
         }
 
-        public int? Id { get; set; }
-        public int? Address { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public short? Age { get; set; }
         public short? BirthYear { get; set; }
-        public string Gender { get; set; }
+        public Gender? Gender { get; set; }
         public string Picture { get; set; }
-        public string Race { get; set; }
-        public string Religion { get; set; }
-        public string Married { get; set; }
-        public string HighEdu { get; set; }
-        public string EduSubject { get; set; }
-        public string EduInstitute { get; set; }
+        public Race? Race { get; set; }
+        public Religion? Religion { get; set; }
+        public MaritalStatus? Married { get; set; }
+        public short? HasKids { get; set; }
+        public Common.Enums.EducationLevel? EducationLevel { get; set; }
+        public Common.Enums.EducationSubject? EducationSubject { get; set; }
+        public string EducationInstitute { get; set; }
         public string Sexuality { get; set; }
-        public string Disability { get; set; }
-        public double? BaseSalary { get; set; }
-        public double? OtherIncentive { get; set; }
-        public bool? Urban { get; set; }
+        public string VisibleDisability { get; set; }
+        public int? Urban { get; set; }
+        public string Website { get; set; }
         public DateTime EffectiveFrom { get; set; }
 
-        [JsonIgnore]
-        public virtual Address AddressNavigation { get; set; }
         public virtual ICollection<PersonCountry> PersonCountries { get; set; }
-        [JsonIgnore]
         public virtual ICollection<Role> Roles { get; set; }
     }
 }

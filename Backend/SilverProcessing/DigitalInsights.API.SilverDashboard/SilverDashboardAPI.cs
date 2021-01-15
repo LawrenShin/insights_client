@@ -1,20 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
 using DigitalInsights.DB.Silver;
-using Amazon.Lambda.Serialization.SystemTextJson;
-using System.IO;
-using System.Text;
 using Newtonsoft.Json;
 using DigitalInsights.DB.Silver.Entities;
-using Microsoft.EntityFrameworkCore;
-using DigitalInsights.DB.Silver.Enums;
-using CompanyQuestion = DigitalInsights.DB.Silver.Entities.CompanyQuestion;
 using DigitalInsights.API.SilverDashboard.Services;
 using DigitalInsights.API.SilverDashboard.Helpers;
 using DigitalInsights.API.SilverDashboard.DTO;
@@ -34,7 +24,7 @@ namespace DigitalInsights.API.SilverDashboard
         // Delete company query string parameters
         const string ID = "id";
 
-        const string AUTH_HEADER = "x-api-token";
+        const string AUTH_HEADER = "xApiToken";
 
         /// <summary>
         /// Default constructor that Lambda will invoke.
@@ -54,7 +44,7 @@ namespace DigitalInsights.API.SilverDashboard
         //                Statement = new List<APIGatewayCustomAuthorizerPolicy.IAMPolicyStatement>() {
         //                    new APIGatewayCustomAuthorizerPolicy.IAMPolicyStatement()
         //                    {
-        //                        Action = new HashSet<string>(){"execute-api:Invoke"},
+        //                        Action = new HashSet<string>(){"executeApi:Invoke"},
         //                        Effect = "Deny",
         //                        Resource = new HashSet<string>(){  request.MethodArn }
         //                    }
@@ -115,8 +105,8 @@ namespace DigitalInsights.API.SilverDashboard
 
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
-                    .WithJsonContent()
-                    .WithBody(JsonConvert.SerializeObject(new AuthResponseDTO() { Token = JWTHelper.CreateToken(authInfo) }))
+                    .WithPlainTextContent()
+                    .WithBody(JWTHelper.CreateToken(authInfo))
                     .Build();
             }
             catch (Exception ex)
@@ -127,7 +117,7 @@ namespace DigitalInsights.API.SilverDashboard
             }
         }
 
-        public APIGatewayProxyResponse GetRoleTypes(APIGatewayProxyRequest request, ILambdaContext context)
+        public APIGatewayProxyResponse GetDictionaries(APIGatewayProxyRequest request, ILambdaContext context)
         {
             try
             {
@@ -146,7 +136,21 @@ namespace DigitalInsights.API.SilverDashboard
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
                     .WithJsonContent()
-                    .WithBody(JsonConvert.SerializeObject(service.GetRoleTypes()))
+                    .WithBody(JsonConvert.SerializeObject(
+                        new DictionariesDTO()
+                        {
+                            Countries = service.GetCountries(),
+                            EducationLevels = service.GetEducationLevels(),
+                            EducationSubjects = service.GetEducationSubjects(),
+                            Genders = service.GetGenders(),
+                            Industries = service.GetIndustries(),
+                            IndustryCodes = service.GetIndustryCodes(),
+                            MaritalStatuses = service.GetMaritalStatuses(),
+                            Races = service.GetRaces(),
+                            Regions = service.GetRegions(),
+                            Religions = service.GetReligions(),
+                            RoleTypes = service.GetRoleTypes(),
+                        }))
                     .Build();
             }
             catch (Exception ex)
@@ -156,67 +160,6 @@ namespace DigitalInsights.API.SilverDashboard
                     .Build();
             }
         }
-
-        public APIGatewayProxyResponse GetCountries(APIGatewayProxyRequest request, ILambdaContext context)
-        {
-            try
-            {
-                context.Logger.LogLine("Get Request\n");
-
-                if (!ValidateRequest(request))
-                {
-                    return new APIGatewayProxyResponseBuilder()
-                        .WithForbiddenCode()
-                        .WithPlainTextContent()
-                        .Build();
-                }
-
-                var service = new DictionaryService(new SilverContext());
-
-                return new APIGatewayProxyResponseBuilder()
-                    .WithOkCode()
-                    .WithJsonContent()
-                    .WithBody(JsonConvert.SerializeObject(service.GetCountries()))
-                    .Build();
-            }
-            catch (Exception ex)
-            {
-                return new APIGatewayProxyResponseBuilder()
-                    .WithSimpleError($"Bad query: {ex}")
-                    .Build();
-            }
-        }
-
-        public APIGatewayProxyResponse GetIndustries(APIGatewayProxyRequest request, ILambdaContext context)
-        {
-            try
-            {
-                context.Logger.LogLine("Get Request\n");
-
-                if (!ValidateRequest(request))
-                {
-                    return new APIGatewayProxyResponseBuilder()
-                        .WithForbiddenCode()
-                        .WithPlainTextContent()
-                        .Build();
-                }
-
-                var service = new DictionaryService(new SilverContext());
-
-                return new APIGatewayProxyResponseBuilder()
-                    .WithOkCode()
-                    .WithJsonContent()
-                    .WithBody(JsonConvert.SerializeObject(service.GetIndustries()))
-                    .Build();
-            }
-            catch (Exception ex)
-            {
-                return new APIGatewayProxyResponseBuilder()
-                    .WithSimpleError($"Bad query: {ex}")
-                    .Build();
-            }
-        }
-
 
         /// <summary>
         /// A Lambda function to get a list of companies to HTTP Get methods from API Gateway
@@ -350,7 +293,7 @@ namespace DigitalInsights.API.SilverDashboard
 
                 var service = new CompanyService(new SilverContext());
                 service.UpdateOrInsertCompany(
-                    JsonConvert.DeserializeObject<Company>(request.Body));                
+                    JsonConvert.DeserializeObject<CompanyDTO>(request.Body));                
 
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
@@ -497,7 +440,7 @@ namespace DigitalInsights.API.SilverDashboard
 
                 var service = new PeopleService(new SilverContext());
                 service.UpdateOrInsertPerson(
-                    JsonConvert.DeserializeObject<Person>(request.Body));
+                    JsonConvert.DeserializeObject<PersonDTO>(request.Body));
 
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()

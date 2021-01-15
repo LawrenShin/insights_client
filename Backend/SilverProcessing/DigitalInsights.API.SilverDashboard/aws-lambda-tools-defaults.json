@@ -7,12 +7,12 @@
         "All the command line options for the Lambda command can be specified in this file."
     ],
     "profile"     : "stanislav.sartasov",
-    "region"      : "us-east-2",
+    "region"      : "usEast-2",
     "configuration" : "Release",
-    "s3-prefix"     : "DigitalInsights.API.SilverDashboard/",
+    "s3Prefix"     : "DigitalInsights.API.SilverDashboard/",
     "template"      : "serverless.template",
-    "template-parameters" : "",
-    "docker-host-build-output-dir" : "./bin/Release/net5.0/linux-x64/publish",
+    "templateParameters" : "",
+    "dockerHost-buildOutputDir" : "./bin/Release/net5.0/linux-x64/publish",
     "s3-bucket"                    : "silverdashboard",
     "stack-name"                   : "SilverDashboard"
 }

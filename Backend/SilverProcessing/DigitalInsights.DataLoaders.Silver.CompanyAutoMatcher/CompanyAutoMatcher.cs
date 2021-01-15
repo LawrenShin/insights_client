@@ -68,7 +68,7 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
 
                 var names = dbContext.CompanyNames.AsNoTracking()
                     .Include(x => x.Company).ThenInclude(x=>x.CompanyCountries.Where(x=>x.LegalJurisdiction)).ThenInclude(x=>x.Country)
-                    .Select(x => new { x.Name, x.Type, x.Id, LegalJurisdiction = x.Company.CompanyCountries }).ToList(); // note that ID is internal to our DB, it's different from LEI
+                    .Select(x => new { x.Name, x.NameType, x.Id, LegalJurisdiction = x.Company.CompanyCountries }).ToList(); // note that ID is internal to our DB, it's different from LEI
 
                 Action<string, ICollection<CompanyCountry>, int, List<Tuple<string, string>>, Dictionary<string, int>> add = (name, code, id, namesList, namesDictionary) =>
                 {
@@ -90,15 +90,15 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
 
                 foreach (var n in names)
                 {
-                    if (n.Type == "TRADING_OR_OPERATING_NAME")
+                    if (n.NameType == "TRADING_OR_OPERATING_NAME")
                     {
-                        add(n.Name, n.LegalJurisdiction, n.Id.Value, akaNames, akaNameToId);
+                        add(n.Name, n.LegalJurisdiction, n.Id, akaNames, akaNameToId);
                     }
-                    else if (n.Type == "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME" ||
-                        n.Type == "PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME" ||
-                        n.Type == "ALTERNATIVE_LANGUAGE_LEGAL_NAME")
+                    else if (n.NameType == "AUTO_ASCII_TRANSLITERATED_LEGAL_NAME" ||
+                        n.NameType == "PREFERRED_ASCII_TRANSLITERATED_LEGAL_NAME" ||
+                        n.NameType == "ALTERNATIVE_LANGUAGE_LEGAL_NAME")
                     {
-                        add(n.Name, n.LegalJurisdiction, n.Id.Value, transliteratedNames, transliteratedNameToId);
+                        add(n.Name, n.LegalJurisdiction, n.Id, transliteratedNames, transliteratedNameToId);
                     }
                 }
 
@@ -108,7 +108,7 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
 
                 foreach (var n in companies)
                 {
-                    add(n.LegalName, n.LegalJurisdiction, n.Id.Value, legalNames, legalNameToId);
+                    add(n.LegalName, n.LegalJurisdiction, n.Id, legalNames, legalNameToId);
                 }
 
                 // The following code is used to dump all relevant DB data except countries - it saves time to reload ready data structures from hard drive
@@ -184,8 +184,6 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
                     csvReader.Configuration.MissingFieldFound = null;
 
                     string prevCompanyName = "";
-                    Company targetCompany = null;
-                    Person previousPerson = null;
                     csvReader.Read();
                     while (csvReader.Read())
                     {

@@ -8,7 +8,7 @@ namespace DigitalInsights.DB.Silver.Entities
     public partial class IndustryCountry
     {
         public int Id { get; set; }
-        public int? IndustryId { get; set; }
+        public Common.Enums.Industry? Industry { get; set; }
         public int? CountryId { get; set; }
         public int NumEmployees { get; set; }
         public double AvgPay { get; set; }
@@ -26,6 +26,5 @@ namespace DigitalInsights.DB.Silver.Entities
         public DateTime EffectiveFrom { get; set; }
 
         public virtual Country Country { get; set; }
-        public virtual Industry Industry { get; set; }
     }
 }

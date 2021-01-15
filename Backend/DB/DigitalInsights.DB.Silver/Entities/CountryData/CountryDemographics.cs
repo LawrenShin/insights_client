@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace DigitalInsights.DB.Silver.Entities.CountryData
 {
     public partial class CountryDemographics

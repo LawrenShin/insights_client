@@ -1,9 +1,8 @@
-﻿using DigitalInsights.Common.Logging;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 
-namespace DigitalInsights.DataLoaders.GLEIFLoader
+namespace DigitalInsights.Common.Logging
 {
     public class TraceLoggerProvider : ILoggerProvider
     {
@@ -14,7 +13,7 @@ namespace DigitalInsights.DataLoaders.GLEIFLoader
 
         public void Dispose()
         {
-            
+
         }
 
         private class DbLogger : ILogger

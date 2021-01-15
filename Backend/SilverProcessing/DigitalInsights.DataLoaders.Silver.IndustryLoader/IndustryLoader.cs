@@ -35,15 +35,12 @@ namespace DigitalInsights.DataLoaders.Silver.IndustryLoader
                 Logger.Log("Started");
                 // todo: switch to S3
                 var filename = "C:\\temp\\industry.csv";
-                File.WriteAllText(filename, File.ReadAllText(filename).Replace(',', '.'));
-                var str = File.ReadAllText(filename);
-                str = str.Replace(',', '.');
-                File.WriteAllText(filename, str);
 
                 Logger.Log("Configuring DB context.");
                 SilverContext dbContext = new SilverContext();
-                dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
                 dbContext.ChangeTracker.LazyLoadingEnabled = true;
+
+                var industries = dbContext.Industries.ToList();
 
                 using (var fileReader = new StreamReader(filename))
                 {
@@ -58,12 +55,12 @@ namespace DigitalInsights.DataLoaders.Silver.IndustryLoader
                     {
                         var industry = csvReader.GetRecord<Industry>();
 
+                        var targetIndustry = industries.First(x=>x.Name == industry.Name.Trim());
+
                         var industryCountry = csvReader.GetRecord<IndustryCountry>();
-                        industryCountry.Industry = industry;
-                        industry.IndustryCountries.Add(industryCountry);
+                        industryCountry.Industry = (DB.Common.Enums.Industry)targetIndustry.Id;
 
                         dbContext.Add(industryCountry);
-                        dbContext.Add(industry);
                     }
                 }
 

@@ -1,7 +1,7 @@
 ﻿using System;
+using DigitalInsights.DB.Common.Enums;
 using DigitalInsights.DB.Silver.Entities;
 using DigitalInsights.DB.Silver.Entities.CountryData;
-using DigitalInsights.DB.Silver.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -30,14 +30,15 @@ namespace DigitalInsights.DB.Silver
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyCountry> CompanyCountries { get; set; }
-        public virtual DbSet<CompanyExtendedData> CompanyExtendedData { get; set; }
         public virtual DbSet<CompanyIndustry> CompanyIndustries { get; set; }
         public virtual DbSet<CompanyMatch> CompanyMatches { get; set; }
         public virtual DbSet<CompanyName> CompanyNames { get; set; }
+        public virtual DbSet<CompanyPrivateData> CompanyPrivateData { get; set; }
+        public virtual DbSet<CompanyPublicData> CompanyPublicData { get; set; }
         public virtual DbSet<Entities.CompanyQuestion> CompanyQuestionnaires { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<CountryAge> CountryAges { get; set; }
-        public virtual DbSet<CountryDemographic> CountryDemographics { get; set; }
+        public virtual DbSet<CountryDemographics> CountryDemographics { get; set; }
         public virtual DbSet<CountryDisability> CountryDisabilities { get; set; }
         public virtual DbSet<CountryEconomy> CountryEconomies { get; set; }
         public virtual DbSet<CountryEdu> CountryEdus { get; set; }
@@ -47,10 +48,13 @@ namespace DigitalInsights.DB.Silver
         public virtual DbSet<CountryReligion> CountryReligions { get; set; }
         public virtual DbSet<CountrySex> CountrySexes { get; set; }
         public virtual DbSet<CountryUrban> CountryUrbans { get; set; }
-        public virtual DbSet<Industry> Industries { get; set; }
+        public virtual DbSet<Entities.EducationLevel> EducationLevels { get; set; }
+        public virtual DbSet<Entities.EducationSubject> EducationSubjects { get; set; }
+        public virtual DbSet<Entities.Industry> Industries { get; set; }
         public virtual DbSet<IndustryCountry> IndustryCountries { get; set; }
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<PersonCountry> PersonCountries { get; set; }
+        public virtual DbSet<Entities.Region> Regions { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -58,7 +62,7 @@ namespace DigitalInsights.DB.Silver
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Host=di-dev.c19yqc3su48v.us-east-2.rds.amazonaws.com;Port=5432;Database=DI-silver;Username=postgres;Password=2wsx##edc");
+                optionsBuilder.UseNpgsql("Host=di-dev.c19yqc3su48v.us-east-2.rds.amazonaws.com;Port=5432;Database=DI-silver-dev;Username=postgres;Password=2wsx##edc");
 
                 if (_loggerFactory != null) {
                     optionsBuilder.UseLoggerFactory(_loggerFactory);
@@ -68,6 +72,8 @@ namespace DigitalInsights.DB.Silver
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasAnnotation("Relational:Collation", "en_US.UTF-8");
+
             modelBuilder.Entity<Address>(entity =>
             {
                 entity.ToTable("address");
@@ -104,7 +110,7 @@ namespace DigitalInsights.DB.Silver
                     .HasDefaultValueSql("NULL::character varying");
 
                 entity.Property(e => e.Region)
-                    .HasMaxLength(10)
+                    .HasMaxLength(50)
                     .HasColumnName("region")
                     .HasDefaultValueSql("NULL::character varying");
 
@@ -121,6 +127,8 @@ namespace DigitalInsights.DB.Silver
                 entity.HasIndex(e => e.Id, "company_id_pk")
                     .IsUnique();
 
+                entity.HasIndex(e => e.LegalName, "company_legal_name_idx");
+
                 entity.HasIndex(e => e.Lei, "company_lei_idx")
                     .HasMethod("hash");
 
@@ -129,10 +137,6 @@ namespace DigitalInsights.DB.Silver
                 entity.Property(e => e.EffectiveFrom)
                     .HasColumnName("effective_from")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.Property(e => e.HqId).HasColumnName("hq_id");
-
-                entity.Property(e => e.LegalId).HasColumnName("legal_id");
 
                 entity.Property(e => e.LegalName)
                     .HasMaxLength(400)
@@ -144,25 +148,6 @@ namespace DigitalInsights.DB.Silver
                     .HasColumnName("lei")
                     .HasDefaultValueSql("NULL::bpchar")
                     .IsFixedLength(true);
-
-                entity.Property(e => e.NumEmployees).HasColumnName("num_employees");
-
-                entity.Property(e => e.Status)
-                    .HasMaxLength(30)
-                    .HasColumnName("status")
-                    .HasDefaultValueSql("NULL::character varying");
-
-                entity.HasOne(d => d.Hq)
-                    .WithMany(p => p.CompanyHqs)
-                    .HasForeignKey(d => d.HqId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("company_hq_id_fkey");
-
-                entity.HasOne(d => d.Legal)
-                    .WithMany(p => p.CompanyLegals)
-                    .HasForeignKey(d => d.LegalId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("company_legal_id_fkey");
             });
 
             modelBuilder.Entity<CompanyCountry>(entity =>
@@ -171,22 +156,27 @@ namespace DigitalInsights.DB.Silver
 
                 entity.Property(e => e.CompanyCountryId).HasColumnName("company_country_id");
 
-                entity.Property(e => e.CompanyCountryEffectiveFrom)
-                    .HasColumnName("company_country_effective_from")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
                 entity.Property(e => e.CompanyId).HasColumnName("company_id");
 
                 entity.Property(e => e.CountryId).HasColumnName("country_id");
+
+                entity.Property(e => e.EffectiveFrom)
+                    .HasColumnName("effective_from")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.IsPrimary).HasColumnName("is_primary");
 
                 entity.Property(e => e.LegalJurisdiction).HasColumnName("legal_jurisdiction");
 
-                entity.Property(e => e.Ticker)
-                    .IsRequired()
+                entity.Property(e => e.StockIndex)
                     .HasMaxLength(10)
-                    .HasColumnName("ticker");
+                    .HasColumnName("stock_index")
+                    .HasDefaultValueSql("NULL::character varying");
+
+                entity.Property(e => e.Ticker)
+                    .HasMaxLength(10)
+                    .HasColumnName("ticker")
+                    .HasDefaultValueSql("NULL::character varying");
 
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.CompanyCountries)
@@ -198,40 +188,6 @@ namespace DigitalInsights.DB.Silver
                     .WithMany(p => p.CompanyCountries)
                     .HasForeignKey(d => d.CountryId)
                     .HasConstraintName("company_country_country_id_fkey");
-            });
-
-            modelBuilder.Entity<CompanyExtendedData>(entity =>
-            {
-                entity.ToTable("company_extended_data");
-
-                entity.HasIndex(e => e.CompanyId, "company_extended_data_company_id_idx");
-
-                entity.HasIndex(e => e.Id, "company_extended_data_id_pk")
-                    .IsUnique();
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.BelowNationalAvgIncome).HasColumnName("below_national_avg_income");
-
-                entity.Property(e => e.CompanyId).HasColumnName("company_id");
-
-                entity.Property(e => e.DisabledEmployees).HasColumnName("disabled_employees");
-
-                entity.Property(e => e.EffectiveFrom)
-                    .HasColumnName("effective_from")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.Property(e => e.HierarchyLevel).HasColumnName("hierarchy_level");
-
-                entity.Property(e => e.MedianSalary).HasColumnName("median_salary");
-
-                entity.Property(e => e.RetentionRate).HasColumnName("retention_rate");
-
-                entity.HasOne(d => d.Company)
-                    .WithMany(p => p.CompanyExtendedData)
-                    .HasForeignKey(d => d.CompanyId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("company_extended_data_company_id_fkey");
             });
 
             modelBuilder.Entity<CompanyIndustry>(entity =>
@@ -246,7 +202,25 @@ namespace DigitalInsights.DB.Silver
                     .HasColumnName("effective_from")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.IndustryId).HasColumnName("industry_id");
+                var industryCodeConverter = new ValueConverter<IndustryCode?, int?>(
+                    v => v != null ? (int)v : null,
+                    v => v != null ? (IndustryCode)v : null
+                    );
+
+                entity.Property(e => e.IndustryCode)
+                    .HasColumnName("industry_code")
+                    .HasConversion(industryCodeConverter);
+
+                entity.Property(e => e.IndustryCode).HasColumnName("industry_code");
+
+                var industryConverter = new ValueConverter<Common.Enums.Industry?, int?>(
+                    v => v != null ? (int)v : null,
+                    v => v != null ? (Common.Enums.Industry)v : null
+                    );
+
+                entity.Property(e => e.Industry)
+                    .HasColumnName("industry_id")
+                    .HasConversion(industryConverter);
 
                 entity.Property(e => e.PrimarySecondary)
                     .HasMaxLength(1)
@@ -257,11 +231,6 @@ namespace DigitalInsights.DB.Silver
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("company_industry_company_id_fkey");
-
-                entity.HasOne(d => d.Industry)
-                    .WithMany(p => p.CompanyIndustries)
-                    .HasForeignKey(d => d.IndustryId)
-                    .HasConstraintName("company_industry_industry_id_fkey");
             });
 
             modelBuilder.Entity<CompanyMatch>(entity =>
@@ -313,16 +282,146 @@ namespace DigitalInsights.DB.Silver
                     .HasMaxLength(400)
                     .HasColumnName("name");
 
-                entity.Property(e => e.Type)
+                entity.Property(e => e.NameType)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("type");
+                    .HasColumnName("name_type");
 
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.CompanyNames)
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("company_name_company_id_fkey");
+            });
+
+            modelBuilder.Entity<CompanyPrivateData>(entity =>
+            {
+                entity.ToTable("company_private_data");
+
+                entity.HasIndex(e => e.CompanyId, "company_private_data_company_id_idx");
+
+                entity.HasIndex(e => e.Id, "company_private_data_id_pk")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.BelowNationalAvgIncome).HasColumnName("below_national_avg_income");
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.Property(e => e.DisabledEmployees).HasColumnName("disabled_employees");
+
+                entity.Property(e => e.EffectiveFrom)
+                    .HasColumnName("effective_from")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.HierarchyLevel).HasColumnName("hierarchy_level");
+
+                entity.Property(e => e.MedianSalary).HasColumnName("median_salary");
+
+                entity.Property(e => e.RetentionRate).HasColumnName("retention_rate");
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.CompanyPrivateData)
+                    .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("company_private_data_company_id_fkey");
+            });
+
+            modelBuilder.Entity<CompanyPublicData>(entity =>
+            {
+                entity.ToTable("company_public_data");
+
+                entity.HasIndex(e => e.CompanyId, "company_public_data_company_id_idx");
+
+                entity.HasIndex(e => e.Id, "company_public_data_id_pk")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.AllEmployeesGenderRatioFemale).HasColumnName("all_employees_gender_ratio_female");
+
+                entity.Property(e => e.AllEmployeesVisibleRaceMinority).HasColumnName("all_employees_visible_race_minority");
+
+                entity.Property(e => e.BoardVisibleRaceMinority).HasColumnName("board_visible_race_minority");
+
+                entity.Property(e => e.CompanyHasProgramForAdvancingMinorities).HasColumnName("company_has_program_for_advancing_minorities");
+
+                entity.Property(e => e.CompanyHasSocialImpactPrograms).HasColumnName("company_has_social_impact_programs");
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.Property(e => e.CompanyMeasuresEngagement).HasColumnName("company_measures_engagement");
+
+                entity.Property(e => e.CompanyOffersTraining).HasColumnName("company_offers_training");
+
+                entity.Property(e => e.CompanySupplierSpendingWithDi).HasColumnName("company_supplier_spending_with_di");
+
+                entity.Property(e => e.DIOnWebsite).HasColumnName("di_on_website");
+
+                entity.Property(e => e.EffectiveFrom)
+                    .HasColumnName("effective_from")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.EngagementSurvey).HasColumnName("engagement_survey");
+
+                entity.Property(e => e.EngagementSurveyResponseRate).HasColumnName("engagement_survey_response_rate");
+
+                entity.Property(e => e.ExecutivesVisibleRaceMinority).HasColumnName("executives_visible_race_minority");
+
+                entity.Property(e => e.Fatalities).HasColumnName("fatalities");
+
+                entity.Property(e => e.GenderPayGapFemale).HasColumnName("gender_pay_gap_female");
+
+                entity.Property(e => e.HqAddressEditable)
+                    .IsRequired()
+                    .HasColumnName("hq_address_editable")
+                    .HasDefaultValueSql("true");
+
+                entity.Property(e => e.HqAddressId).HasColumnName("hq_address_id");
+
+                entity.Property(e => e.InvoluntaryTurnoverRate).HasColumnName("involuntary_turnover_rate");
+
+                entity.Property(e => e.LegalAddressEditable)
+                    .IsRequired()
+                    .HasColumnName("legal_address_editable")
+                    .HasDefaultValueSql("true");
+
+                entity.Property(e => e.LegalAddressId).HasColumnName("legal_address_id");
+
+                entity.Property(e => e.MiddleMgmtGenderRatioFemale).HasColumnName("middle_mgmt_gender_ratio_female");
+
+                entity.Property(e => e.MiddleMgmtVisibleRaceMinority).HasColumnName("middle_mgmt_visible_race_minority");
+
+                entity.Property(e => e.NumEmployees).HasColumnName("num_employees");
+
+                entity.Property(e => e.SeniorMgmtGenderRatioFemale).HasColumnName("senior_mgmt_gender_ratio_female");
+
+                entity.Property(e => e.SicknessAnsense).HasColumnName("sickness_ansense");
+
+                entity.Property(e => e.TotalHoursWorked).HasColumnName("total_hours_worked");
+
+                entity.Property(e => e.TotalRecordableInjuries).HasColumnName("total_recordable_injuries");
+
+                entity.Property(e => e.TotalTurnoverRate).HasColumnName("total_turnover_rate");
+
+                entity.Property(e => e.VoluntaryTurnoverRate).HasColumnName("voluntary_turnover_rate");
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.CompanyPublicData)
+                    .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("company_public_data_company_id_fkey");
+
+                entity.HasOne(d => d.HqAddress)
+                    .WithMany(p => p.CompanyPublicDatumHqAddresses)
+                    .HasForeignKey(d => d.HqAddressId)
+                    .HasConstraintName("company_public_data_hq_address_id_fkey");
+
+                entity.HasOne(d => d.LegalAddress)
+                    .WithMany(p => p.CompanyPublicDatumLegalAddresses)
+                    .HasForeignKey(d => d.LegalAddressId)
+                    .HasConstraintName("company_public_data_legal_address_id_fkey");
             });
 
             modelBuilder.Entity<Entities.CompanyQuestion>(entity =>
@@ -344,14 +443,14 @@ namespace DigitalInsights.DB.Silver
                     .HasColumnName("effective_from")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                var converter = new ValueConverter<Enums.CompanyQuestion, int>(
+                var converter = new ValueConverter<Common.Enums.CompanyQuestion, int>(
                     v => (int)v,
-                    v => (Enums.CompanyQuestion)v
+                    v => (Common.Enums.CompanyQuestion)v
                     );
 
                 entity.Property(e => e.Question)
                     .HasColumnName("question")
-                    .HasConversion(converter); ;
+                    .HasConversion(converter);
 
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.CompanyQuestionnaires)
@@ -362,7 +461,7 @@ namespace DigitalInsights.DB.Silver
 
             modelBuilder.Entity<Country>(entity =>
             {
-                entity.ToTable("country");
+                entity.ToTable("countries");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -370,10 +469,6 @@ namespace DigitalInsights.DB.Silver
                     .IsRequired()
                     .HasMaxLength(3)
                     .HasColumnName("code");
-
-                entity.Property(e => e.EffectiveFrom)
-                    .HasColumnName("effective_from")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -415,7 +510,7 @@ namespace DigitalInsights.DB.Silver
                     .HasConstraintName("country_age_country_id_fkey");
             });
 
-            modelBuilder.Entity<CountryDemographic>(entity =>
+            modelBuilder.Entity<CountryDemographics>(entity =>
             {
                 entity.ToTable("country_demographics");
 
@@ -749,15 +844,69 @@ namespace DigitalInsights.DB.Silver
                     .HasConstraintName("country_urban_country_id_fkey");
             });
 
-            modelBuilder.Entity<Industry>(entity =>
+            modelBuilder.Entity<Entities.Industry>(entity =>
             {
-                entity.ToTable("industry");
+                entity.ToTable("industries");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
 
-                entity.Property(e => e.EffectiveFrom)
-                    .HasColumnName("effective_from")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<Entities.Industry>(entity =>
+            {
+                entity.ToTable("industries");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<Entities.EducationLevel>(entity =>
+            {
+                entity.ToTable("education_levels");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<Entities.EducationSubject>(entity =>
+            {
+                entity.ToTable("education_subjects");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<Entities.Region>(entity =>
+            {
+                entity.ToTable("regions");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -791,7 +940,14 @@ namespace DigitalInsights.DB.Silver
 
                 entity.Property(e => e.IndustryDiversity).HasColumnName("industry_diversity");
 
-                entity.Property(e => e.IndustryId).HasColumnName("industry_id");
+                var industryConverter = new ValueConverter<Common.Enums.Industry?, int?>(
+                   v => v != null ? (int)v : null,
+                   v => v != null ? (Common.Enums.Industry)v : null
+                   );
+
+                entity.Property(e => e.Industry)
+                    .HasColumnName("industry_id")
+                    .HasConversion(industryConverter);
 
                 entity.Property(e => e.LgbtPledge).HasColumnName("lgbt_pledge");
 
@@ -809,11 +965,6 @@ namespace DigitalInsights.DB.Silver
                     .WithMany(p => p.IndustryCountries)
                     .HasForeignKey(d => d.CountryId)
                     .HasConstraintName("industry_country_country_id_fkey");
-
-                entity.HasOne(d => d.Industry)
-                    .WithMany(p => p.IndustryCountries)
-                    .HasForeignKey(d => d.IndustryId)
-                    .HasConstraintName("industry_country_industry_id_fkey");
             });
 
             modelBuilder.Entity<Person>(entity =>
@@ -822,89 +973,96 @@ namespace DigitalInsights.DB.Silver
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Address).HasColumnName("address");
-
                 entity.Property(e => e.Age).HasColumnName("age");
-
-                entity.Property(e => e.BaseSalary).HasColumnName("base_salary");
 
                 entity.Property(e => e.BirthYear).HasColumnName("birth_year");
 
-                entity.Property(e => e.Disability)
-                    .HasMaxLength(45)
-                    .HasColumnName("disability")
+                entity.Property(e => e.EducationInstitute)
+                    .HasMaxLength(100)
+                    .HasColumnName("education_institute")
                     .HasDefaultValueSql("NULL::character varying");
 
-                entity.Property(e => e.EduInstitute)
-                    .HasMaxLength(100)
-                    .HasColumnName("edu_institute")
-                    .HasDefaultValueSql("NULL::character varying");
+                var levelConverter = new ValueConverter<Common.Enums.EducationLevel?, int?>(
+                    v => v != null ? (int)v : null,
+                    v => v != null ? (Common.Enums.EducationLevel)v : null
+                    ); 
 
-                entity.Property(e => e.EduSubject)
-                    .HasMaxLength(100)
-                    .HasColumnName("edu_subject")
-                    .HasDefaultValueSql("NULL::character varying");
+                entity.Property(e => e.EducationLevel)
+                    .HasColumnName("education_level")
+                    .HasConversion(levelConverter);
+
+                var subjectConverter = new ValueConverter<Common.Enums.EducationSubject?, int?>(
+                    v => v != null ? (int)v : null,
+                    v => v != null ? (Common.Enums.EducationSubject)v : null
+                    );
+
+                entity.Property(e => e.EducationSubject)
+                    .HasColumnName("education_subject")
+                    .HasConversion(subjectConverter);
 
                 entity.Property(e => e.EffectiveFrom)
                     .HasColumnName("effective_from")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.Gender)
-                    .HasMaxLength(20)
-                    .HasColumnName("gender")
-                    .HasDefaultValueSql("NULL::character varying");
+                entity.Property(e => e.Gender).HasColumnName("gender");
 
-                entity.Property(e => e.HighEdu)
-                    .HasMaxLength(45)
-                    .HasColumnName("high_edu")
-                    .HasDefaultValueSql("NULL::character varying");
+                entity.Property(e => e.HasKids).HasColumnName("has_kids");
+
+                var marriedConverter = new ValueConverter<MaritalStatus?, int?>(
+                    v => v != null ? (int)v : null,
+                    v => v != null ? (MaritalStatus)v : null
+                    );
 
                 entity.Property(e => e.Married)
-                    .HasMaxLength(45)
                     .HasColumnName("married")
-                    .HasDefaultValueSql("NULL::character varying");
+                    .HasConversion(marriedConverter);
+
+                entity.Property(e => e.Married).HasColumnName("married");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(135)
                     .HasColumnName("name");
 
-                entity.Property(e => e.OtherIncentive).HasColumnName("other_incentive");
-
                 entity.Property(e => e.Picture)
                     .HasMaxLength(45)
                     .HasColumnName("picture")
                     .HasDefaultValueSql("NULL::character varying");
 
+                var raceConverter = new ValueConverter<Race?, int?>(
+                    v => v != null ? (int)v : null,
+                    v => v != null ? (Race)v : null
+                    );
+
                 entity.Property(e => e.Race)
-                    .HasMaxLength(45)
                     .HasColumnName("race")
-                    .HasDefaultValueSql("NULL::character varying");
+                    .HasConversion(raceConverter);
+
+                var religionConverter = new ValueConverter<Religion?, int?>(
+                    v => v != null ? (int)v : null,
+                    v => v != null ? (Religion)v : null
+                    );
 
                 entity.Property(e => e.Religion)
-                    .HasMaxLength(45)
                     .HasColumnName("religion")
-                    .HasDefaultValueSql("NULL::character varying");
+                    .HasConversion(religionConverter);
 
                 entity.Property(e => e.Sexuality)
                     .HasMaxLength(45)
                     .HasColumnName("sexuality")
                     .HasDefaultValueSql("NULL::character varying");
 
-                var urbanConverter = new ValueConverter<bool, int>(
-                    v => v ? 100 : 0,
-                    v => v != 0
-                    );
+                entity.Property(e => e.Urban).HasColumnName("urban");
 
-                entity.Property(e => e.Urban)
-                    .HasColumnName("urban")
-                    .HasDefaultValueSql("NULL::int")
-                    .HasConversion(urbanConverter);
+                entity.Property(e => e.VisibleDisability)
+                    .HasMaxLength(45)
+                    .HasColumnName("visible_disability")
+                    .HasDefaultValueSql("NULL::character varying");
 
-                entity.HasOne(d => d.AddressNavigation)
-                    .WithMany(p => p.People)
-                    .HasForeignKey(d => d.Address)
-                    .HasConstraintName("person_address_fkey");
+                entity.Property(e => e.Website)
+                    .HasMaxLength(200)
+                    .HasColumnName("website")
+                    .HasDefaultValueSql("NULL::character varying");
             });
 
             modelBuilder.Entity<PersonCountry>(entity =>
@@ -915,8 +1073,8 @@ namespace DigitalInsights.DB.Silver
 
                 entity.Property(e => e.CountryId).HasColumnName("country_id");
 
-                entity.Property(e => e.PersonCountryEffectiveFrom)
-                    .HasColumnName("person_country_effective_from")
+                entity.Property(e => e.EffectiveFrom)
+                    .HasColumnName("effective_from")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.PersonId).HasColumnName("person_id");
@@ -929,6 +1087,7 @@ namespace DigitalInsights.DB.Silver
                 entity.HasOne(d => d.Person)
                     .WithMany(p => p.PersonCountries)
                     .HasForeignKey(d => d.PersonId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("person_country_person_id_fkey");
             });
 
@@ -946,24 +1105,13 @@ namespace DigitalInsights.DB.Silver
                     .HasColumnName("effective_from")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.IncentiveOptions)
-                    .HasMaxLength(45)
-                    .HasColumnName("incentive_options")
-                    .HasDefaultValueSql("NULL::character varying");
-
                 entity.Property(e => e.IsEffective).HasColumnName("is_effective");
+
+                entity.Property(e => e.OtherIncentives).HasColumnName("other_incentives");
 
                 entity.Property(e => e.PersonId).HasColumnName("person_id");
 
-                var converter = new ValueConverter<RoleType, int>(
-                    v => (int)v,
-                    v => (RoleType)v
-                    );
-
-                entity.Property(e => e.RoleType)
-                    .IsRequired()
-                    .HasColumnName("role_type")
-                    .HasConversion(converter); ;
+                entity.Property(e => e.RoleType).HasColumnName("role_type");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -973,13 +1121,15 @@ namespace DigitalInsights.DB.Silver
                 entity.HasOne(d => d.Company)
                     .WithMany(p => p.Roles)
                     .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("role_company_id_fkey");
 
                 entity.HasOne(d => d.Person)
                     .WithMany(p => p.Roles)
                     .HasForeignKey(d => d.PersonId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("role_person_id_fkey");
-            });            
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }

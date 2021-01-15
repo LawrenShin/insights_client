@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-#nullable disable
+﻿#nullable disable
 
 namespace DigitalInsights.DB.Silver.Entities
 {
-    public partial class Industry
+    public partial class EducationSubject
     {
-        public Industry()
+        public EducationSubject()
         {
         }
 

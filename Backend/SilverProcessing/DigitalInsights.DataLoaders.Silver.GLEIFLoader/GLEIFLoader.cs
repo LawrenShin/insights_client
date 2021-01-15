@@ -37,8 +37,6 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
                 sw.Start();
                 Logger.Init(TRANSFORMER_NAME);
                 Logger.Log("Started");
-                // todo: switch to S3
-                var filename = "C:\\temp\\country.csv";
 
                 Logger.Log($"Creating DB contexts.");
                 var silverContext = new SilverContext();
@@ -87,7 +85,6 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
 
                 chunks
                     .AsParallel().WithDegreeOfParallelism(24).ForAll(
-                    //.Skip(20).ToList()
                     //.ForEach(
                     x => LoadChunk(x, chunks.IndexOf(x), countries));
 
@@ -110,19 +107,15 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
                 //{
                 //    builder.AddProvider(new TraceLoggerProvider());
                 //});
-                var silverContext = new SilverContext();
+                var silverContext = new SilverContext(/*factory*/);
                 silverContext.ChangeTracker.LazyLoadingEnabled = true;
                 silverContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
                 silverContext.ChangeTracker.AutoDetectChangesEnabled = false;
 
-                List<Company> companiesToSave = new List<Company>();
+                List<CompanyPublicData> publicDataToSave = new List<CompanyPublicData>();
                 List<CompanyName> namesToSave = new List<CompanyName>();
                 foreach (var entity in leadContext.GleifEntity.AsNoTracking().Where(x => chunk.Contains(x.Lei)).Include(x => x.GleifAddresses).Include(x => x.GleifEntityNames))
                 {
-                    //var targetEntity = silverContext.Company.Where(x => x.Lei == entity.Lei).FirstOrDefault();
-                    //if (targetEntity == null)
-                    //{
-
                     if (!countries.ContainsKey(entity.LegalJurisdiction.Split('-')[0]))
                     {
                         // we have no country data for it
@@ -130,8 +123,8 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
                     }
 
                     var targetEntity = new Company();
-                    companiesToSave.Add(targetEntity);
-                    //}
+                    silverContext.Add(targetEntity);
+                    //companiesToSave.Add(targetEntity);
 
                     var names = entity.GleifEntityNames;
                     var legalName = names.Where(x => x.Type == "LEGAL").First(); //legal name should exist
@@ -144,25 +137,29 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
                         {
                             Company = targetEntity,
                             Name = name.Name,
-                            Type = name.Type,
+                            NameType = name.Type,
                         };
                         targetEntity.CompanyNames.Add(otherName);
                         namesToSave.Add(otherName);
                     }
 
-                    targetEntity.Status = entity.Status;
                     targetEntity.Lei = entity.Lei;
+
+                    var publicData = new CompanyPublicData() { HqAddressEditable = false, LegalAddressEditable = false };
+                    targetEntity.CompanyPublicData.Add(publicData);
+                    publicData.Company = targetEntity;
+                    publicDataToSave.Add(publicData);
+
+                    var privateData = new CompanyPrivateData();
+                    targetEntity.CompanyPrivateData.Add(privateData);
+                    privateData.Company = targetEntity;
+                    silverContext.CompanyPrivateData.Add(privateData);
 
                     var legalAddress = entity.GleifAddresses.Where(x => x.Type == "LEGAL").First();
 
-                    if (targetEntity.Legal == null)
-                    {
-                        targetEntity.Legal = new Address();
-                        silverContext.Add(targetEntity.Legal);
-                        //targetEntity.Legal.CompanyLegal.Add(targetEntity);
-                    }
+                    Address targetLegalAddress = publicData.LegalAddress = new Address();
+                    silverContext.Add(publicData.LegalAddress);
 
-                    Address targetLegalAddress = targetEntity.Legal;
                     targetLegalAddress.City = legalAddress.City;
                     if (countries.ContainsKey(legalAddress.Country))
                     {
@@ -180,14 +177,9 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
 
                     var hqAddress = entity.GleifAddresses.Where(x => x.Type == "HQ").First();
 
-                    if (targetEntity.Hq == null)
-                    {
-                        targetEntity.Hq = new Address();
-                        silverContext.Add(targetEntity.Hq);
-                        //targetEntity.Hq.CompanyHq.Add(targetEntity);
-                    }
+                    Address targetHqAddress = publicData.HqAddress = new Address();
+                    silverContext.Add(publicData.HqAddress);
 
-                    Address targetHqAddress = targetEntity.Hq;
                     targetHqAddress.City = hqAddress.City;
                     if (countries.ContainsKey(hqAddress.Country))
                     {
@@ -203,26 +195,27 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
                         + (string.IsNullOrEmpty(hqAddress.Additionaladdressline3) ? string.Empty : " " + hqAddress.Additionaladdressline3);
                     targetHqAddress.AddressLine = targetHqAddress.AddressLine ?? string.Empty;
 
-                    targetEntity.CompanyCountries.Add(
-                        new CompanyCountry()
-                        {
-                            IsPrimary = true,
-                            LegalJurisdiction = true,
-                            Company = targetEntity,
-                            CountryId = countries[entity.LegalJurisdiction.Split('-')[0]].Id
-                        });
+                    var companyCountry = new CompanyCountry()
+                    {
+                        IsPrimary = true,
+                        LegalJurisdiction = true,
+                        Company = targetEntity,
+                        CountryId = countries[entity.LegalJurisdiction.Split('-')[0]].Id
+                    };
+                    targetEntity.CompanyCountries.Add(companyCountry);
+                    silverContext.CompanyCountries.Add(companyCountry);
                 }
 
                 silverContext.SaveChanges();
 
-                foreach (var company in companiesToSave)
-                {
-                    silverContext.Add(company);
-                }
-
                 foreach (var name in namesToSave)
                 {
                     silverContext.Add(name);
+                }
+
+                foreach (var publicData in publicDataToSave)
+                {
+                    silverContext.Add(publicData);
                 }
                 silverContext.SaveChanges();
                 silverContext.Dispose();

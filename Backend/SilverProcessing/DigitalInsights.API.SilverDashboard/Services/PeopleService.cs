@@ -1,4 +1,6 @@
-﻿using DigitalInsights.DB.Silver;
+﻿using DigitalInsights.API.SilverDashboard.DTO;
+using DigitalInsights.API.SilverDashboard.Helpers;
+using DigitalInsights.DB.Silver;
 using DigitalInsights.DB.Silver.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,7 +20,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             silverContext = context;
         }
 
-        public Person[] GetPeople(int pageSize, int pageIndex, string searchPrefix)
+        public PersonDTO[] GetPeople(int pageSize, int pageIndex, string searchPrefix)
         {
             var peopleQuery = silverContext.People.AsQueryable<Person>();
 
@@ -29,7 +31,10 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
             return peopleQuery
                 .Include(x => x.PersonCountries)
-                .OrderBy(x => x.Name).Skip(pageIndex * pageSize).Take(pageSize).ToArray();
+                .OrderBy(x => x.Name)
+                .Skip(pageIndex * pageSize).Take(pageSize)
+                .Select(x => new PersonDTO(x))
+                .ToArray();
         }
 
         public void DeletePerson(int id)
@@ -45,11 +50,13 @@ namespace DigitalInsights.API.SilverDashboard.Services
             silverContext.SaveChanges();
         }
 
-        internal void UpdateOrInsertPerson(Person source)
+        internal void UpdateOrInsertPerson(PersonDTO source)
         {
+            var countries = silverContext.Countries.Select(x=>x.Id).ToHashSet();
+
             Person targetPerson;
 
-            if (!source.Id.HasValue || source.Id == 0)
+            if (!source.Id.HasValue)
             {
                 targetPerson = new Person();
                 silverContext.People.Add(targetPerson);
@@ -67,61 +74,58 @@ namespace DigitalInsights.API.SilverDashboard.Services
             }
 
             targetPerson.Age = source.Age;
-            targetPerson.BaseSalary = source.BaseSalary;
             targetPerson.BirthYear = source.BirthYear;
-            targetPerson.Disability = source.Disability;
-            targetPerson.EduInstitute = source.EduInstitute;
-            targetPerson.EduSubject = source.EduSubject;
-            targetPerson.Gender = source.Gender;
-            targetPerson.HighEdu = source.HighEdu;
-            targetPerson.Married = source.Married;
+            targetPerson.EducationInstitute = source.EducationInstitute;
+            targetPerson.EducationLevel = EnumHelper.ParseInputEnumValue<DB.Common.Enums.EducationLevel>(source.EducationLevel);
+            targetPerson.EducationSubject = EnumHelper.ParseInputEnumValue<DB.Common.Enums.EducationSubject>(source.EducationSubject);
+            targetPerson.Gender = EnumHelper.ParseInputEnumValue<DB.Common.Enums.Gender>(source.Gender);
+            targetPerson.HasKids = source.HasKids;
+            targetPerson.Married = EnumHelper.ParseInputEnumValue<DB.Common.Enums.MaritalStatus>(source.MaritalStatus);
             targetPerson.Name = source.Name;
-            targetPerson.OtherIncentive = source.OtherIncentive;
             targetPerson.Picture = source.Picture;
-            targetPerson.Race = source.Race;
-            targetPerson.Religion = source.Religion;
+            targetPerson.Religion = EnumHelper.ParseInputEnumValue<DB.Common.Enums.Religion>(source.Religion);
             targetPerson.Sexuality = source.Sexuality;
             targetPerson.Urban = source.Urban;
+            targetPerson.VisibleDisability = source.VisibleDisability;
+            targetPerson.Website = source.Website;
 
             // countries
 
-            var srcIds = source.PersonCountries
-                .Where(x => x.PersonCountryId.HasValue)
-                .Select(x => x.PersonCountryId.Value)
-                .ToHashSet();
+            if (source.Countries.Any(x => !countries.Contains(x)))
+            {
+                throw new ArgumentException("Country not found");
+            }
+
+            var srcIds = source.Countries.ToHashSet();
 
             var toRemove = new List<PersonCountry>();
             foreach (var personCountry in targetPerson.PersonCountries)
             {
-                if (!srcIds.Contains(personCountry.PersonCountryId.Value))
+                if (!srcIds.Contains(personCountry.PersonCountryId))
                 {
                     toRemove.Add(personCountry);
                 }
             }
+
             foreach (var item in toRemove)
             {
                 targetPerson.PersonCountries.Remove(item);
                 silverContext.Remove(item);
             }
 
-            foreach (var personCountry in source.PersonCountries)
+            foreach (var countryId in source.Countries)
             {
-                PersonCountry targetEntity;
-                if (!personCountry.PersonCountryId.HasValue)
+                if(!targetPerson.PersonCountries.Any(x=>x.CountryId == countryId))
                 {
-                    targetEntity = new PersonCountry()
+                    PersonCountry targetEntity = new PersonCountry()
                     {
                         Person = targetPerson,
+                        CountryId = countryId
                     };
 
                     targetPerson.PersonCountries.Add(targetEntity);
                     silverContext.PersonCountries.Add(targetEntity);
                 }
-                else
-                {
-                    targetEntity = targetPerson.PersonCountries.First(x => x.PersonCountryId == personCountry.PersonCountryId);
-                }
-                targetEntity.CountryId = personCountry.CountryId;
             }
 
             silverContext.SaveChanges();

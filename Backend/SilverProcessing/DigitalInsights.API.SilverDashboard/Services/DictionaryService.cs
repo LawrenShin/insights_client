@@ -1,7 +1,7 @@
 ﻿using DigitalInsights.API.SilverDashboard.DTO;
+using DigitalInsights.DB.Common.Enums;
 using DigitalInsights.DB.Silver;
 using DigitalInsights.DB.Silver.Entities;
-using DigitalInsights.DB.Silver.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,19 +19,59 @@ namespace DigitalInsights.API.SilverDashboard.Services
             silverContext = context;
         }
 
-        public RoleTypeDTO[] GetRoleTypes()
+        public CountryDTO[] GetCountries()
         {
-            return Enum.GetValues<RoleType>().Select(x => new RoleTypeDTO { Id = (int)x, Name = x.ToString() }).ToArray();
+            return silverContext.Countries.Select(x=>new CountryDTO() { Id = x.Id, Name = x.Name, ISOCode = x.Code}).ToArray();
         }
 
-        public Country[] GetCountries()
+        public EnumDTO[] GetEducationLevels()
         {
-            return silverContext.Countries.ToArray();
+            return silverContext.EducationLevels.Select(x => new EnumDTO { Id = x.Id, Name = x.Name }).ToArray();
         }
 
-        public Industry[] GetIndustries()
+        public EnumDTO[] GetEducationSubjects()
         {
-            return silverContext.Industries.ToArray();
+            return silverContext.EducationSubjects.Select(x => new EnumDTO { Id = x.Id, Name = x.Name }).ToArray();
+        }
+
+        public EnumDTO[] GetGenders()
+        {
+            return Enum.GetValues<Gender>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
+        }
+
+        public EnumDTO[] GetIndustryCodes()
+        {
+            return Enum.GetValues<IndustryCode>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
+        }
+
+        public EnumDTO[] GetIndustries()
+        {
+            return silverContext.Industries.Select(x => new EnumDTO { Id = x.Id, Name = x.Name }).ToArray();
+        }
+
+        public EnumDTO[] GetMaritalStatuses()
+        {
+            return Enum.GetValues<MaritalStatus>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
+        }
+
+        public EnumDTO[] GetRaces()
+        {
+            return Enum.GetValues<Race>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
+        }
+
+        public EnumDTO[] GetRegions()
+        {
+            return silverContext.Regions.Select(x => new EnumDTO { Id = x.Id, Name = x.Name }).ToArray();
+        }
+
+        public EnumDTO[] GetReligions()
+        {
+            return Enum.GetValues<Religion>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
+        }
+
+        public EnumDTO[] GetRoleTypes()
+        {
+            return Enum.GetValues<RoleType>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
         }
     }
 }

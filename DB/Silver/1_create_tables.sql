@@ -698,8 +698,6 @@ CREATE TABLE IF NOT EXISTS company
 	id SERIAL PRIMARY KEY,
 	lei CHAR(20) NULL DEFAULT NULL,
 	legal_name VARCHAR(400) NULL DEFAULT NULL,
-	industry_id INT REFERENCES industries(id) DEFAULT NULL,
-	industry_code INT REFERENCES industry_codes(id) DEFAULT NULL,
 	effective_from TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -866,10 +864,10 @@ CREATE TABLE IF NOT EXISTS company_country
 	company_country_id SERIAL PRIMARY KEY,
 	company_id INT REFERENCES company(id) ON DELETE CASCADE,
 	country_id INT REFERENCES countries(id),
-	legal_jurisdiction BOOLEAN NOT NULL,
+	legal_jurisdiction BOOLEAN NOT NULL DEFAULT FALSE,
 	ticker VARCHAR(10) DEFAULT NULL,
 	stock_index VARCHAR(10) DEFAULT NULL,
-	is_primary BOOLEAN NOT NULL,
+	is_primary BOOLEAN NOT NULL DEFAULT FALSE,
 	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -881,7 +879,8 @@ CREATE TABLE IF NOT EXISTS company_industry
 (
 	id SERIAL PRIMARY KEY,
 	company_id INT REFERENCES company(id) ON DELETE CASCADE,
-	industry_id INT REFERENCES industries(id),
+	industry_id INT REFERENCES industries(id) DEFAULT NULL,
+	industry_code INT REFERENCES industry_codes(id) DEFAULT NULL,
 	primary_secondary CHAR(1) NOT NULL,
 	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

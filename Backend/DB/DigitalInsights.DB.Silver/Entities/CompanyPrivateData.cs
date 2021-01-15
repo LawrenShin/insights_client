@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DigitalInsights.DB.Silver.Entities
 {
-    public partial class CompanyExtendedData
+    public partial class CompanyPrivateData
     {
         public int Id { get; set; }
         public int? CompanyId { get; set; }

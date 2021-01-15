@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DigitalInsights.DB.Silver.Enums
+namespace DigitalInsights.DB.Common.Enums
 {
     public enum CompanyQuestion
     {

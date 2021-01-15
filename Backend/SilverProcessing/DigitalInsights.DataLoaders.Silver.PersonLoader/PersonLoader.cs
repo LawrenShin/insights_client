@@ -9,7 +9,6 @@ using CsvHelper;
 using DigitalInsights.Common.Logging;
 using DigitalInsights.DB.Silver;
 using DigitalInsights.DB.Silver.Entities;
-using DigitalInsights.DataLoaders.GLEIFLoader;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using DigitalInsights.DataLoaders.Silver.PersonLoader.Model.CSV;
@@ -55,9 +54,7 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader
                 countries["UAE"] = countries["United Arab Emirates"];
                 countries["Russia"] = countries["Russian Federation"];
                 countries["England"] = countries["United Kingdom"];
-                countries["Guernsey"] = countries["United Kingdom"];
                 countries["Great Britain"] = countries["United Kingdom"];
-                countries["Hong Kong"] = countries["China"];
                 countries["Palestine"] = countries["State of Palestine"];
                 foreach (var key in countries.Keys)
                 {
@@ -101,7 +98,7 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader
                 var companyIds = companies.Where(x => matches.ContainsKey(x)).Select(x => matches[x]).Where(x => x != -1).ToList();
                 Dictionary<int, Company> companiesLookup =
                     dbContext.Companies.AsQueryable().Include(x => x.Roles).Where(x => companyIds.Contains(x.Id))
-                    .ToDictionary(x => x.Id.Value, x => x);
+                    .ToDictionary(x => x.Id, x => x);
 
                 using (var fileReader = new StreamReader(filename))
                 {
@@ -120,14 +117,6 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader
                     {
                         var role = csvReader.GetRecord<Role>();
                         var person = csvReader.GetRecord<Person>();
-                        if (person.Disability == "0") person.Disability = null;
-                        if (person.EduInstitute == "0") person.EduInstitute = null;
-                        if (person.EduSubject == "0") person.EduSubject = null;
-                        if (person.HighEdu == "0") person.HighEdu = null;
-                        if (person.Married == "0") person.Married = null;
-                        if (person.Race == "0") person.Race = null;
-                        if (person.Religion == "0") person.Religion = null;
-                        if (person.Sexuality == "0") person.Sexuality = null;
                         //if (person.Urban == "0") person.Urban = null;
 
 
@@ -196,7 +185,7 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader
 
                             var secondaryNation = csvReader.GetField("Secondary Nation").Trim();
                             secondaryNation = secondaryNation.Substring(0, 1).ToUpperInvariant() + secondaryNation.Substring(1);
-                            if (!string.IsNullOrEmpty(secondaryNation) && secondaryNation != "0" && secondaryNation != "Hong Kong")
+                            if (!string.IsNullOrEmpty(secondaryNation) && secondaryNation != "0")
                             {
                                 if (countries.ContainsKey(secondaryNation))
                                 {

@@ -9,7 +9,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambda-entrypoint.sh"
+            "/lambdaEntrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::Login"
@@ -38,16 +38,16 @@
         "DockerTag": ""
       }
     },
-    "GetCountries": {
+    "GetDictionaries": {
       "Type": "AWS::Serverless::Function",
       "Properties": { 
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambda-entrypoint.sh"
+            "/lambdaEntrypoint.sh"
           ],
           "Command": [
-            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetCountries"
+            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetDictionaries"
           ]
         },
         "ImageUri": "",
@@ -61,77 +61,7 @@
           "RootGet": {
             "Type": "Api",
             "Properties": {
-              "Path": "/countries/",
-              "Method": "GET"
-            }
-          }
-        }
-      },
-      "Metadata": {
-        "Dockerfile": "Dockerfile",
-        "DockerContext": ".",
-        "DockerTag": ""
-      }
-    },
-    "GetIndustries": {
-      "Type": "AWS::Serverless::Function",
-      "Properties": {
-        "PackageType": "Image",
-        "ImageConfig": {
-          "EntryPoint": [
-            "/lambda-entrypoint.sh"
-          ],
-          "Command": [
-            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetIndustries"
-          ]
-        },
-        "ImageUri": "",
-        "MemorySize": 512,
-        "Timeout": 60,
-        "Role": null,
-        "Policies": [
-          "AWSLambdaBasicExecutionRole"
-        ],
-        "Events": {
-          "RootGet": {
-            "Type": "Api",
-            "Properties": {
-              "Path": "/industries/",
-              "Method": "GET"
-            }
-          }
-        }
-      },
-      "Metadata": {
-        "Dockerfile": "Dockerfile",
-        "DockerContext": ".",
-        "DockerTag": ""
-      }
-    },
-    "GetRoleTypes": {
-      "Type": "AWS::Serverless::Function",
-      "Properties": {
-        "PackageType": "Image",
-        "ImageConfig": {
-          "EntryPoint": [
-            "/lambda-entrypoint.sh"
-          ],
-          "Command": [
-            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetRoleTypes"
-          ]
-        },
-        "ImageUri": "",
-        "MemorySize": 256,
-        "Timeout": 60,
-        "Role": null,
-        "Policies": [
-          "AWSLambdaBasicExecutionRole"
-        ],
-        "Events": {
-          "RootGet": {
-            "Type": "Api",
-            "Properties": {
-              "Path": "/roletypes/",
+              "Path": "/dictionaries/",
               "Method": "GET"
             }
           }
@@ -149,7 +79,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambda-entrypoint.sh"
+            "/lambdaEntrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetCompanies"
@@ -189,7 +119,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambda-entrypoint.sh"
+            "/lambdaEntrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::DeleteCompany"
@@ -227,7 +157,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambda-entrypoint.sh"
+            "/lambdaEntrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::SaveCompany"
@@ -262,7 +192,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambda-entrypoint.sh"
+            "/lambdaEntrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetPeople"
@@ -302,7 +232,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambda-entrypoint.sh"
+            "/lambdaEntrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::DeletePerson"
@@ -340,7 +270,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambda-entrypoint.sh"
+            "/lambdaEntrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::SavePerson"
@@ -374,7 +304,7 @@
     "ApiURL": {
       "Description": "API endpoint URL for Silver dashboard",
       "Value": {
-        "Fn::Sub": "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+        "Fn::Sub": "https://${ServerlessRestApi}.executeApi.${AWS::Region}.amazonaws.com/Prod/"
       }
     }
   }
