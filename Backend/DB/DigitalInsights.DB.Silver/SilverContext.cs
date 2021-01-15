@@ -62,7 +62,7 @@ namespace DigitalInsights.DB.Silver
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseNpgsql("Host=di-dev.c19yqc3su48v.us-east-2.rds.amazonaws.com;Port=5432;Database=DI-silver-dev;Username=postgres;Password=2wsx##edc");
+                optionsBuilder.UseNpgsql("Host=di-dev.c19yqc3su48v.us-east-2.rds.amazonaws.com;Port=5432;Database=DI-silver;Username=postgres;Password=2wsx##edc");
 
                 if (_loggerFactory != null) {
                     optionsBuilder.UseLoggerFactory(_loggerFactory);

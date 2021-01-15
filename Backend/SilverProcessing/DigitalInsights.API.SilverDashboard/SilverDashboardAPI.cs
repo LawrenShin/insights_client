@@ -24,7 +24,7 @@ namespace DigitalInsights.API.SilverDashboard
         // Delete company query string parameters
         const string ID = "id";
 
-        const string AUTH_HEADER = "xApiToken";
+        const string AUTH_HEADER = "x-api-token";
 
         /// <summary>
         /// Default constructor that Lambda will invoke.

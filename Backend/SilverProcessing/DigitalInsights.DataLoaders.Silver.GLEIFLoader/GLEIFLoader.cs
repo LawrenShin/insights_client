@@ -145,7 +145,7 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
 
                     targetEntity.Lei = entity.Lei;
 
-                    var publicData = new CompanyPublicData() { HqAddressEditable = false, LegalAddressEditable = false };
+                    var publicData = new CompanyPublicData() { HqAddressEditable = true, LegalAddressEditable = true };
                     targetEntity.CompanyPublicData.Add(publicData);
                     publicData.Company = targetEntity;
                     publicDataToSave.Add(publicData);
@@ -157,43 +157,46 @@ namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
 
                     var legalAddress = entity.GleifAddresses.Where(x => x.Type == "LEGAL").First();
 
-                    Address targetLegalAddress = publicData.LegalAddress = new Address();
-                    silverContext.Add(publicData.LegalAddress);
-
-                    targetLegalAddress.City = legalAddress.City;
                     if (countries.ContainsKey(legalAddress.Country))
                     {
+                        Address targetLegalAddress = publicData.LegalAddress = new Address();
+                        silverContext.Add(publicData.LegalAddress);
+
+                        targetLegalAddress.City = legalAddress.City;
                         targetLegalAddress.Country = countries[legalAddress.Country];
                         targetLegalAddress.CountryId = targetLegalAddress.Country.Id;
+                        targetLegalAddress.AddressNumber = legalAddress.Addressnumber;
+                        targetLegalAddress.PostalCode = legalAddress.Postalcode;
+                        targetLegalAddress.Region = legalAddress.Region;
+                        targetLegalAddress.AddressLine = legalAddress.Firstaddressline
+                            + (string.IsNullOrEmpty(legalAddress.Additionaladdressline1) ? string.Empty : " " + legalAddress.Additionaladdressline1)
+                            + (string.IsNullOrEmpty(legalAddress.Additionaladdressline2) ? string.Empty : " " + legalAddress.Additionaladdressline2)
+                            + (string.IsNullOrEmpty(legalAddress.Additionaladdressline3) ? string.Empty : " " + legalAddress.Additionaladdressline3);
+                        targetLegalAddress.AddressLine = targetLegalAddress.AddressLine ?? string.Empty;
+
+                        publicData.LegalAddressEditable = false;
                     }
-                    targetLegalAddress.AddressNumber = legalAddress.Addressnumber;
-                    targetLegalAddress.PostalCode = legalAddress.Postalcode;
-                    targetLegalAddress.Region = legalAddress.Region;
-                    targetLegalAddress.AddressLine = legalAddress.Firstaddressline
-                        + (string.IsNullOrEmpty(legalAddress.Additionaladdressline1) ? string.Empty : " " + legalAddress.Additionaladdressline1)
-                        + (string.IsNullOrEmpty(legalAddress.Additionaladdressline2) ? string.Empty : " " + legalAddress.Additionaladdressline2)
-                        + (string.IsNullOrEmpty(legalAddress.Additionaladdressline3) ? string.Empty : " " + legalAddress.Additionaladdressline3);
-                    targetLegalAddress.AddressLine = targetLegalAddress.AddressLine ?? string.Empty;
 
                     var hqAddress = entity.GleifAddresses.Where(x => x.Type == "HQ").First();
-
-                    Address targetHqAddress = publicData.HqAddress = new Address();
-                    silverContext.Add(publicData.HqAddress);
-
-                    targetHqAddress.City = hqAddress.City;
                     if (countries.ContainsKey(hqAddress.Country))
                     {
+                        Address targetHqAddress = publicData.HqAddress = new Address();
+                        silverContext.Add(publicData.HqAddress);
+
+                        targetHqAddress.City = hqAddress.City;
                         targetHqAddress.Country = countries[hqAddress.Country];
                         targetHqAddress.CountryId = targetHqAddress.Country.Id;
+                        targetHqAddress.AddressNumber = hqAddress.Addressnumber;
+                        targetHqAddress.PostalCode = hqAddress.Postalcode;
+                        targetHqAddress.Region = hqAddress.Region;
+                        targetHqAddress.AddressLine = hqAddress.Firstaddressline
+                            + (string.IsNullOrEmpty(hqAddress.Additionaladdressline1) ? string.Empty : " " + hqAddress.Additionaladdressline1)
+                            + (string.IsNullOrEmpty(hqAddress.Additionaladdressline2) ? string.Empty : " " + hqAddress.Additionaladdressline2)
+                            + (string.IsNullOrEmpty(hqAddress.Additionaladdressline3) ? string.Empty : " " + hqAddress.Additionaladdressline3);
+                        targetHqAddress.AddressLine = targetHqAddress.AddressLine ?? string.Empty;
+                        publicData.HqAddressEditable = false;
                     }
-                    targetHqAddress.AddressNumber = hqAddress.Addressnumber;
-                    targetHqAddress.PostalCode = hqAddress.Postalcode;
-                    targetHqAddress.Region = hqAddress.Region;
-                    targetHqAddress.AddressLine = hqAddress.Firstaddressline
-                        + (string.IsNullOrEmpty(hqAddress.Additionaladdressline1) ? string.Empty : " " + hqAddress.Additionaladdressline1)
-                        + (string.IsNullOrEmpty(hqAddress.Additionaladdressline2) ? string.Empty : " " + hqAddress.Additionaladdressline2)
-                        + (string.IsNullOrEmpty(hqAddress.Additionaladdressline3) ? string.Empty : " " + hqAddress.Additionaladdressline3);
-                    targetHqAddress.AddressLine = targetHqAddress.AddressLine ?? string.Empty;
+                        
 
                     var companyCountry = new CompanyCountry()
                     {
