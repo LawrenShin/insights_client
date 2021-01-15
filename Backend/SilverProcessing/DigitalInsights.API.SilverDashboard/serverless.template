@@ -9,7 +9,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambdaEntrypoint.sh"
+            "/lambda-entrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::Login"
@@ -44,7 +44,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambdaEntrypoint.sh"
+            "/lambda-entrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetDictionaries"
@@ -79,7 +79,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambdaEntrypoint.sh"
+            "/lambda-entrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetCompanies"
@@ -119,7 +119,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambdaEntrypoint.sh"
+            "/lambda-entrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::DeleteCompany"
@@ -157,7 +157,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambdaEntrypoint.sh"
+            "/lambda-entrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::SaveCompany"
@@ -192,7 +192,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambdaEntrypoint.sh"
+            "/lambda-entrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetPeople"
@@ -232,7 +232,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambdaEntrypoint.sh"
+            "/lambda-entrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::DeletePerson"
@@ -270,7 +270,7 @@
         "PackageType": "Image",
         "ImageConfig": {
           "EntryPoint": [
-            "/lambdaEntrypoint.sh"
+            "/lambda-entrypoint.sh"
           ],
           "Command": [
             "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::SavePerson"
