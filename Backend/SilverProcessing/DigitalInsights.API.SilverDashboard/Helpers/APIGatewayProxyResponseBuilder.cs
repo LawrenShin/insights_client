@@ -14,8 +14,8 @@ namespace DigitalInsights.API.SilverDashboard.Helpers
         HttpStatusCode code = HttpStatusCode.OK;
         Dictionary<string, string> headers = new Dictionary<string, string>
         {
-            { "ContentType", "text/plain" },
-            { "AccessControlAllowOrigin", "*" },
+            { "Content-Type", "text/plain" },
+            { "Access-Control-Allow-Origin", "*" },
         };
 
 
@@ -54,12 +54,12 @@ namespace DigitalInsights.API.SilverDashboard.Helpers
 
         public APIGatewayProxyResponseBuilder WithPlainTextContent()
         {
-            return WithHeader("ContentType", "text/plain");
+            return WithHeader("Content-Type", "text/plain");
         }
 
         public APIGatewayProxyResponseBuilder WithJsonContent()
         {
-            return WithHeader("ContentType", "application/json");
+            return WithHeader("Content-Type", "application/json");
         }
         public APIGatewayProxyResponseBuilder WithSimpleError(string body)
         {
