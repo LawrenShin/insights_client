@@ -23,7 +23,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             countries = silverContext.Countries.Select(x => x.Id).ToHashSet();
         }
 
-        public CompanyDTO[] GetCompanies(
+        public CompaniesDTO GetCompanies(
             int pageSize,
             int pageIndex,
             string searchPrefix)
@@ -36,14 +36,18 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 companiesQuery = companiesQuery.Where(x => x.LegalName.StartsWith(prefix));
             }
 
-            return companiesQuery
+            return new CompaniesDTO(
+                companiesQuery
                     .Include(x => x.Roles)
                     .Include(x => x.CompanyCountries)
                     .Include(x => x.CompanyIndustries)
                     .Include(x => x.CompanyNames)
                     .Include(x => x.CompanyPublicData).ThenInclude(x => x.HqAddress)
                     .Include(x => x.CompanyPublicData).ThenInclude(x => x.LegalAddress)
-                    .OrderBy(x => x.LegalName).Skip(pageIndex * pageSize).Take(pageSize).Select(x => new CompanyDTO(x)).ToArray();
+                    .OrderBy(x => x.LegalName).Skip(pageIndex * pageSize).Take(pageSize).ToArray(),
+                pageSize,
+                pageIndex,
+                (int)Math.Ceiling((double)silverContext.Companies.Count() / pageSize));
         }
 
         public void DeleteCompany(int id)
