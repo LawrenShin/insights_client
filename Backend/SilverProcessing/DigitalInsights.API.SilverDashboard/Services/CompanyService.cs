@@ -39,7 +39,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             return new CompaniesDTO(
                 companiesQuery
                     .Include(x => x.Roles)
-                    .Include(x => x.CompanyCountries)
+                    .Include(x => x.CompanyCountries).ThenInclude(x => x.Country)
                     .Include(x => x.CompanyIndustries)
                     .Include(x => x.CompanyNames)
                     .Include(x => x.CompanyPublicData).ThenInclude(x => x.HqAddress)

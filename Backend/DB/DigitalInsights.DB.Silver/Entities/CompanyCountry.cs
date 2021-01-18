@@ -18,5 +18,13 @@ namespace DigitalInsights.DB.Silver.Entities
 
         public virtual Company Company { get; set; }
         public virtual Country Country { get; set; }
+
+        public string ISOCode
+        { 
+            get
+            {
+                return Country?.Code;
+            }
+        }
     }
 }

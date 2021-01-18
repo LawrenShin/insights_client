@@ -16,10 +16,14 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             LegalJurisdiction = source.LegalJurisdiction;
             StockIndex = source.StockIndex;
             Ticker = source.Ticker;
+            ISOCode = source.ISOCode;
         }
 
         [JsonProperty("countryId")]
         public int? CountryId { get; private set; }
+
+        [JsonProperty("isoCode")]
+        public string ISOCode { get; private set; }
         [JsonProperty("isPrimary")]
         public bool? IsPrimary { get; private set; }
         [JsonProperty("legalJurisdiction")]

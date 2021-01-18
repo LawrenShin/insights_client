@@ -53,7 +53,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             silverContext.SaveChanges();
         }
 
-        internal void UpdateOrInsertPerson(PersonDTO source)
+        public void UpdateOrInsertPerson(PersonDTO source)
         {
             var countries = silverContext.Countries.Select(x=>x.Id).ToHashSet();
 
