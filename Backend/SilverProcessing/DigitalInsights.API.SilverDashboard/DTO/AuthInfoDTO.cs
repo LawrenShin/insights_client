@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DigitalInsights.API.SilverDashboard.DTO
 {
-    class AuthInfoDTO
+    public class AuthInfoDTO
     {
         [JsonProperty("username")]
         public string UserName { get; set; }

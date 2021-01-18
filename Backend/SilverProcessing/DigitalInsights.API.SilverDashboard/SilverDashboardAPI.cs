@@ -74,7 +74,9 @@ namespace DigitalInsights.API.SilverDashboard
         {
             if (request.Headers != null && request.Headers.ContainsKey(AUTH_HEADER))
             {
-                return JWTHelper.ValidateToken(request.Headers[AUTH_HEADER]);
+                var token = request.Headers[AUTH_HEADER];
+
+                return new LoginService().ValidateToken(token);
             }
             return false;
         }
@@ -106,7 +108,7 @@ namespace DigitalInsights.API.SilverDashboard
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
                     .WithJsonContent()
-                    .WithBody(JsonConvert.SerializeObject(new AuthResponseDTO() { Token = JWTHelper.CreateToken(authInfo) }))
+                    .WithBody(JsonConvert.SerializeObject(new LoginService().CreateToken(authInfo)))
                     .Build();
             }
             catch (Exception ex)

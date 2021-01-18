@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DigitalInsights.API.SilverDashboard.DTO
 {
-    class CompanyDTO
+    public class CompanyDTO
     {
         public CompanyDTO()
         {

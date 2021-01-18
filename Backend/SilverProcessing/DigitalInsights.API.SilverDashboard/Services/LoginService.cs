@@ -5,16 +5,16 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace DigitalInsights.API.SilverDashboard.Helpers
+namespace DigitalInsights.API.SilverDashboard.Services
 {
-    internal class JWTHelper
+    public class LoginService
     {
         const string SECRET = "4P1nkY4ndTh3Br41n";
         const string ISSUER = "https://digital-insights.com";
         const string AUDIENCE = "https://digital-insights.com";
         static readonly SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET));
 
-        internal static string CreateToken(AuthInfoDTO authInfo)
+        public AuthResponseDTO CreateToken(AuthInfoDTO authInfo)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -30,10 +30,13 @@ namespace DigitalInsights.API.SilverDashboard.Helpers
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return new AuthResponseDTO()
+            {
+                Token = tokenHandler.WriteToken(token)
+            };
         }
 
-        internal static bool ValidateToken(string token)
+        public bool ValidateToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             try

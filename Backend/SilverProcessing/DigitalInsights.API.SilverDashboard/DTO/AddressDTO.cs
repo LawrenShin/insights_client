@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace DigitalInsights.API.SilverDashboard.DTO
 {
-    internal class AddressDTO
+    public class AddressDTO
     {
         public AddressDTO()
         {

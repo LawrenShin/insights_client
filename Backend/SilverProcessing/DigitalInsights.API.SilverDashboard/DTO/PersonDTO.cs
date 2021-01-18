@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DigitalInsights.API.SilverDashboard.DTO
 {
-    class PersonDTO
+    public class PersonDTO
     {
         public PersonDTO()
         {

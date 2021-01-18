@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DigitalInsights.API.SilverDashboard.Services
 {
-    internal class CompanyService
+    public class CompanyService
     {
         SilverContext silverContext;
 

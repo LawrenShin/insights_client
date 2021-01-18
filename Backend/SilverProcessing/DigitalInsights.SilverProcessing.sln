@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalInsights.DataLoaders
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalInsights.DB.Common", "..\DB\DigitalInsights.DB.Common\DigitalInsights.DB.Common.csproj", "{103922D6-2051-4034-BE3A-4A843FFF482D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitalInsights.API.SilverDashboard.UnitTests", "DigitalInsights.API.SilverDashboard.UnitTests\DigitalInsights.API.SilverDashboard.UnitTests.csproj", "{BCB77172-B08A-4403-A804-E9F5CDB27892}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{103922D6-2051-4034-BE3A-4A843FFF482D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{103922D6-2051-4034-BE3A-4A843FFF482D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{103922D6-2051-4034-BE3A-4A843FFF482D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCB77172-B08A-4403-A804-E9F5CDB27892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCB77172-B08A-4403-A804-E9F5CDB27892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCB77172-B08A-4403-A804-E9F5CDB27892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCB77172-B08A-4403-A804-E9F5CDB27892}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{5F265920-A779-486B-9490-7C02F4D53336} = {3BF9E175-5ED0-47E0-8BCB-8AB105E59FEE}
 		{4AD24AC4-5E26-40D8-B909-9D8C17183C55} = {3BF9E175-5ED0-47E0-8BCB-8AB105E59FEE}
 		{103922D6-2051-4034-BE3A-4A843FFF482D} = {AC788079-DA91-4B7C-B833-6974A3441B25}
+		{BCB77172-B08A-4403-A804-E9F5CDB27892} = {D5C4225B-85AE-45F5-8BBF-E0680458AC51}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0D38EE87-86BF-48CA-B2A0-FF17EFBC0A3D}

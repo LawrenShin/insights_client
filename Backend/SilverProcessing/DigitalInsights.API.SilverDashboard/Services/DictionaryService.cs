@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DigitalInsights.API.SilverDashboard.Services
 {
-    internal class DictionaryService
+    public class DictionaryService
     {
         SilverContext silverContext;
 

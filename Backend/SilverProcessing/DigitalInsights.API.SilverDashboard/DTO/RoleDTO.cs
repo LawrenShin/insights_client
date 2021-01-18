@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DigitalInsights.API.SilverDashboard.DTO
 {
-    class RoleDTO
+    public class RoleDTO
     {
         public RoleDTO()
         {
