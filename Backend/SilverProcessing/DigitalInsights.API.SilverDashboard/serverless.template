@@ -73,6 +73,41 @@
         "DockerTag": ""
       }
     },
+    "GetUIMetadata": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": { 
+        "PackageType": "Image",
+        "ImageConfig": {
+          "EntryPoint": [
+            "/lambda-entrypoint.sh"
+          ],
+          "Command": [
+            "DigitalInsights.API.SilverDashboard::DigitalInsights.API.SilverDashboard.SilverDashboardAPI::GetUIMetadata"
+          ]
+        },
+        "ImageUri": "",
+        "MemorySize": 512,
+        "Timeout": 60,
+        "Role": null,
+        "Policies": [
+          "AWSLambdaBasicExecutionRole"
+        ],
+        "Events": {
+          "RootGet": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/metadata/",
+              "Method": "GET"
+            }
+          }
+        }
+      },
+      "Metadata": {
+        "Dockerfile": "Dockerfile",
+        "DockerContext": ".",
+        "DockerTag": ""
+      }
+    },
     "GetCompanies": {
       "Type": "AWS::Serverless::Function",
       "Properties": {

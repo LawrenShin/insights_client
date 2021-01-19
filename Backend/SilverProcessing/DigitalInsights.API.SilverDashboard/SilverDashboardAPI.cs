@@ -163,6 +163,36 @@ namespace DigitalInsights.API.SilverDashboard
             }
         }
 
+        public APIGatewayProxyResponse GetUIMetadata(APIGatewayProxyRequest request, ILambdaContext context)
+        {
+            try
+            {
+                context.Logger.LogLine("Get Request\n");
+
+                if (!ValidateRequest(request))
+                {
+                    return new APIGatewayProxyResponseBuilder()
+                        .WithForbiddenCode()
+                        .WithPlainTextContent()
+                        .Build();
+                }
+
+                var service = new MetadataService(new SilverContext());
+
+                return new APIGatewayProxyResponseBuilder()
+                    .WithOkCode()
+                    .WithJsonContent()
+                    .WithBody(JsonConvert.SerializeObject(service.GetUIMetadata()))
+                    .Build();
+            }
+            catch (Exception ex)
+            {
+                return new APIGatewayProxyResponseBuilder()
+                    .WithSimpleError($"Bad query: {ex}")
+                    .Build();
+            }
+        }
+
         /// <summary>
         /// A Lambda function to get a list of companies to HTTP Get methods from API Gateway
         /// </summary>
