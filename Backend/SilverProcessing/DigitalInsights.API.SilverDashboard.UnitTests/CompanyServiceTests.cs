@@ -1,5 +1,7 @@
 ﻿using DigitalInsights.API.SilverDashboard.Services;
+using DigitalInsights.Common.Logging;
 using DigitalInsights.DB.Silver;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,12 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
         [SetUp]
         public void Setup()
         {
-            silverContext = new SilverContext();
+            var factory = LoggerFactory.Create(builder =>
+            {
+                builder.AddProvider(new TraceLoggerProvider());
+            });
+            Logger.Init("CompanyServiceTests");
+            silverContext = new SilverContext(factory);
             companyService = new CompanyService(silverContext);
         }
 
@@ -48,6 +55,19 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
                 {
                     Assert.IsFalse(string.IsNullOrEmpty(companyCountry.ISOCode));
                 }
+            }
+        }
+
+        [Test]
+        public void SearchPrefixTest()
+        {
+            var prefix = "APPLE";
+            var companies = companyService.GetCompanies(10, 0, prefix);
+
+            Assert.NotZero(companies.Companies.Length);
+            foreach (var company in companies.Companies)
+            {
+                Assert.IsTrue(company.LegalName.StartsWith(prefix));
             }
         }
     }

@@ -49,7 +49,20 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
             for (int i = 0; i < 5; i++)
             {
                 Assert.IsFalse(string.IsNullOrEmpty(smallPageTwo.People[i].Name));
-                Assert.AreEqual(smallPageOne.People[i].Name, bigPage.People[i + 5].Name);
+                Assert.AreEqual(smallPageTwo.People[i].Name, bigPage.People[i + 5].Name);
+            }
+        }
+
+        [Test]
+        public void SearchPrefixTest()
+        {
+            var prefix = "Adele";
+            var people = peopleService.GetPeople(10, 0, prefix);
+
+            Assert.NotZero(people.People.Length);
+            foreach (var person in people.People)
+            {
+                Assert.IsTrue(person.Name.StartsWith(prefix));
             }
         }
     }

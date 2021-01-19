@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\DigitalInsights.Common\DigitalInsights.Common.csproj" />
     <ProjectReference Include="..\DigitalInsights.API.SilverDashboard\DigitalInsights.API.SilverDashboard.csproj" />
   </ItemGroup>
 

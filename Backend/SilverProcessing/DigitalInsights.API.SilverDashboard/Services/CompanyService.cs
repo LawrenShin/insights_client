@@ -30,10 +30,9 @@ namespace DigitalInsights.API.SilverDashboard.Services
         {
             var companiesQuery = silverContext.Companies.AsQueryable<Company>();
 
-            string prefix = null;
             if (!string.IsNullOrEmpty(searchPrefix))
             {
-                companiesQuery = companiesQuery.Where(x => x.LegalName.StartsWith(prefix));
+                companiesQuery = companiesQuery.Where(x => x.LegalName.StartsWith(searchPrefix));
             }
 
             return new CompaniesDTO(
