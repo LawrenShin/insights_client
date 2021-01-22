@@ -2,6 +2,7 @@
 using DigitalInsights.Common.Logging;
 using DigitalInsights.DB.Silver;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -69,6 +70,14 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
             {
                 Assert.IsTrue(company.LegalName.StartsWith(prefix));
             }
+        }
+
+        [Test]
+        public void MetadataSanityTest()
+        {
+            Assert.DoesNotThrow(() => JsonConvert.SerializeObject(
+                        companyService.GetCompanies(10, 0, null),
+                        new JsonSerializerSettings() { ContractResolver = new MetadataBasedContractResolver() }));
         }
     }
 }

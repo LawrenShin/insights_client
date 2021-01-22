@@ -483,7 +483,7 @@ INSERT INTO PropertyMetadata(
 	('Company','LEI','LEI','Identifier according to GLEIF database',0,True,True,NULL,NULL,NULL,NULL),
 	('Company','LegalName','Legal Name of company',NULL,0,False,True,NULL,NULL,NULL,NULL),
 	('Company','KeyFinancials','KeyFinancials',NULL,7,False,True,NULL,'CompanyKeyFinancialsMetrics',NULL,NULL),
-	('Company','CompanyIndustries','Industries',NULL,7,False,True,NULL,'CompanyIndustries',NULL,NULL),
+	('Company','CompanyIndustries','Industries',NULL,7,False,True,NULL,'CompanyIndustry',NULL,NULL),
 	('Company','CompanyExecutiveStatistics','Executive statistics',NULL,7,False,True,NULL,'CompanyExecutiveStatistics',NULL,NULL),
 	('Company','CompanyBoardStatistics','Board statistics',NULL,7,False,True,NULL,'CompanyBoardStatistics',NULL,NULL),
 	('Company','CompanyDIMetrics','DI Metrics',NULL,7,False,True,NULL,'CompanyDIMetrics',NULL,NULL),

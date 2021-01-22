@@ -13,7 +13,10 @@ namespace DigitalInsights.API.SilverDashboard.Helpers
             {
                 var context = new SilverContext();
                 return context.PropertyMetadata.ToList().GroupBy(x => x.EntityName)
-                    .ToDictionary(x => x.Key, x => x.ToDictionary(y => y.PropertyName, y => y), StringComparer.OrdinalIgnoreCase);
+                    .ToDictionary(
+                        x => x.Key, 
+                        x => x.ToDictionary(y => y.PropertyName, y => y, StringComparer.OrdinalIgnoreCase), 
+                        StringComparer.OrdinalIgnoreCase);
             });
 
         public static Dictionary<string, Dictionary<string, PropertyMetadata>> CurrentPropertyMetadata

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DigitalInsights.API.SilverDashboard.Services
 {
-    class MetadataService
+    public class MetadataService
     {
         private SilverContext silverContext;
 
@@ -19,7 +19,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             this.silverContext = silverContext;
         }
 
-        internal EntityMetadataDTO[] GetUIMetadata(params string[] entities)
+        public EntityMetadataDTO[] GetUIMetadata(params string[] entities)
         {
             var groups = PropertyMetadataStorage.CurrentPropertyMetadata;
 

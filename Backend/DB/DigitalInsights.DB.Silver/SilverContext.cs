@@ -1950,7 +1950,7 @@ namespace DigitalInsights.DB.Silver
                 entity.Property(e => e.EntityName)
                     .IsRequired()
                     .HasMaxLength(30)
-                    .HasColumnName("EntityName");
+                    .HasColumnName("entityname");
 
                 entity.Property(e => e.PropertyName)
                     .IsRequired()
@@ -1959,12 +1959,12 @@ namespace DigitalInsights.DB.Silver
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(200)
-                    .HasColumnName("Description")
+                    .HasColumnName("description")
                     .HasDefaultValueSql("NULL::character varying");
 
                 entity.Property(e => e.DropDownDictionary)
                     .HasMaxLength(30)
-                    .HasColumnName("DropDownDictionary")
+                    .HasColumnName("dropdowndictionary")
                     .HasDefaultValueSql("NULL::character varying");
 
                 entity.Property(e => e.FrontendName)
@@ -1974,12 +1974,12 @@ namespace DigitalInsights.DB.Silver
 
                 entity.Property(e => e.RangeHigh)
                     .HasMaxLength(15)
-                    .HasColumnName("name")
+                    .HasColumnName("rangehigh")
                     .HasDefaultValueSql("NULL::character varying"); ;
 
                 entity.Property(e => e.RangeLow)
                     .HasMaxLength(15)
-                    .HasColumnName("name")
+                    .HasColumnName("rangelow")
                     .HasDefaultValueSql("NULL::character varying"); ;
 
                 entity.Property(e => e.ChildrenEntityName)

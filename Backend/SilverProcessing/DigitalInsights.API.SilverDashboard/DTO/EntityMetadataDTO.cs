@@ -18,7 +18,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         {
             EntityName = entityName;
 
-            PropertyMetadata = groups["entityName"].Values.Select(x =>
+            PropertyMetadata = groups[entityName].Values.Select(x =>
                 new PropertyMetadataDTO()
                 {
                     AllowsNull = x.AllowsNull,

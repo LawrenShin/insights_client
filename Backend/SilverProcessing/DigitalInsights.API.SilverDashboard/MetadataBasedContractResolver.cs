@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DigitalInsights.API.SilverDashboard
 {
-    internal class MetadataBasedContractResolver : DefaultContractResolver
+    public class MetadataBasedContractResolver : DefaultContractResolver
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
