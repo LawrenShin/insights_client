@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 
 #nullable disable
 
 namespace DigitalInsights.DB.Silver.Entities
 {
-    public partial class PersonCountry
+    public partial class PersonNationality
     {
-        public int PersonCountryId { get; set; }
+        public int PersonNationalityId { get; set; }
         public int PersonId { get; set; }
         public int CountryId { get; set; }
         public DateTime EffectiveFrom { get; set; }

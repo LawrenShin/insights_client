@@ -11,10 +11,10 @@ namespace DigitalInsights.DataLoaders.Silver.CountryLoader.Model.CSV
         public CountryDisabilityMap()
         {
             Map(m => m.Disabled).Name("Disabled");
-            Map(m => m.DiscriminationLaw).Name("DisabilityDiscriminationLaw");
+            Map(m => m.DisabilityDiscriminationLaw).Name("DisabilityDiscriminationLaw");
             Map(m => m.Overweight).Name("Overweight");
-            Map(m => m.HealthFundingGdp).Name("HealthFundingGDP");
-            Map(m => m.HealthFundingType).Name("HealthFundingType");
+            Map(m => m.HealthFundingGDP).Name("HealthFundingGDP");
+            Map(m => m.HealthType).Name("HealthFundingType");
         }
     }
 }

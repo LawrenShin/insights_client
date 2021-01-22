@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DigitalInsights.DB.Silver.Entities.CompanyData;
+using System;
 using System.Collections.Generic;
 
 #nullable disable

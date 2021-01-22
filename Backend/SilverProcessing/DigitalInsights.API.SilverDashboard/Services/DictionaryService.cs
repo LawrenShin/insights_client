@@ -49,24 +49,14 @@ namespace DigitalInsights.API.SilverDashboard.Services
             return silverContext.Industries.Select(x => new EnumDTO { Id = x.Id, Name = x.Name }).ToArray();
         }
 
-        public EnumDTO[] GetMaritalStatuses()
-        {
-            return Enum.GetValues<MaritalStatus>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
-        }
-
         public EnumDTO[] GetRaces()
         {
             return Enum.GetValues<Race>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
         }
 
-        public EnumDTO[] GetRegions()
-        {
-            return silverContext.Regions.Select(x => new EnumDTO { Id = x.Id, Name = x.Name }).ToArray();
-        }
-
         public EnumDTO[] GetReligions()
         {
-            return Enum.GetValues<Religion>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
+            return Enum.GetValues<Common.Enums.Religion>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
         }
 
         public EnumDTO[] GetRoleTypes()

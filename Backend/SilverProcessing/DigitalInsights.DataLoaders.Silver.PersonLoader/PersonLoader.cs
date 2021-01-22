@@ -168,13 +168,13 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader
                             {
                                 if (countries.ContainsKey(primaryNation))
                                 {
-                                    var pc = new PersonCountry()
+                                    var pc = new PersonNationality()
                                     {
                                         CountryId = countries[primaryNation],
                                         Person = person
                                     };
 
-                                    person.PersonCountries.Add(pc);
+                                    person.PersonNationalities.Add(pc);
                                     dbContext.Add(pc);
                                 }
                                 else
@@ -189,13 +189,13 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader
                             {
                                 if (countries.ContainsKey(secondaryNation))
                                 {
-                                    var pc = new PersonCountry()
+                                    var pc = new PersonNationality()
                                     {
                                         CountryId = countries[secondaryNation],
                                         Person = person
                                     };
 
-                                    person.PersonCountries.Add(pc);
+                                    person.PersonNationalities.Add(pc);
 
                                     dbContext.Add(pc);
                                 }

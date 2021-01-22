@@ -1,16 +1,13 @@
 ﻿using CsvHelper.Configuration;
 using DigitalInsights.DB.Silver.Entities.CountryData;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DigitalInsights.DataLoaders.Silver.CountryLoader.Model.CSV
 {
-    class CountryUrbanMap : ClassMap<CountryUrban>
+    class CountryUrbanizationMap : ClassMap<CountryUrbanization>
     {
-        public CountryUrbanMap()
+        public CountryUrbanizationMap()
         {
-            Map(m => m.CitiesPop).Name("LiveCities");
+            Map(m => m.LiveCities).Name("LiveCities");
         }
     }
 }

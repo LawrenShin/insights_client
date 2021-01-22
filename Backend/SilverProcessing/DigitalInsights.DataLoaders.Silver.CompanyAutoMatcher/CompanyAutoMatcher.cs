@@ -13,6 +13,7 @@ using DigitalInsights.Common.Logging;
 using DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher.Helpers;
 using DigitalInsights.DB.Silver;
 using DigitalInsights.DB.Silver.Entities;
+using DigitalInsights.DB.Silver.Entities.CompanyData;
 using Microsoft.EntityFrameworkCore;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -62,13 +63,13 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
                 dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
                 dbContext.ChangeTracker.LazyLoadingEnabled = true;
 
-                dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE company_match");
+                dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE companymatches");
 
                 countries = dbContext.Countries.AsNoTracking().ToList();
 
                 var names = dbContext.CompanyNames.AsNoTracking()
-                    .Include(x => x.Company).ThenInclude(x=>x.CompanyCountries.Where(x=>x.LegalJurisdiction)).ThenInclude(x=>x.Country)
-                    .Select(x => new { x.Name, x.NameType, x.Id, LegalJurisdiction = x.Company.CompanyCountries }).ToList(); // note that ID is internal to our DB, it's different from LEI
+                    .Include(x => x.Company).ThenInclude(x=>x.CompanyCountries).ThenInclude(x=>x.Country)
+                    .Select(x => new { x.Name, x.NameType, Id = x.CompanyId.Value, LegalJurisdiction = x.Company.CompanyCountries }).ToList(); // note that ID is internal to our DB, it's different from LEI
 
                 Action<string, ICollection<CompanyCountry>, int, List<Tuple<string, string>>, Dictionary<string, int>> add = (name, code, id, namesList, namesDictionary) =>
                 {
@@ -77,7 +78,7 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
                     {
                         if (!namesDictionary.ContainsKey(standard))
                         {
-                            namesList.Add(Tuple.Create(standard, code.First().Country.Code));
+                            namesList.Add(Tuple.Create(standard, code.First().Country.ISOCode));
                             namesDictionary[standard] = id;
                         }
                         else
@@ -103,7 +104,7 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
                 }
 
                 var companies = dbContext.Companies.AsNoTracking()
-                    .Include(x => x.CompanyCountries.Where(x => x.LegalJurisdiction)).ThenInclude(x => x.Country)
+                    .Include(x => x.CompanyCountries).ThenInclude(x => x.Country)
                     .Select(x => new { x.LegalName, LegalJurisdiction = x.CompanyCountries, x.Id }).ToList();
 
                 foreach (var n in companies)
@@ -197,7 +198,7 @@ namespace DigitalInsights.DataLoaders.Silver.CompanyAutoMatcher
 
                             var countryName = csvReader.GetField(4); // company HQ
                             if (countryName == "Russia") countryName = "Russian Federation";
-                            var countryCode = countries.Where(x => x.Name == countryName).Select(x => x.Code).FirstOrDefault();
+                            var countryCode = countries.Where(x => x.Name == countryName).Select(x => x.ISOCode).FirstOrDefault();
 
                             if (countryCode == null)
                             {

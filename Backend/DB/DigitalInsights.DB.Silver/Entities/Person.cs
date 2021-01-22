@@ -1,5 +1,4 @@
-﻿using DigitalInsights.DB.Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -10,30 +9,28 @@ namespace DigitalInsights.DB.Silver.Entities
     {
         public Person()
         {
-            PersonCountries = new HashSet<PersonCountry>();
+            PersonNationalities = new HashSet<PersonNationality>();
             Roles = new HashSet<Role>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
+        public string RandomName { get; set; }
         public short? Age { get; set; }
-        public short? BirthYear { get; set; }
-        public Gender? Gender { get; set; }
-        public string Picture { get; set; }
-        public Race? Race { get; set; }
-        public Religion? Religion { get; set; }
-        public MaritalStatus? Married { get; set; }
-        public short? HasKids { get; set; }
-        public Common.Enums.EducationLevel? EducationLevel { get; set; }
+        public Common.Enums.Gender? Gender { get; set; }
+        public Common.Enums.Race? Race { get; set; }
+        public Common.Enums.Religion? Religion { get; set; }
+        public bool? Married { get; set; }
+        public bool? Kids { get; set; }
+        public Common.Enums.EducationLevel? HighEducation { get; set; }
         public Common.Enums.EducationSubject? EducationSubject { get; set; }
         public string EducationInstitute { get; set; }
         public string Sexuality { get; set; }
         public string VisibleDisability { get; set; }
-        public int? Urban { get; set; }
-        public string Website { get; set; }
+        public bool? Urban { get; set; }
         public DateTime EffectiveFrom { get; set; }
 
-        public virtual ICollection<PersonCountry> PersonCountries { get; set; }
+        public virtual ICollection<PersonNationality> PersonNationalities { get; set; }
         public virtual ICollection<Role> Roles { get; set; }
     }
 }

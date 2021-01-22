@@ -58,15 +58,17 @@ namespace DigitalInsights.DataLoaders.Silver.CountryLoader
                     csvReader.Configuration.RegisterClassMap<CountryAgeMap>();
                     csvReader.Configuration.RegisterClassMap<CountryDemographicsMap>();
                     csvReader.Configuration.RegisterClassMap<CountryDisabilityMap>();
-                    csvReader.Configuration.RegisterClassMap<CountryEconomyMap>();
-                    csvReader.Configuration.RegisterClassMap<CountryEduMap>();
+                    csvReader.Configuration.RegisterClassMap<CountryEconomicPowerMap>();
+                    csvReader.Configuration.RegisterClassMap<CountryEconomicEqualityMap>();
+                    csvReader.Configuration.RegisterClassMap<CountryEducationMap>();
                     csvReader.Configuration.RegisterClassMap<CountryGenderMap>();
+                    csvReader.Configuration.RegisterClassMap<CountryLaborForceMap>();
                     csvReader.Configuration.RegisterClassMap<CountryMap>();
                     csvReader.Configuration.RegisterClassMap<CountryPoliticalMap>();
                     csvReader.Configuration.RegisterClassMap<CountryRaceMap>();
                     csvReader.Configuration.RegisterClassMap<CountryReligionMap>();
-                    csvReader.Configuration.RegisterClassMap<CountrySexMap>();
-                    csvReader.Configuration.RegisterClassMap<CountryUrbanMap>();
+                    csvReader.Configuration.RegisterClassMap<CountrySexualityMap>();
+                    csvReader.Configuration.RegisterClassMap<CountryUrbanizationMap>();
 
                     while (csvReader.Read())
                     {
@@ -89,20 +91,30 @@ namespace DigitalInsights.DataLoaders.Silver.CountryLoader
                         targetCountry.CountryDisabilities.Add(countryDisability);
                         dbContext.Add(countryDisability);
 
-                        var countryEconomy = csvReader.GetRecord<CountryEconomy>();
+                        var countryEconomy = csvReader.GetRecord<CountryEconomicPower>();
                         countryEconomy.Country = targetCountry;
-                        targetCountry.CountryEconomies.Add(countryEconomy);
+                        targetCountry.CountryEconomicPowers.Add(countryEconomy);
                         dbContext.Add(countryEconomy);
 
-                        var countryEdu = csvReader.GetRecord<CountryEdu>();
+                        var countryEconomicEquality = csvReader.GetRecord<CountryEconomicEquality>();
+                        countryEconomy.Country = targetCountry;
+                        targetCountry.CountryEconomicEqualities.Add(countryEconomicEquality);
+                        dbContext.Add(countryEconomicEquality);
+
+                        var countryEdu = csvReader.GetRecord<CountryEducation>();
                         countryEdu.Country = targetCountry;
-                        targetCountry.CountryEdus.Add(countryEdu);
+                        targetCountry.CountryEducations.Add(countryEdu);
                         dbContext.Add(countryEdu);
 
                         var countryGender = csvReader.GetRecord<CountryGender>();
                         countryGender.Country = targetCountry;
                         targetCountry.CountryGenders.Add(countryGender);
                         dbContext.Add(countryGender);
+
+                        var countryLaborForce = csvReader.GetRecord<CountryLaborForce>();
+                        countryGender.Country = targetCountry;
+                        targetCountry.CountryLaborForces.Add(countryLaborForce);
+                        dbContext.Add(countryLaborForce);
 
                         var countryPolitical = csvReader.GetRecord<CountryPolitical>();
                         countryPolitical.Country = targetCountry;
@@ -119,15 +131,41 @@ namespace DigitalInsights.DataLoaders.Silver.CountryLoader
                         targetCountry.CountryReligions.Add(countryReligion);
                         dbContext.Add(countryReligion);
 
-                        var countrySex = csvReader.GetRecord<CountrySex>();
+                        var countrySex = csvReader.GetRecord<CountrySexuality>();
                         countrySex.Country = targetCountry;
-                        targetCountry.CountrySexes.Add(countrySex);
+                        targetCountry.CountrySexualities.Add(countrySex);
                         dbContext.Add(countrySex);
 
-                        var countryUrban = csvReader.GetRecord<CountryUrban>();
+                        var countryUrban = csvReader.GetRecord<CountryUrbanization>();
                         countryUrban.Country = targetCountry;
-                        targetCountry.CountryUrbans.Add(countryUrban);
+                        targetCountry.CountryUrbanizations.Add(countryUrban);
                         dbContext.Add(countryUrban);
+
+                        // empty values for currently missing values
+                        var countryLASP = new CountryLaborAndSocialProtection();
+                        countryLASP.Country = targetCountry;
+                        targetCountry.CountryLaborAndSocialProtections.Add(countryLASP);
+                        dbContext.Add(countryLASP);
+
+                        var countryInfrastructure = new CountryInfrastructure();
+                        countryInfrastructure.Country = targetCountry;
+                        targetCountry.CountryInfrastructures.Add(countryInfrastructure);
+                        dbContext.Add(countryInfrastructure);
+
+                        var countryPSAT = new CountryPrivateSectorAndTrade();
+                        countryPSAT.Country = targetCountry;
+                        targetCountry.CountryPrivateSectorsAndTrades.Add(countryPSAT);
+                        dbContext.Add(countryPSAT);
+
+                        var countryPublicSector = new CountryPublicSector();
+                        countryPublicSector.Country = targetCountry;
+                        targetCountry.CountryPublicSectors.Add(countryPublicSector);
+                        dbContext.Add(countryPublicSector);
+
+                        var countryUtility = new CountryUtility();
+                        countryUtility.Country = targetCountry;
+                        targetCountry.CountryUtilities.Add(countryUtility);
+                        dbContext.Add(countryUtility);
                     }
                 }
 

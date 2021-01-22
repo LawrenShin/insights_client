@@ -1,5 +1,6 @@
 ﻿using DigitalInsights.DB.Silver.Entities;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             Companies = new CompanyDTO[0];
             Pagination = new PaginationDTO();
         }
-
+        
         public CompaniesDTO(
             Company[] company,
             int pageSize,

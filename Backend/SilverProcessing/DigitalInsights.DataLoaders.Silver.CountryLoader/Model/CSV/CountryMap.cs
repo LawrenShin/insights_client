@@ -11,7 +11,7 @@ namespace DigitalInsights.DataLoaders.Silver.CountryLoader.Model.CSV
         public CountryMap()
         {
             Map(m => m.Name).Name("Country");
-            Map(m => m.Code).Name("ISOCode");
+            Map(m => m.ISOCode).Name("ISOCode");
         }
     }
 }

@@ -10,9 +10,9 @@ namespace DigitalInsights.DataLoaders.Silver.CountryLoader.Model.CSV
     {
         public CountryPoliticalMap()
         {
-            Map(m => m.Democracy).Name("DemocracyLevel");
-            Map(m => m.Corruption).Name("CorruptionLevel");
-            Map(m => m.FreedomSpeech).Name("FreedomSpeech");
+            Map(m => m.DemocracyIndex).Name("DemocracyLevel");
+            Map(m => m.CorruptionIndex).Name("CorruptionLevel");
+            Map(m => m.FreeSpeechIndex).Name("FreedomSpeech");
         }
     }
 }

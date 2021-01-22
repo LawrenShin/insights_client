@@ -41,8 +41,15 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     .Include(x => x.CompanyCountries).ThenInclude(x => x.Country)
                     .Include(x => x.CompanyIndustries)
                     .Include(x => x.CompanyNames)
-                    .Include(x => x.CompanyPublicData).ThenInclude(x => x.HqAddress)
-                    .Include(x => x.CompanyPublicData).ThenInclude(x => x.LegalAddress)
+                    .Include(x => x.CompanyBoardStatistics)
+                    .Include(x => x.CompanyExecutiveStatistics)
+                    .Include(x => x.CompanyKeyFinancialsMetrics)
+                    .Include(x => x.CompanyHealthMetrics)
+                    .Include(x => x.CompanyJobMetrics)
+                    .Include(x => x.CompanyGenderMetrics)
+                    .Include(x => x.CompanyRaceMetrics)
+                    .Include(x => x.CompanyDIMetrics)
+                    .Include(x => x.CompanyHealthMetrics)
                     .OrderBy(x => x.LegalName).Skip(pageIndex * pageSize).Take(pageSize).ToArray(),
                 pageSize,
                 pageIndex,

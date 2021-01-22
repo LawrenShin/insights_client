@@ -1,4 +1,5 @@
-﻿using DigitalInsights.DB.Silver.Entities.CountryData;
+﻿using DigitalInsights.DB.Silver.Entities.CompanyData;
+using DigitalInsights.DB.Silver.Entities.CountryData;
 using System;
 using System.Collections.Generic;
 
@@ -15,36 +16,50 @@ namespace DigitalInsights.DB.Silver.Entities
             CountryAges = new HashSet<CountryAge>();
             CountryDemographics = new HashSet<CountryDemographics>();
             CountryDisabilities = new HashSet<CountryDisability>();
-            CountryEconomies = new HashSet<CountryEconomy>();
-            CountryEdus = new HashSet<CountryEdu>();
+            CountryEconomicEqualities = new HashSet<CountryEconomicEquality>();
+            CountryEconomicPowers = new HashSet<CountryEconomicPower>();
+            CountryEducations = new HashSet<CountryEducation>();
             CountryGenders = new HashSet<CountryGender>();
+            CountryIndustries = new HashSet<CountryIndustry>();
+            CountryInfrastructures = new HashSet<CountryInfrastructure>();
+            CountryLaborAndSocialProtections = new HashSet<CountryLaborAndSocialProtection>();
+            CountryLaborForces = new HashSet<CountryLaborForce>();
             CountryPoliticals = new HashSet<CountryPolitical>();
+            CountryPrivateSectorsAndTrades = new HashSet<CountryPrivateSectorAndTrade>();
+            CountryPublicSectors = new HashSet<CountryPublicSector>();
             CountryRaces = new HashSet<CountryRace>();
             CountryReligions = new HashSet<CountryReligion>();
-            CountrySexes = new HashSet<CountrySex>();
-            CountryUrbans = new HashSet<CountryUrban>();
-            IndustryCountries = new HashSet<IndustryCountry>();
-            PersonCountries = new HashSet<PersonCountry>();
+            CountrySexualities = new HashSet<CountrySexuality>();
+            CountryUrbanizations = new HashSet<CountryUrbanization>();
+            CountryUtilities = new HashSet<CountryUtility>();
+            PersonNationalities = new HashSet<PersonNationality>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Code { get; set; }
+        public string ISOCode { get; set; }
 
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<CompanyCountry> CompanyCountries { get; set; }
         public virtual ICollection<CountryAge> CountryAges { get; set; }
         public virtual ICollection<CountryDemographics> CountryDemographics { get; set; }
         public virtual ICollection<CountryDisability> CountryDisabilities { get; set; }
-        public virtual ICollection<CountryEconomy> CountryEconomies { get; set; }
-        public virtual ICollection<CountryEdu> CountryEdus { get; set; }
+        public virtual ICollection<CountryEconomicEquality> CountryEconomicEqualities { get; set; }
+        public virtual ICollection<CountryEconomicPower> CountryEconomicPowers { get; set; }
+        public virtual ICollection<CountryEducation> CountryEducations { get; set; }
         public virtual ICollection<CountryGender> CountryGenders { get; set; }
+        public virtual ICollection<CountryIndustry> CountryIndustries { get; set; }
+        public virtual ICollection<CountryInfrastructure> CountryInfrastructures { get; set; }
+        public virtual ICollection<CountryLaborAndSocialProtection> CountryLaborAndSocialProtections { get; set; }
+        public virtual ICollection<CountryLaborForce> CountryLaborForces { get; set; }
         public virtual ICollection<CountryPolitical> CountryPoliticals { get; set; }
+        public virtual ICollection<CountryPrivateSectorAndTrade> CountryPrivateSectorsAndTrades { get; set; }
+        public virtual ICollection<CountryPublicSector> CountryPublicSectors { get; set; }
         public virtual ICollection<CountryRace> CountryRaces { get; set; }
         public virtual ICollection<CountryReligion> CountryReligions { get; set; }
-        public virtual ICollection<CountrySex> CountrySexes { get; set; }
-        public virtual ICollection<CountryUrban> CountryUrbans { get; set; }
-        public virtual ICollection<IndustryCountry> IndustryCountries { get; set; }
-        public virtual ICollection<PersonCountry> PersonCountries { get; set; }
+        public virtual ICollection<CountrySexuality> CountrySexualities { get; set; }
+        public virtual ICollection<CountryUrbanization> CountryUrbanizations { get; set; }
+        public virtual ICollection<CountryUtility> CountryUtilities { get; set; }
+        public virtual ICollection<PersonNationality> PersonNationalities { get; set; }
     }
 }

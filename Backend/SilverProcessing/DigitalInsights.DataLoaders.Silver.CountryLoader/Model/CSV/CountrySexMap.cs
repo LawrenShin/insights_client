@@ -6,14 +6,14 @@ using System.Text;
 
 namespace DigitalInsights.DataLoaders.Silver.CountryLoader.Model.CSV
 {
-    class CountrySexMap : ClassMap<CountrySex>
+    class CountrySexualityMap : ClassMap<CountrySexuality>
     {
-        public CountrySexMap()
+        public CountrySexualityMap()
         {
-            Map(m => m.SameMarriage).Name("SameMarriage");
-            Map(m => m.HomosexualTolerance).Name("HomoXTolerance");
-            Map(m => m.HomosexualPop).Name("HomosexualPop");
-            Map(m => m.SameAdopt).Name("LGBTAdopt");
+            Map(m => m.LGBTMarriage).Name("SameMarriage").ConvertUsing(x => x.GetField("SameMarriage") != "0.00");
+            Map(m => m.LGBTTolerance).Name("HomoXTolerance");
+            Map(m => m.HomosexualPopulation).Name("HomosexualPop");
+            Map(m => m.LGBTAdoption).Name("LGBTAdopt").ConvertUsing(x => x.GetField("LGBTAdopt") != "0.00");
         }
     }
 }

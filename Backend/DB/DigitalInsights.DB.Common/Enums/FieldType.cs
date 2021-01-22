@@ -10,6 +10,7 @@ namespace DigitalInsights.DB.Common.Enums
         Boolean,
         Integer,
         Float,
+        Date,
         Percentage,
         DropDown,
         Array,

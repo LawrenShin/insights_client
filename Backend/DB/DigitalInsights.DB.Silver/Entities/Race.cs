@@ -1,10 +1,13 @@
-﻿#nullable disable
+﻿using System;
+using System.Collections.Generic;
+
+#nullable disable
 
 namespace DigitalInsights.DB.Silver.Entities
 {
-    public partial class Region
+    public partial class Race
     {
-        public Region()
+        public Race()
         {
         }
 

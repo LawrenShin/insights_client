@@ -16,7 +16,7 @@ namespace DigitalInsights.DataLoaders.Silver.CountryLoader.Model.CSV
             Map(m => m.Arab).Name("RaceArab");
             Map(m => m.Caucasian).Name("RaceCaucasian");
             Map(m => m.Indegineous).Name("RaceIndegineous");
-            Map(m => m.DiscriminationLaw).Name("RaceDiscriminationLaw");
+            Map(m => m.RaceDiscriminationLaw).Name("RaceDiscriminationLaw");
         }
     }
 }

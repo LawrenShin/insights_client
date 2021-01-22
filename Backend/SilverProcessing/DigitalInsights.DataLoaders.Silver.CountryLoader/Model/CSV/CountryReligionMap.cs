@@ -16,8 +16,8 @@ namespace DigitalInsights.DataLoaders.Silver.CountryLoader.Model.CSV
             Map(m => m.Buddishm).Name("ReligionBuddishm");
             Map(m => m.Judaism).Name("ReligionJudaism");
             Map(m => m.Other).Name("ReligionOther");
-            Map(m => m.Statereligion).Name("StateReligion");
-            Map(m => m.Freedom).Name("ReligionFreedom");
+            Map(m => m.StateReligion).Name("StateReligion").ConvertUsing(x => x.GetField("StateReligion") != "0.00");
+            Map(m => m.ReligionFreedom).Name("ReligionFreedom").ConvertUsing(x => x.GetField("ReligionFreedom") != "0.00");
         }
     }
 }

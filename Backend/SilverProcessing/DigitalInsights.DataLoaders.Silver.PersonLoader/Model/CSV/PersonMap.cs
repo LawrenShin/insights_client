@@ -13,7 +13,6 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader.Model.CSV
         {
             Map(m => m.Name).Name("Name");
             Map(m => m.Age).Name("Age");
-            Map(m => m.BirthYear).Name("BirthYear");
             Map(m => m.Gender).Name("Gender").ConvertUsing(x =>
             {
                 string gender = x.GetField("Gender").Trim().ToLower();
@@ -39,7 +38,7 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader.Model.CSV
                 }
             });
             //Map(m => m.Nation).Name("Nation"); - done directly in transformer
-            Map(m => m.EducationLevel).Name("HighEdu").ConvertUsing(x =>
+            Map(m => m.HighEducation).Name("HighEdu").ConvertUsing(x =>
             {
                 string educationLevel = x.GetField("HighEdu").Trim().ToLower();
                 switch (educationLevel)
@@ -124,8 +123,8 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader.Model.CSV
                 string maritalStatus = x.GetField("Married").Trim().ToLower();
                 switch (maritalStatus)
                 {
-                    case "yes": return DB.Common.Enums.MaritalStatus.Yes;
-                    case "no": return DB.Common.Enums.MaritalStatus.No;
+                    case "yes": return true;
+                    case "no": return false;
                     default: return null;
                 }
             });

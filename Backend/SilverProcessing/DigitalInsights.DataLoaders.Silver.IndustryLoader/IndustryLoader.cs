@@ -10,6 +10,7 @@ using DigitalInsights.Common.Logging;
 using DigitalInsights.DataLoaders.Silver.IndustryLoader.Model.CSV;
 using DigitalInsights.DB.Silver;
 using DigitalInsights.DB.Silver.Entities;
+using DigitalInsights.DB.Silver.Entities.CountryData;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
@@ -49,7 +50,7 @@ namespace DigitalInsights.DataLoaders.Silver.IndustryLoader
                     csvReader.Configuration.Delimiter = ";";
                     csvReader.Configuration.MissingFieldFound = null;
                     csvReader.Configuration.RegisterClassMap<IndustryMap>();
-                    csvReader.Configuration.RegisterClassMap<IndustryCountryMap>();
+                    csvReader.Configuration.RegisterClassMap<CountryIndustryMap>();
 
                     while (csvReader.Read())
                     {
@@ -57,9 +58,9 @@ namespace DigitalInsights.DataLoaders.Silver.IndustryLoader
 
                         var targetIndustry = industries.First(x=>x.Name == industry.Name.Trim());
 
-                        var industryCountry = csvReader.GetRecord<IndustryCountry>();
+                        var industryCountry = csvReader.GetRecord<CountryIndustry>();
                         industryCountry.Industry = (DB.Common.Enums.Industry)targetIndustry.Id;
-
+                        dbContext.CountryIndustries.Add(industryCountry);
                         dbContext.Add(industryCountry);
                     }
                 }
