@@ -11,7 +11,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 
         public CompanyDTO(Company source)
         {
-            CompanyAddresses = source.CompanyAddresses.Select(x => new AddressDTO(x)).ToArray();
+            Addresses = source.CompanyAddresses.Select(x => new AddressDTO(x)).ToArray();
             CompanyBoardStatistics = source.CompanyBoardStatistics.Select(x => new CompanyBoardStatisticsDTO(x)).ToArray();
             CompanyCountries = source.CompanyCountries.Select(x => new CompanyCountryDTO(x)).ToArray();
             CompanyDIMetrics = source.CompanyDIMetrics.Select(x => new CompanyDIMetricsDTO(x)).ToArray();
@@ -32,7 +32,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         public int Id { get; private set; }
         public string LegalName { get; private set; }
         public string Lei { get; private set; }
-        public AddressDTO[] CompanyAddresses { get; private set; }
+        public AddressDTO[] Addresses { get; private set; }
         public CompanyBoardStatisticsDTO[] CompanyBoardStatistics { get; set; }
         public CompanyCountryDTO[] CompanyCountries { get; }
         public CompanyDIMetricsDTO[] CompanyDIMetrics { get; }

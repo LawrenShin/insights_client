@@ -31,7 +31,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
             return new PeopleDTO(
                 peopleQuery
-                    .Include(x => x.PersonNationalities)
+                    .Include(x => x.PersonNationalities).ThenInclude(x=>x.Country)
                     .OrderBy(x => x.Name)
                     .Skip(pageIndex * pageSize).Take(pageSize)
                     .ToArray(),

@@ -19,6 +19,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
                 AddressType = (int)source.AddressType;
                 City = source.City;
                 Country = source.CountryId;
+                IsoCode = source.Country.ISOCode;
                 IsEditable = source.IsEditable;
                 PostCode = source.PostCode;
                 State = source.State;
@@ -28,6 +29,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         }
 
         public int? Country { get; private set; }
+        public string IsoCode { get; private set; }
         public bool IsEditable { get; private set; }
         public string PostCode { get; private set; }
         public string State { get; private set; }

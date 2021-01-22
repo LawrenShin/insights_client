@@ -37,10 +37,10 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 companiesQuery = companiesQuery.Where(x => x.LegalName.StartsWith(searchPrefix));
             }
 
-            return new CompaniesDTO(
-                companiesQuery
+            var result = companiesQuery
                     .Include(x => x.Roles)
                     .Include(x => x.CompanyCountries).ThenInclude(x => x.Country)
+                    .Include(x => x.CompanyAddresses).ThenInclude(x=>x.Country)
                     .Include(x => x.CompanyIndustries)
                     .Include(x => x.CompanyNames)
                     .Include(x => x.CompanyBoardStatistics)
@@ -51,8 +51,46 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     .Include(x => x.CompanyGenderMetrics)
                     .Include(x => x.CompanyRaceMetrics)
                     .Include(x => x.CompanyDIMetrics)
-                    .Include(x => x.CompanyHealthMetrics)
-                    .OrderBy(x => x.LegalName).Skip(pageIndex * pageSize).Take(pageSize).ToArray(),
+                    .OrderBy(x => x.LegalName).Skip(pageIndex * pageSize).Take(pageSize).ToArray();
+
+            foreach(var company in result)
+            {
+                if(company.CompanyBoardStatistics.Count ==0)
+                {
+                    company.CompanyBoardStatistics.Add(new CompanyBoardStatistics());
+                }
+                if (company.CompanyExecutiveStatistics.Count == 0)
+                {
+                    company.CompanyExecutiveStatistics.Add(new CompanyExecutiveStatistics());
+                }
+                if (company.CompanyKeyFinancialsMetrics.Count == 0)
+                {
+                    company.CompanyKeyFinancialsMetrics.Add(new CompanyKeyFinancialsMetrics());
+                }
+                if (company.CompanyHealthMetrics.Count == 0)
+                {
+                    company.CompanyHealthMetrics.Add(new CompanyHealthMetrics());
+                }
+                if (company.CompanyJobMetrics.Count == 0)
+                {
+                    company.CompanyJobMetrics.Add(new CompanyJobMetrics());
+                }
+                if (company.CompanyGenderMetrics.Count == 0)
+                {
+                    company.CompanyGenderMetrics.Add(new CompanyGenderMetrics());
+                }
+                if (company.CompanyRaceMetrics.Count == 0)
+                {
+                    company.CompanyRaceMetrics.Add(new CompanyRaceMetrics());
+                }
+                if (company.CompanyDIMetrics.Count == 0)
+                {
+                    company.CompanyDIMetrics.Add(new CompanyDIMetrics());
+                }
+            }
+
+            return new CompaniesDTO(
+                result,
                 pageSize,
                 pageIndex,
                 (int)Math.Ceiling((double)silverContext.Companies.Count() / pageSize));
@@ -451,7 +489,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
         {
             // countries
             var srcIds = source.CompanyCountries
-                .Select(x => x.CountryId)
+                .Select(x => x.Country)
                 .ToHashSet();
 
             var toRemove = targetCompany.CompanyCountries.Where(x => !srcIds.Contains(x.CountryId)).ToList();
@@ -468,7 +506,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             {
                 CompanyCountry targetEntity;
 
-                if (!targetCompanyCountries.ContainsKey(companyCountry.CountryId))
+                if (!targetCompanyCountries.ContainsKey(companyCountry.Country))
                 {
                     targetEntity = new CompanyCountry()
                     {
@@ -480,7 +518,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 }
                 else
                 {
-                    targetEntity = targetCompanyCountries[companyCountry.CountryId];
+                    targetEntity = targetCompanyCountries[companyCountry.Country];
                 }
                 targetEntity.Ticker = companyCountry.Ticker;
             }

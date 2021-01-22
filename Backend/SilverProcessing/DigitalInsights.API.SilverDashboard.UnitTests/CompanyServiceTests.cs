@@ -75,9 +75,13 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
         [Test]
         public void MetadataSanityTest()
         {
-            Assert.DoesNotThrow(() => JsonConvert.SerializeObject(
-                        companyService.GetCompanies(10, 0, null),
-                        new JsonSerializerSettings() { ContractResolver = new MetadataBasedContractResolver() }));
+            Assert.DoesNotThrow(() =>
+            {
+                var result = companyService.GetCompanies(10, 0, null);
+                var serializationResult = JsonConvert.SerializeObject(
+                            result,
+                            new JsonSerializerSettings() { ContractResolver = new MetadataBasedContractResolver() });
+            });
         }
     }
 }

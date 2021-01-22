@@ -12,12 +12,12 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         }
         public CompanyCountryDTO(CompanyCountry source)
         {
-            CountryId = source.CountryId;
+            Country = source.CountryId;
             Ticker = source.Ticker;
             IsoCode = source.Country.ISOCode;
         }
 
-        public int CountryId { get; private set; }
+        public int Country { get; private set; }
         public string Ticker { get; private set; }
         public string IsoCode { get; private set; }
     }

@@ -19,7 +19,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 
         public PersonDTO(Person source)
         {
-            PersonNationalities = source.PersonNationalities.OrderBy(x => x).Select(x=>new PersonNationalityDTO(x)).ToArray();
+            PersonNationalities = source.PersonNationalities.OrderBy(x => x.CountryId).Select(x=>new PersonNationalityDTO(x)).ToArray();
             Age = source.Age;
             EducationInstitute = source.EducationInstitute;
             EducationSubject = source.EducationSubject.HasValue ? (int)source.EducationSubject : null;
