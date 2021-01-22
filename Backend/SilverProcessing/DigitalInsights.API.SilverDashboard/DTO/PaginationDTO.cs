@@ -14,13 +14,8 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 
         }
 
-        [JsonProperty("pageSize")]
         public int PageSize { get; set; }
-
-        [JsonProperty("pageIndex")]
         public int PageIndex { get; set; }
-
-        [JsonProperty("pageCount")]
         public int PageCount { get; set; }
     }
 }

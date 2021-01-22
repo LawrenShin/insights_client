@@ -1,4 +1,5 @@
 ﻿using DigitalInsights.DB.Silver.Entities;
+using DigitalInsights.DB.Silver.Entities.CompanyData;
 using Newtonsoft.Json;
 
 namespace DigitalInsights.API.SilverDashboard.DTO
@@ -14,16 +15,15 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             if (source != null)
             {
                 Industry = (int)source.Industry;
-                IndustryCode = source.IndustryCode.HasValue ? (int?)source.IndustryCode.Value : null;
-                PrimarySecondary = source.PrimarySecondary;
+                IndustryCode = (int)source.IndustryCode;
+                IsPrimary = source.IsPrimary;
+                TradeDescription = source.TradeDescription;
             }
         }
 
-        [JsonProperty("industry")]
         public int? Industry { get; set; }
-        [JsonProperty("industryCode")]
         public int? IndustryCode { get; set; }
-        [JsonProperty("primaryOrSecondary")]
-        public char? PrimarySecondary { get; set; }
+        public bool? IsPrimary { get; set; }
+        public string TradeDescription { get; private set; }
     }
 }

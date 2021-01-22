@@ -31,7 +31,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
             return new PeopleDTO(
                 peopleQuery
-                    .Include(x => x.PersonCountries)
+                    .Include(x => x.PersonNationalities)
                     .OrderBy(x => x.Name)
                     .Skip(pageIndex * pageSize).Take(pageSize)
                     .ToArray(),
@@ -57,6 +57,8 @@ namespace DigitalInsights.API.SilverDashboard.Services
         {
             var countries = silverContext.Countries.Select(x=>x.Id).ToHashSet();
 
+            var groups = silverContext.PropertyMetadata.GroupBy(x => x.EntityName).ToDictionary(x => x.Key, x => x);
+
             Person targetPerson;
 
             if (!source.Id.HasValue)
@@ -67,7 +69,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             else
             {
                 targetPerson = silverContext.People.Where(x => x.Id == source.Id)
-                    .Include(x=>x.PersonCountries)
+                    .Include(x=>x.PersonNationalities)
                     .FirstOrDefault();
 
                 if (targetPerson == null)
@@ -76,58 +78,87 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 }
             }
 
-            targetPerson.Age = source.Age;
-            targetPerson.BirthYear = source.BirthYear;
-            targetPerson.EducationInstitute = source.EducationInstitute;
-            targetPerson.EducationLevel = EnumHelper.ParseInputEnumValue<DB.Common.Enums.EducationLevel>(source.EducationLevel);
-            targetPerson.EducationSubject = EnumHelper.ParseInputEnumValue<DB.Common.Enums.EducationSubject>(source.EducationSubject);
-            targetPerson.Gender = EnumHelper.ParseInputEnumValue<DB.Common.Enums.Gender>(source.Gender);
-            targetPerson.HasKids = source.HasKids;
-            targetPerson.Married = EnumHelper.ParseInputEnumValue<DB.Common.Enums.MaritalStatus>(source.MaritalStatus);
-            targetPerson.Name = source.Name;
-            targetPerson.Picture = source.Picture;
-            targetPerson.Religion = EnumHelper.ParseInputEnumValue<DB.Common.Enums.Religion>(source.Religion);
-            targetPerson.Sexuality = source.Sexuality;
-            targetPerson.Urban = source.Urban;
-            targetPerson.VisibleDisability = source.VisibleDisability;
-            targetPerson.Website = source.Website;
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("Age") 
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["Age"].IsEditable)
+                targetPerson.Age = source.Age;
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("EducationInstitute")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["EducationInstitute"].IsEditable)
+                targetPerson.EducationInstitute = source.EducationInstitute;
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("EducationSubject")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["EducationSubject"].IsEditable)
+                targetPerson.EducationSubject = EnumHelper.ParseInputEnumValue<DB.Common.Enums.EducationSubject>(source.EducationSubject);
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("Gender") 
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["Gender"].IsEditable)
+                targetPerson.Gender = EnumHelper.ParseInputEnumValue<DB.Common.Enums.Gender>(source.Gender);
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("HighEducation")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["HighEducation"].IsEditable)
+                targetPerson.HighEducation = EnumHelper.ParseInputEnumValue<DB.Common.Enums.EducationLevel>(source.HighEducation);
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("Kids")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["Kids"].IsEditable)
+                targetPerson.Kids = source.Kids;
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("Married")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["Married"].IsEditable)
+                targetPerson.Married = source.Married;
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("Name")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["Name"].IsEditable)
+                targetPerson.Name = source.Name;
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("Race")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["Race"].IsEditable)
+                targetPerson.Race = EnumHelper.ParseInputEnumValue<DB.Common.Enums.Race>(source.Race);
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("Religion")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["Religion"].IsEditable)
+                targetPerson.Religion = EnumHelper.ParseInputEnumValue<DB.Common.Enums.Religion>(source.Religion);
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("Sexuality")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["Sexuality"].IsEditable)
+                targetPerson.Sexuality = source.Sexuality;
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("Urban")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["Urban"].IsEditable)
+                targetPerson.Urban = source.Urban;
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("VisibleDisability")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["VisibleDisability"].IsEditable)
+                targetPerson.VisibleDisability = source.VisibleDisability;
 
             // countries
 
-            if (source.Countries.Any(x => !countries.Contains(x)))
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["person"].ContainsKey("PersonNationalities")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["PersonNationalities"].IsEditable)
             {
-                throw new ArgumentException("Country not found");
-            }
 
-            var srcIds = source.Countries.ToHashSet();
-
-            var toRemove = new List<PersonCountry>();
-            foreach (var personCountry in targetPerson.PersonCountries)
-            {
-                if (!srcIds.Contains(personCountry.PersonCountryId))
+                if (source.PersonNationalities.Any(x => !countries.Contains(x.Country)))
                 {
-                    toRemove.Add(personCountry);
+                    throw new ArgumentException("Country not found");
                 }
-            }
 
-            foreach (var item in toRemove)
-            {
-                targetPerson.PersonCountries.Remove(item);
-                silverContext.Remove(item);
-            }
+                var srcIds = source.PersonNationalities.Select(x => x.Country).ToHashSet();
 
-            foreach (var countryId in source.Countries)
-            {
-                if(!targetPerson.PersonCountries.Any(x=>x.CountryId == countryId))
+                var toRemove = new List<PersonNationality>();
+                foreach (var personCountry in targetPerson.PersonNationalities)
                 {
-                    PersonCountry targetEntity = new PersonCountry()
+                    if (!srcIds.Contains(personCountry.PersonNationalityId))
                     {
-                        Person = targetPerson,
-                        CountryId = countryId
-                    };
+                        toRemove.Add(personCountry);
+                    }
+                }
 
-                    targetPerson.PersonCountries.Add(targetEntity);
-                    silverContext.PersonCountries.Add(targetEntity);
+                foreach (var item in toRemove)
+                {
+                    targetPerson.PersonNationalities.Remove(item);
+                    silverContext.Remove(item);
+                }
+
+                foreach (var country in source.PersonNationalities)
+                {
+                    if (!targetPerson.PersonNationalities.Any(x => x.CountryId == country.Country))
+                    {
+                        PersonNationality targetEntity = new PersonNationality()
+                        {
+                            Person = targetPerson,
+                            CountryId = country.Country
+                        };
+
+                        targetPerson.PersonNationalities.Add(targetEntity);
+                        silverContext.PersonNationalities.Add(targetEntity);
+                    }
                 }
             }
 

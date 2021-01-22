@@ -21,7 +21,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
         public CountryDTO[] GetCountries()
         {
-            return silverContext.Countries.Select(x=>new CountryDTO() { Id = x.Id, Name = x.Name, ISOCode = x.Code}).ToArray();
+            return silverContext.Countries.Select(x=>new CountryDTO() { Id = x.Id, Name = x.Name, IsoCode = x.ISOCode}).ToArray();
         }
 
         public EnumDTO[] GetEducationLevels()
@@ -51,17 +51,22 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
         public EnumDTO[] GetRaces()
         {
-            return Enum.GetValues<Race>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
+            return Enum.GetValues<DB.Common.Enums.Race>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
         }
 
         public EnumDTO[] GetReligions()
         {
-            return Enum.GetValues<Common.Enums.Religion>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
+            return Enum.GetValues<DB.Common.Enums.Religion>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
         }
 
         public EnumDTO[] GetRoleTypes()
         {
             return Enum.GetValues<RoleType>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
+        }
+
+        public EnumDTO[] GetAddressTypes()
+        {
+            return Enum.GetValues<AddressType>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
         }
     }
 }

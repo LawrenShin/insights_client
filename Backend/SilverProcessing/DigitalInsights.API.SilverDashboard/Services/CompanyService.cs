@@ -1,7 +1,9 @@
 ﻿using DigitalInsights.API.SilverDashboard.DTO;
+using DigitalInsights.API.SilverDashboard.Helpers;
 using DigitalInsights.DB.Common.Enums;
 using DigitalInsights.DB.Silver;
 using DigitalInsights.DB.Silver.Entities;
+using DigitalInsights.DB.Silver.Entities.CompanyData;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -81,11 +83,19 @@ namespace DigitalInsights.API.SilverDashboard.Services
             else
             {
                 targetCompany = silverContext.Companies.Where(x => x.Id == source.Id)
+                    .Include(x => x.Roles)
                     .Include(x => x.CompanyCountries)
-                    .Include(x => x.CompanyPublicData)
                     .Include(x => x.CompanyIndustries)
                     .Include(x => x.CompanyNames)
-                    .Include(x => x.Roles)
+                    .Include(x => x.CompanyBoardStatistics)
+                    .Include(x => x.CompanyExecutiveStatistics)
+                    .Include(x => x.CompanyKeyFinancialsMetrics)
+                    .Include(x => x.CompanyHealthMetrics)
+                    .Include(x => x.CompanyJobMetrics)
+                    .Include(x => x.CompanyGenderMetrics)
+                    .Include(x => x.CompanyRaceMetrics)
+                    .Include(x => x.CompanyDIMetrics)
+                    .Include(x => x.CompanyHealthMetrics)
                     .FirstOrDefault();
 
                 if (targetCompany == null)
@@ -94,148 +104,354 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 }
             }
 
-            targetCompany.Lei = source.LEI;
-            targetCompany.LegalName = source.LegalName;
+            if(PropertyMetadataStorage.CurrentPropertyMetadata["company"].ContainsKey("lei")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["company"]["lei"].IsEditable)
+                targetCompany.LEI = source.Lei;
+            if (PropertyMetadataStorage.CurrentPropertyMetadata["company"].ContainsKey("legalname")
+                && PropertyMetadataStorage.CurrentPropertyMetadata["company"]["legalname"].IsEditable)
+                targetCompany.LegalName = source.LegalName;
 
-            FillCompanyCountries(source, targetCompany);
-            FillCompanyNames(source, targetCompany);
-            FillCompanyIndustries(source, targetCompany);
-            FillPublicData(source, targetCompany);
             FillRoles(source, targetCompany);
+            FillCompanyCountries(source, targetCompany);
+            FillCompanyIndustries(source, targetCompany);
+            FillCompanyNames(source, targetCompany);
+            FillCompanyBoardStatistics(source, targetCompany);
+            FillCompanyExecutiveStatistics(source, targetCompany);
+            FillCompanyKeyFinancialsMetrics(source, targetCompany);
+            FillCompanyHealthMetrics(source, targetCompany);
+            FillCompanyJobMetrics(source, targetCompany);
+            FillCompanyGenderMetrics(source, targetCompany);
+            FillCompanyRaceMetrics(source, targetCompany);
+            FillCompanyDIMetrics(source, targetCompany);
+            FillCompanyHealthMetrics(source, targetCompany);
 
             silverContext.SaveChanges();
         }
 
-        private void FillPublicData(CompanyDTO source, Company targetCompany)
+        private void FillCompanyDIMetrics(CompanyDTO source, Company targetCompany)
         {
-            CompanyPublicData publicData;
+            if (source.CompanyDIMetrics == null || source.CompanyDIMetrics.Length == 0) return;
 
-            if (source.AllEmployeesGenderRatioFemale.HasValue && (source.AllEmployeesGenderRatioFemale < 0 || source.AllEmployeesGenderRatioFemale > 100)
-                || source.AllEmployeesVisibleRaceMinority.HasValue && (source.AllEmployeesVisibleRaceMinority < 0 || source.AllEmployeesVisibleRaceMinority > 100)
-                || source.BoardVisibleRaceMinority.HasValue && (source.BoardVisibleRaceMinority < 0 || source.BoardVisibleRaceMinority > 100)
-                || source.CompanySupplierSpendingWithDi.HasValue && (source.CompanySupplierSpendingWithDi < 0 || source.CompanySupplierSpendingWithDi > 100)
-                || source.EngagementSurvey.HasValue && (source.EngagementSurvey < 0 || source.EngagementSurvey > 100)
-                || source.EngagementSurveyResponseRate.HasValue && (source.EngagementSurveyResponseRate < 0 || source.EngagementSurveyResponseRate > 100)
-                || source.ExecutivesVisibleRaceMinority.HasValue && (source.ExecutivesVisibleRaceMinority < 0 || source.ExecutivesVisibleRaceMinority > 100)
-                || source.Fatalities.HasValue && source.Fatalities < 0
-                || source.HQAddress == null
-                    || source.HQAddress.CountryId == null || !countries.Contains(source.HQAddress.CountryId.Value)
-                || source.LegalAddress == null
-                    || source.LegalAddress.CountryId == null || !countries.Contains(source.HQAddress.CountryId.Value)
-                || source.InvoluntaryTurnoverRate.HasValue && source.InvoluntaryTurnoverRate < 0
-                || source.MiddleMgmtGenderRatioFemale.HasValue && (source.MiddleMgmtGenderRatioFemale < 0 || source.MiddleMgmtGenderRatioFemale > 100)
-                || source.MiddleMgmtVisibleRaceMinority.HasValue && (source.MiddleMgmtVisibleRaceMinority < 0 || source.MiddleMgmtVisibleRaceMinority > 100)
-                || source.NumEmployees.HasValue && source.NumEmployees < 0
-                || source.SeniorMgmtGenderRatioFemale.HasValue && (source.SeniorMgmtGenderRatioFemale < 0 || source.SeniorMgmtGenderRatioFemale > 100)
-                || source.SicknessAbsense.HasValue && source.SicknessAbsense < 0
-                || source.TotalHoursWorked.HasValue && source.TotalHoursWorked < 0
-                || source.TotalRecordableInjuries.HasValue && source.TotalRecordableInjuries < 0
-                || source.TotalTurnoverRate.HasValue && (source.TotalTurnoverRate < 0 || source.TotalTurnoverRate > 100)
-                || source.VoluntaryTurnoverRate.HasValue && (source.VoluntaryTurnoverRate < 0 || source.VoluntaryTurnoverRate > 100))
-            {
-                throw new ArgumentException("company country");
-            }
+            var metricSource = source.CompanyDIMetrics[0];
 
-            if (targetCompany.CompanyPublicData.Count == 1)
+            CompanyDIMetrics target;
+            if (targetCompany.CompanyDIMetrics.Count == 1)
             {
-                publicData = targetCompany.CompanyPublicData.First();
+                target = targetCompany.CompanyDIMetrics.First();
             }
             else
             {
-                if (targetCompany.CompanyPublicData.Count > 1)
+                if (targetCompany.CompanyDIMetrics.Count > 1)
                 {
-                    silverContext.CompanyPublicData.RemoveRange(targetCompany.CompanyPublicData);
-                    targetCompany.CompanyPublicData.Clear();
+                    silverContext.CompanyDIMetrics.RemoveRange(targetCompany.CompanyDIMetrics);
+                    targetCompany.CompanyDIMetrics.Clear();
                 }
 
-                publicData = new CompanyPublicData()
+                target = new CompanyDIMetrics()
                 {
-                    Company = targetCompany,
-                    HqAddressEditable = true,
-                    LegalAddressEditable = true,
+                    CompanyId = targetCompany.Id,
                 };
-                silverContext.Add(publicData);
-                targetCompany.CompanyPublicData.Add(publicData);
+                silverContext.Add(target);
+                targetCompany.CompanyDIMetrics.Add(target);
             }
 
-            // simple fields
-            publicData.AllEmployeesGenderRatioFemale = source.AllEmployeesGenderRatioFemale;
-            publicData.AllEmployeesVisibleRaceMinority = source.AllEmployeesVisibleRaceMinority;
-            publicData.BoardVisibleRaceMinority = source.BoardVisibleRaceMinority;
-            publicData.CompanyHasProgramForAdvancingMinorities = source.CompanyHasProgramForAdvancingMinorities;
-            publicData.CompanyHasSocialImpactPrograms = source.CompanyHasSocialImpactPrograms;
-            publicData.CompanyMeasuresEngagement = source.CompanyMeasuresEngagement;
-            publicData.CompanyOffersTraining = source.CompanyOffersTraining;
-            publicData.CompanySupplierSpendingWithDi = source.CompanySupplierSpendingWithDi;
-            publicData.DIOnWebsite = source.DIOnWebsite;
-            publicData.EngagementSurvey = source.EngagementSurvey;
-            publicData.EngagementSurveyResponseRate = source.EngagementSurveyResponseRate;
-            publicData.ExecutivesVisibleRaceMinority = source.ExecutivesVisibleRaceMinority;
-            publicData.Fatalities = source.Fatalities;
-            publicData.GenderPayGapFemale = source.GenderPayGapFemale;
-            publicData.InvoluntaryTurnoverRate = source.InvoluntaryTurnoverRate;
-            publicData.MiddleMgmtGenderRatioFemale = source.MiddleMgmtGenderRatioFemale;
-            publicData.MiddleMgmtVisibleRaceMinority = source.MiddleMgmtVisibleRaceMinority;
-            publicData.NumEmployees = source.NumEmployees;
-            publicData.SeniorMgmtGenderRatioFemale = source.SeniorMgmtGenderRatioFemale;
-            publicData.SicknessAnsense = source.SicknessAbsense;
-            publicData.TotalHoursWorked = source.TotalHoursWorked;
-            publicData.TotalRecordableInjuries = source.TotalRecordableInjuries;
-            publicData.TotalTurnoverRate = source.TotalTurnoverRate;
-            publicData.VoluntaryTurnoverRate = source.VoluntaryTurnoverRate;
+            target.DICodeConduct = metricSource.DICodeConduct;
+            target.DIComplaint = metricSource.DIComplaint;
+            target.DIDivision = metricSource.DIDivision;
+            target.DIEarningCall = metricSource.DIEarningCall;
+            target.DIFTEPosition = metricSource.DIFTEPosition;
+            target.DIPolicyEstablished = metricSource.DIPolicyEstablished;
+            target.DIPosition = metricSource.DIPosition;
+            target.DIPositionExecutive = metricSource.DIPositionExecutive;
+            target.DIPublicAvailable = metricSource.DIPublicAvailable;
+            target.DISupplyChain = metricSource.DISupplyChain;
+            target.DISupplySpendRevenueRatio = metricSource.DISupplySpendRevenueRatio;
+            target.DITalentGoals = metricSource.DITalentGoals;
+            target.DIWebsite = metricSource.DIWebsite;
+            target.EmployEngagement = metricSource.EmployEngagement;
+            target.EmploySatisfactionSurvey = metricSource.EmploySatisfactionSurvey;
+            target.EmploySurveyResponseRate = metricSource.EmploySurveyResponseRate;
+            target.HarassmentPolicy = metricSource.HarassmentPolicy;
+            target.HolidaySupport = metricSource.HolidaySupport;
+            target.ManagingDiverse = metricSource.ManagingDiverse;
+            target.MentorProgram = metricSource.MentorProgram;
+            target.Retaliation = metricSource.Retaliation;
+            target.SocialEvents = metricSource.SocialEvents;
+            target.SocialProgram = metricSource.SocialProgram;
+            target.SupplySpend = metricSource.SupplySpend;
+            target.ValueDISupplySpend = metricSource.ValueDISupplySpend;
+        }
 
-            // addresses
-            if (publicData.HqAddressEditable)
+        private void FillCompanyRaceMetrics(CompanyDTO source, Company targetCompany)
+        {
+            if (source.CompanyRaceMetrics == null || source.CompanyRaceMetrics.Length == 0) return;
+
+            var metricSource = source.CompanyRaceMetrics[0];
+
+            CompanyRaceMetrics target;
+            if (targetCompany.CompanyRaceMetrics.Count == 1)
             {
-                if(publicData.HqAddress == null)
-                {
-                    publicData.HqAddress = new Address();
-                    silverContext.Add(publicData.HqAddress);
-                }
-                Address targetAddress = publicData.HqAddress;
-                AddressDTO sourceAddress = source.HQAddress;
-
-                targetAddress.AddressLine = sourceAddress.AddressLine;
-                targetAddress.AddressNumber = sourceAddress.AddressNumber;
-                targetAddress.City = sourceAddress.City;
-                targetAddress.CountryId = sourceAddress.CountryId.Value;
-                targetAddress.PostalCode = sourceAddress.PostalCode;
-                targetAddress.Region = sourceAddress.Region;
+                target = targetCompany.CompanyRaceMetrics.First();
             }
-
-            if (publicData.LegalAddressEditable)
+            else
             {
-                if (publicData.LegalAddress == null)
+                if (targetCompany.CompanyRaceMetrics.Count > 1)
                 {
-                    publicData.LegalAddress = new Address();
-                    silverContext.Add(publicData.LegalAddress);
+                    silverContext.CompanyRaceMetrics.RemoveRange(targetCompany.CompanyRaceMetrics);
+                    targetCompany.CompanyRaceMetrics.Clear();
                 }
-                Address targetAddress = publicData.LegalAddress;
-                AddressDTO sourceAddress = source.LegalAddress;
 
-                targetAddress.AddressLine = sourceAddress.AddressLine;
-                targetAddress.AddressNumber = sourceAddress.AddressNumber;
-                targetAddress.City = sourceAddress.City;
-                targetAddress.CountryId = sourceAddress.CountryId.Value;
-                targetAddress.PostalCode = sourceAddress.PostalCode;
-                targetAddress.Region = sourceAddress.Region;
+                target = new CompanyRaceMetrics()
+                {
+                    CompanyId = targetCompany.Id,
+                };
+                silverContext.Add(target);
+                targetCompany.CompanyRaceMetrics.Add(target);
             }
+
+            target.RaceArab = metricSource.RaceArab;
+            target.RaceAsian = metricSource.RaceAsian;
+            target.RaceBlack = metricSource.RaceBlack;
+            target.RaceCaucasian = metricSource.RaceCaucasian;
+            target.RaceHispanic = metricSource.RaceHispanic;
+            target.RaceIndigenous = metricSource.RaceIndigenous;
+            target.RaceRatioAll = metricSource.RaceRatioAll;
+            target.RaceRatioBoard = metricSource.RaceRatioBoard;
+            target.RaceRatioExececutive = metricSource.RaceRatioExececutive;
+            target.RaceRatioMiddle = metricSource.RaceRatioMiddle;
+            target.RaceRatioSenior = metricSource.RaceRatioSenior;
+        }
+
+        private void FillCompanyGenderMetrics(CompanyDTO source, Company targetCompany)
+        {
+            if (source.CompanyGenderMetrics == null || source.CompanyGenderMetrics.Length == 0) return;
+
+            var metricSource = source.CompanyGenderMetrics[0];
+
+            CompanyGenderMetrics target;
+            if (targetCompany.CompanyGenderMetrics.Count == 1)
+            {
+                target = targetCompany.CompanyGenderMetrics.First();
+            }
+            else
+            {
+                if (targetCompany.CompanyGenderMetrics.Count > 1)
+                {
+                    silverContext.CompanyGenderMetrics.RemoveRange(targetCompany.CompanyGenderMetrics);
+                    targetCompany.CompanyGenderMetrics.Clear();
+                }
+
+                target = new CompanyGenderMetrics()
+                {
+                    CompanyId = targetCompany.Id,
+                };
+                silverContext.Add(target);
+                targetCompany.CompanyGenderMetrics.Add(target);
+            }
+
+            target.GenderMale = metricSource.GenderMale;
+            target.GenderOther = metricSource.GenderOther;
+            target.GenderPayGap = metricSource.GenderPayGap;
+            target.GenderRatioAll = metricSource.GenderRatioAll;
+            target.GenderRatioBoard = metricSource.GenderRatioBoard;
+            target.GenderRatioMiddle = metricSource.GenderRatioMiddle;
+            target.GenderRatioSenior = metricSource.GenderRatioSenior;
+        }
+
+        private void FillCompanyJobMetrics(CompanyDTO source, Company targetCompany)
+        {
+            if (source.CompanyJobMetrics == null || source.CompanyJobMetrics.Length == 0) return;
+
+            var metricSource = source.CompanyJobMetrics[0];
+
+            CompanyJobMetrics target;
+            if (targetCompany.CompanyJobMetrics.Count == 1)
+            {
+                target = targetCompany.CompanyJobMetrics.First();
+            }
+            else
+            {
+                if (targetCompany.CompanyJobMetrics.Count > 1)
+                {
+                    silverContext.CompanyJobMetrics.RemoveRange(targetCompany.CompanyJobMetrics);
+                    targetCompany.CompanyJobMetrics.Clear();
+                }
+
+                target = new CompanyJobMetrics()
+                {
+                    CompanyId = targetCompany.Id,
+                };
+                silverContext.Add(target);
+                targetCompany.CompanyJobMetrics.Add(target);
+            }
+
+            target.AverageSalary = metricSource.AverageSalary;
+            target.EmployTraining = metricSource.EmployTraining;
+            target.EmployTurnoverFired = metricSource.EmployTurnoverFired;
+            target.EmployTurnoverTotal = metricSource.EmployTurnoverTotal;
+            target.EmployTurnoverVoluntary = metricSource.EmployTurnoverVoluntary;
+            target.JobTenureAverage = metricSource.JobTenureAverage;
+            target.MedianSalary = metricSource.MedianSalary;
+            target.TotalHours = metricSource.TotalHours;
+        }
+
+        private void FillCompanyHealthMetrics(CompanyDTO source, Company targetCompany)
+        {
+            if (source.CompanyHealthMetrics == null || source.CompanyHealthMetrics.Length == 0) return;
+
+            var metricSource = source.CompanyHealthMetrics[0];
+
+            CompanyHealthMetrics target;
+            if (targetCompany.CompanyHealthMetrics.Count == 1)
+            {
+                target = targetCompany.CompanyHealthMetrics.First();
+            }
+            else
+            {
+                if (targetCompany.CompanyHealthMetrics.Count > 1)
+                {
+                    silverContext.CompanyHealthMetrics.RemoveRange(targetCompany.CompanyHealthMetrics);
+                    targetCompany.CompanyHealthMetrics.Clear();
+                }
+
+                target = new CompanyHealthMetrics()
+                {
+                    CompanyId = targetCompany.Id,
+                };
+                silverContext.Add(target);
+                targetCompany.CompanyHealthMetrics.Add(target);
+            }
+
+            target.AgeAverage = metricSource.AgeAverage;
+            target.Fatalities = metricSource.Fatalities;
+            target.HealthTRI = metricSource.HealthTRI;
+            target.HealthTRIR = metricSource.HealthTRIR;
+            target.SickAbsence = metricSource.SickAbsence;
+        }
+
+        private void FillCompanyBoardStatistics(CompanyDTO source, Company targetCompany)
+        {
+            if (source.CompanyBoardStatistics == null || source.CompanyBoardStatistics.Length == 0) return;
+
+            var metricSource = source.CompanyBoardStatistics[0];
+
+            CompanyBoardStatistics target;
+            if (targetCompany.CompanyBoardStatistics.Count == 1)
+            {
+                target = targetCompany.CompanyBoardStatistics.First();
+            }
+            else
+            {
+                if (targetCompany.CompanyBoardStatistics.Count > 1)
+                {
+                    silverContext.CompanyBoardStatistics.RemoveRange(targetCompany.CompanyBoardStatistics);
+                    targetCompany.CompanyBoardStatistics.Clear();
+                }
+
+                target = new CompanyBoardStatistics()
+                {
+                    CompanyId = targetCompany.Id,
+                };
+                silverContext.Add(target);
+                targetCompany.CompanyBoardStatistics.Add(target);
+            }
+
+            target.ArabPercentage = metricSource.ArabPercentage;
+            target.AsianPercentage = metricSource.AsianPercentage;
+            target.AverageAge = metricSource.AverageAge;
+            target.AverageEducationLength = metricSource.AverageEducationLength;
+            target.BlackPercentage = metricSource.BlackPercentage;
+            target.CaucasianPercentage = metricSource.CaucasianPercentage;
+            target.FemaleRatio = metricSource.FemaleRatio;
+            target.Height = metricSource.Height;
+            target.HispanicPercentage = metricSource.HispanicPercentage;
+            target.IndigenousPercentage = metricSource.IndigenousPercentage;
+            target.MembersNumber = metricSource.MembersNumber;
+            target.SalaryAverage = metricSource.SalaryAverage;
+            target.SalaryMean = metricSource.SalaryMean;
+            target.Weight = metricSource.Weight;
+        }
+
+        private void FillCompanyExecutiveStatistics(CompanyDTO source, Company targetCompany)
+        {
+            if (source.CompanyExecutiveStatistics == null || source.CompanyExecutiveStatistics.Length == 0) return;
+
+            var metricSource = source.CompanyExecutiveStatistics[0];
+
+            CompanyExecutiveStatistics target;
+            if (targetCompany.CompanyExecutiveStatistics.Count == 1)
+            {
+                target = targetCompany.CompanyExecutiveStatistics.First();
+            }
+            else
+            {
+                if (targetCompany.CompanyExecutiveStatistics.Count > 1)
+                {
+                    silverContext.CompanyExecutiveStatistics.RemoveRange(targetCompany.CompanyExecutiveStatistics);
+                    targetCompany.CompanyExecutiveStatistics.Clear();
+                }
+
+                target = new CompanyExecutiveStatistics()
+                {
+                    CompanyId = targetCompany.Id,
+                };
+                silverContext.Add(target);
+                targetCompany.CompanyExecutiveStatistics.Add(target);
+            }
+
+            target.ArabPercentage = metricSource.ArabPercentage;
+            target.AsianPercentage = metricSource.AsianPercentage;
+            target.AverageAge = metricSource.AverageAge;
+            target.AverageEducationLength = metricSource.AverageEducationLength;
+            target.BlackPercentage = metricSource.BlackPercentage;
+            target.CaucasianPercentage = metricSource.CaucasianPercentage;
+            target.FemaleRatio = metricSource.FemaleRatio;
+            target.Height = metricSource.Height;
+            target.HispanicPercentage = metricSource.HispanicPercentage;
+            target.IndigenousPercentage = metricSource.IndigenousPercentage;
+            target.MembersNumber = metricSource.MembersNumber;
+            target.SalaryAverage = metricSource.SalaryAverage;
+            target.SalaryMean = metricSource.SalaryMean;
+            target.Weight = metricSource.Weight;
+        }
+
+        private void FillCompanyKeyFinancialsMetrics(CompanyDTO source, Company targetCompany)
+        {
+            if (source.CompanyKeyFinancialsMetrics == null || source.CompanyKeyFinancialsMetrics.Length == 0) return;
+
+            var metricSource = source.CompanyKeyFinancialsMetrics[0];
+
+            CompanyKeyFinancialsMetrics target;
+            if (targetCompany.CompanyKeyFinancialsMetrics.Count == 1)
+            {
+                target = targetCompany.CompanyKeyFinancialsMetrics.First();
+            }
+            else
+            {
+                if (targetCompany.CompanyKeyFinancialsMetrics.Count > 1)
+                {
+                    silverContext.CompanyKeyFinancialsMetrics.RemoveRange(targetCompany.CompanyKeyFinancialsMetrics);
+                    targetCompany.CompanyKeyFinancialsMetrics.Clear();
+                }
+
+                target = new CompanyKeyFinancialsMetrics()
+                {
+                    CompanyId = targetCompany.Id,
+                };
+                silverContext.Add(target);
+                targetCompany.CompanyKeyFinancialsMetrics.Add(target);
+            }
+
+            target.Employees = metricSource.Employees;
+            target.OperatingRevenue = metricSource.OperatingRevenue;
+            target.TotalAssets = metricSource.TotalAssets;
         }
 
         private void FillCompanyCountries(CompanyDTO source, Company targetCompany)
         {
             // countries
-            if (source.CompanyCountries.Any(
-                x => x == null
-                || x.CountryId == null || !countries.Contains(x.CountryId.Value)
-                || x.IsPrimary == null
-                || x.LegalJurisdiction == null))
-            {
-                throw new ArgumentException("company country");
-            }
-
             var srcIds = source.CompanyCountries
-                .Select(x => x.CountryId.Value)
+                .Select(x => x.CountryId)
                 .ToHashSet();
 
             var toRemove = targetCompany.CompanyCountries.Where(x => !srcIds.Contains(x.CountryId)).ToList();
@@ -252,7 +468,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             {
                 CompanyCountry targetEntity;
 
-                if (!targetCompanyCountries.ContainsKey(companyCountry.CountryId.Value))
+                if (!targetCompanyCountries.ContainsKey(companyCountry.CountryId))
                 {
                     targetEntity = new CompanyCountry()
                     {
@@ -264,11 +480,8 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 }
                 else
                 {
-                    targetEntity = targetCompanyCountries[companyCountry.CountryId.Value];
+                    targetEntity = targetCompanyCountries[companyCountry.CountryId];
                 }
-                targetEntity.IsPrimary = companyCountry.IsPrimary.Value;
-                targetEntity.LegalJurisdiction = companyCountry.LegalJurisdiction.Value;
-                targetEntity.StockIndex = companyCountry.StockIndex;
                 targetEntity.Ticker = companyCountry.Ticker;
             }
         }
@@ -278,15 +491,6 @@ namespace DigitalInsights.API.SilverDashboard.Services
             // industries
             var industries = silverContext.Industries.Select(x => x.Id).ToHashSet();
             var industryCodes = silverContext.Industries.Select(x => x.Id).ToHashSet();
-
-            if (source.CompanyIndustries.Any(
-                x => x == null
-                || x.PrimarySecondary == null
-                || x.Industry == null || !industries.Contains(x.Industry.Value)
-                || x.IndustryCode != null && !industryCodes.Contains(x.IndustryCode.Value)))
-            {
-                throw new ArgumentException("company industries");
-            }
 
             var srcIds = source.CompanyIndustries
                 .Select(x => x.Industry.Value)
@@ -323,7 +527,8 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 }
 
                 targetEntity.IndustryCode = (IndustryCode)companyIndustry.IndustryCode.Value;
-                targetEntity.PrimarySecondary = companyIndustry.PrimarySecondary.Value;
+                targetEntity.IsPrimary = companyIndustry.IsPrimary.Value;
+                targetEntity.TradeDescription = companyIndustry.TradeDescription;
             }
         }
 
@@ -368,16 +573,6 @@ namespace DigitalInsights.API.SilverDashboard.Services
         {
             // roles
             var roleTypes = Enum.GetValues<RoleType>().Select(x => (int)x).ToArray();
-            if (source.Roles.Any(
-                x => x == null
-                || x.PersonId == null
-                || !silverContext.People.Any(y => y.Id == x.PersonId)
-                || x.RoleType == null 
-                || !roleTypes.Contains(x.RoleType.Value)
-                || string.IsNullOrEmpty(x.Title)))
-            {
-                throw new ArgumentException("roles");
-            }
 
             var toRemove = targetCompany.Roles.Where(x => !source.Roles.Any(y => y.RoleType.Value == (int)x.RoleType && x.Title == y.Title)).ToList();
 
@@ -411,7 +606,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 }
                 
                 targetEntity.BaseSalary = role.BaseSalary;
-                targetEntity.IsEffective = role.IsEffective;
+                targetEntity.JobTenure = role.JobTenure;
                 targetEntity.OtherIncentives = role.OtherIncentives;
             }
         }

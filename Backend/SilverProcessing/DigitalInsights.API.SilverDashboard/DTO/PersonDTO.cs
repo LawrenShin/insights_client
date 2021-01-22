@@ -1,4 +1,5 @@
-﻿using DigitalInsights.DB.Common.Enums;
+﻿using DigitalInsights.API.SilverDashboard.Helpers;
+using DigitalInsights.DB.Common.Enums;
 using DigitalInsights.DB.Silver.Entities;
 using Newtonsoft.Json;
 using System;
@@ -13,64 +14,43 @@ namespace DigitalInsights.API.SilverDashboard.DTO
     {
         public PersonDTO()
         {
-            Countries = new int[0];
+            PersonNationalities = new PersonNationalityDTO[0];
         }
 
         public PersonDTO(Person source)
         {
-            Countries = source.PersonCountries.Select(x => x.CountryId).OrderBy(x => x).ToArray();
+            PersonNationalities = source.PersonNationalities.OrderBy(x => x).Select(x=>new PersonNationalityDTO(x)).ToArray();
             Age = source.Age;
-            BirthYear = source.BirthYear;
             EducationInstitute = source.EducationInstitute;
-            EducationLevel = source.EducationLevel.HasValue ? (int)source.EducationLevel : null;
             EducationSubject = source.EducationSubject.HasValue ? (int)source.EducationSubject : null;
             Gender = source.Gender.HasValue ? (int)source.Gender : null;
-            HasKids = source.HasKids;
+            HighEducation = source.HighEducation.HasValue ? (int)source.HighEducation : null;
+            Kids = source.Kids;
             Id = source.Id;
-            MaritalStatus = source.Married.HasValue ? (int)source.Married : null;
+            Married = source.Married;
             Name = source.Name;
-            Picture = source.Picture;
+            Race = source.Race.HasValue ? (int)source.Race : null; ;
             Religion = source.Religion.HasValue ? (int)source.Religion : null; ;
             Sexuality = source.Sexuality;
             Urban = source.Urban;
             VisibleDisability = source.VisibleDisability;
-            Website = source.Website;
         }
 
 
-        [JsonProperty("countries")]
-        public int[] Countries { get; set; }
-        [JsonProperty("age")]
+        public PersonNationalityDTO[] PersonNationalities { get; set; }
         public short? Age { get; set; }
-        [JsonProperty("birthYear")]
-        public short? BirthYear { get; set; }
-        [JsonProperty("educationInstitute")]
         public string EducationInstitute { get; set; }
-        [JsonProperty("educationLevel")]
-        public int? EducationLevel { get; set; }
-        [JsonProperty("educationSubject")]
         public int? EducationSubject { get; set; }
-        [JsonProperty("gender")]
         public int? Gender { get; set; }
-        [JsonProperty("hasKids")]
-        public short? HasKids { get; set; }
-        [JsonProperty("id")]
+        public int? HighEducation { get; set; }
+        public bool? Kids { get; set; }
         public int? Id { get; set; }
-        [JsonProperty("maritalStatus")]
-        public int? MaritalStatus { get; set; }
-        [JsonProperty("name")]
+        public bool? Married { get; set; }
         public string Name { get; set; }
-        [JsonProperty("picture")]
-        public string Picture { get; set; }
-        [JsonProperty("religion")]
+        public int? Race { get; set; }
         public int? Religion { get; set; }
-        [JsonProperty("sexuality")]
         public string Sexuality { get; set; }
-        [JsonProperty("livesInUrbanArea")]
-        public int? Urban { get; set; }
-        [JsonProperty("visibleDisability")]
+        public bool? Urban { get; set; }
         public string VisibleDisability { get; set; }
-        [JsonProperty("corporateWebsitePersonalPageUrl")]
-        public string Website { get; set; }
     }
 }

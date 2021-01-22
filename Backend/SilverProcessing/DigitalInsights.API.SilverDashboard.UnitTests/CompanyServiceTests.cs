@@ -53,7 +53,7 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
                 Assert.NotZero(company.CompanyCountries.Length);
                 foreach(var companyCountry in company.CompanyCountries)
                 {
-                    Assert.IsFalse(string.IsNullOrEmpty(companyCountry.ISOCode));
+                    Assert.IsFalse(string.IsNullOrEmpty(companyCountry.IsoCode));
                 }
             }
         }

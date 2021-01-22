@@ -32,10 +32,8 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             };
         }
 
-        [JsonProperty("companies")]
         public CompanyDTO[] Companies { get; set; }
 
-        [JsonProperty("pagination")]
         public PaginationDTO Pagination { get; set; }
     }
 }

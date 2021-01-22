@@ -25,13 +25,24 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
         [Test]
         public void TestDictionaries()
         {
+            var addressTypes = dictionaryService.GetAddressTypes();
+            Assert.NotNull(addressTypes);
+            Assert.AreEqual(Enum.GetNames(typeof(AddressType)).Length, addressTypes.Length);
+            var enumAddressTypes = Enum.GetValues<AddressType>().Select(x => (int)x).ToHashSet();
+            foreach (var addressType in addressTypes)
+            {
+                Assert.IsTrue(enumAddressTypes.Contains(addressType.Id));
+                enumAddressTypes.Remove(addressType.Id);
+                Assert.IsFalse(string.IsNullOrEmpty(addressType.Name));
+            }
+
             var countries = dictionaryService.GetCountries();
             Assert.NotNull(countries);
             Assert.IsTrue(countries.Length > 0);
             foreach(var country in countries)
             {
                 Assert.IsTrue(country.Id > 0);
-                Assert.IsFalse(string.IsNullOrEmpty(country.ISOCode));
+                Assert.IsFalse(string.IsNullOrEmpty(country.IsoCode));
                 Assert.IsFalse(string.IsNullOrEmpty(country.Name));
             }
 
@@ -90,17 +101,6 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
                 Assert.IsFalse(string.IsNullOrEmpty(industryCode.Name));
             }
 
-            var maritalStatuses = dictionaryService.GetMaritalStatuses();
-            Assert.NotNull(maritalStatuses);
-            Assert.AreEqual(Enum.GetNames(typeof(MaritalStatus)).Length, maritalStatuses.Length);
-            var enumMaritalStatuses = Enum.GetValues<MaritalStatus>().Select(x => (int)x).ToHashSet();
-            foreach (var maritalStatus in maritalStatuses)
-            {
-                Assert.IsTrue(enumMaritalStatuses.Contains(maritalStatus.Id));
-                enumMaritalStatuses.Remove(maritalStatus.Id);
-                Assert.IsFalse(string.IsNullOrEmpty(maritalStatus.Name));
-            }
-
             var races = dictionaryService.GetRaces();
             Assert.NotNull(races);
             Assert.AreEqual(Enum.GetNames(typeof(Race)).Length, races.Length);
@@ -110,17 +110,6 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
                 Assert.IsTrue(enumRaces.Contains(race.Id));
                 enumRaces.Remove(race.Id);
                 Assert.IsFalse(string.IsNullOrEmpty(race.Name));
-            }
-
-            var regions = dictionaryService.GetRegions();
-            Assert.NotNull(regions);
-            Assert.AreEqual(Enum.GetNames(typeof(Region)).Length, regions.Length);
-            var enumRegions = Enum.GetValues<Region>().Select(x => (int)x).ToHashSet();
-            foreach (var region in regions)
-            {
-                Assert.IsTrue(enumRegions.Contains(region.Id));
-                enumRegions.Remove(region.Id);
-                Assert.IsFalse(string.IsNullOrEmpty(region.Name));
             }
 
             var religions = dictionaryService.GetReligions();

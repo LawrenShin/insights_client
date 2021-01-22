@@ -141,15 +141,14 @@ namespace DigitalInsights.API.SilverDashboard
                     .WithBody(JsonConvert.SerializeObject(
                         new DictionariesDTO()
                         {
+                            AddressTypes = service.GetAddressTypes(),
                             Countries = service.GetCountries(),
                             EducationLevels = service.GetEducationLevels(),
                             EducationSubjects = service.GetEducationSubjects(),
                             Genders = service.GetGenders(),
                             Industries = service.GetIndustries(),
                             IndustryCodes = service.GetIndustryCodes(),
-                            MaritalStatuses = service.GetMaritalStatuses(),
                             Races = service.GetRaces(),
-                            Regions = service.GetRegions(),
                             Religions = service.GetReligions(),
                             RoleTypes = service.GetRoleTypes(),
                         }))
@@ -182,7 +181,7 @@ namespace DigitalInsights.API.SilverDashboard
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
                     .WithJsonContent()
-                    .WithBody(JsonConvert.SerializeObject(service.GetUIMetadata()))
+                    .WithBody(JsonConvert.SerializeObject(service.GetUIMetadata("company", "person")))
                     .Build();
             }
             catch (Exception ex)
@@ -241,7 +240,9 @@ namespace DigitalInsights.API.SilverDashboard
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
                     .WithJsonContent()
-                    .WithBody(JsonConvert.SerializeObject(service.GetCompanies(pageSize, pageIndex, prefix)))
+                    .WithBody(JsonConvert.SerializeObject(
+                        service.GetCompanies(pageSize, pageIndex, prefix), 
+                        new JsonSerializerSettings() { ContractResolver = new MetadataBasedContractResolver() }))
                     .Build();
             }
             catch (Exception ex)
@@ -387,7 +388,9 @@ namespace DigitalInsights.API.SilverDashboard
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
                     .WithJsonContent()
-                    .WithBody(JsonConvert.SerializeObject(service.GetPeople(pageSize, pageIndex, prefix)))
+                    .WithBody(JsonConvert.SerializeObject(
+                        service.GetPeople(pageSize, pageIndex, prefix),
+                        new JsonSerializerSettings() { ContractResolver = new MetadataBasedContractResolver() }))
                     .Build();
 
             }

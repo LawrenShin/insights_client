@@ -9,6 +9,9 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 {
     public class DictionariesDTO
     {
+        [JsonProperty(PropertyName = "addressTypes")]
+        public EnumDTO[] AddressTypes { get; set; }
+
         [JsonProperty(PropertyName = "countries")]
         public CountryDTO[] Countries { get; set; }
 
@@ -27,14 +30,8 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         [JsonProperty(PropertyName = "industryCodes")]
         public EnumDTO[] IndustryCodes { get; set; }
 
-        [JsonProperty(PropertyName = "maritalStatuses")]
-        public EnumDTO[] MaritalStatuses { get; set; }
-
         [JsonProperty(PropertyName = "races")]
         public EnumDTO[] Races { get; set; }
-
-        [JsonProperty(PropertyName = "regions")]
-        public EnumDTO[] Regions { get; set; }
 
         [JsonProperty(PropertyName = "religions")]
         public EnumDTO[] Religions { get; set; }

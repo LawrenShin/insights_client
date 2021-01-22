@@ -1,4 +1,5 @@
 ﻿using DigitalInsights.DB.Silver.Entities;
+using DigitalInsights.DB.Silver.Entities.CompanyData;
 using Newtonsoft.Json;
 
 namespace DigitalInsights.API.SilverDashboard.DTO
@@ -19,9 +20,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             }
         }
 
-        [JsonProperty("name")]
         public string Name { get; private set; }
-        [JsonProperty("nameType")]
         public string NameType { get; private set; }
     }
 }

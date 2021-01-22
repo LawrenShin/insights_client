@@ -1807,9 +1807,9 @@ namespace DigitalInsights.DB.Silver
                     .HasConversion(religionConverter);
 
                 entity.Property(e => e.RandomName)
-                    .IsRequired()
                     .HasMaxLength(135)
-                    .HasColumnName("randomname");
+                    .HasColumnName("randomname")
+                    .HasDefaultValueSql("NULL::character varying");
 
                 entity.Property(e => e.Sexuality)
                     .HasMaxLength(45)

@@ -83,7 +83,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 
         public bool ShouldSerializeEntityMetadata()
         {
-            return FieldType == "Array";
+            return FieldType == "Array" && EntityMetadata != null;
         }
     }
 }
