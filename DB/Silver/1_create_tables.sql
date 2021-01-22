@@ -1,16 +1,30 @@
 -- DICTIONARIES --
 
--- Code for industry table --
+-- Code for Address Types table --
 
-DROP TABLE IF EXISTS industries CASCADE;
+DROP TABLE IF EXISTS AddressTypes CASCADE;
 
-CREATE TABLE IF NOT EXISTS industries
+CREATE TABLE IF NOT EXISTS AddressTypes
 (
-	id INT PRIMARY KEY,
-	name VARCHAR(100) NOT NULL
+	Id INT PRIMARY KEY,
+	Name VARCHAR(50) NOT NULL
 );
 
-INSERT INTO industries(id, name) VALUES
+INSERT INTO AddressTypes(Id, Name) VALUES
+	(0, 'Legal'),
+	(1, 'HQ');
+
+-- Code for industry table --
+
+DROP TABLE IF EXISTS Industries CASCADE;
+
+CREATE TABLE IF NOT EXISTS Industries
+(
+	Id INT PRIMARY KEY,
+	Name VARCHAR(100) NOT NULL
+);
+
+INSERT INTO Industries(Id, Name) VALUES
 	(0, 'Health Care and Social Assistance'),
 	(1, 'Accommodation and Food Services'),
 	(2, 'Finance and Insurance'),
@@ -34,59 +48,45 @@ INSERT INTO industries(id, name) VALUES
 	
 -- Code for industry table --
 
-DROP TABLE IF EXISTS industry_codes CASCADE;
+DROP TABLE IF EXISTS IndustryCodes CASCADE;
 
-CREATE TABLE IF NOT EXISTS industry_codes
+CREATE TABLE IF NOT EXISTS IndustryCodes
 (
-	id INT PRIMARY KEY,
-	name VARCHAR(20) NOT NULL
+	Id INT PRIMARY KEY,
+	Name VARCHAR(20) NOT NULL
 );
 
-INSERT INTO industry_codes(id, name) VALUES
+INSERT INTO IndustryCodes(Id, Name) VALUES
 	(0, 'NACE'),
 	(1, 'NAICS'),
 	(2, 'Local');
 
--- Code for Gender table --
+-- Code for Genders table --
 
-DROP TABLE IF EXISTS genders CASCADE;
+DROP TABLE IF EXISTS Genders CASCADE;
 
-CREATE TABLE IF NOT EXISTS genders
+CREATE TABLE IF NOT EXISTS Genders
 (
-	id INT PRIMARY KEY,
-	name VARCHAR(50) NOT NULL
+	Id INT PRIMARY KEY,
+	Name VARCHAR(50) NOT NULL
 );
 
-INSERT INTO genders(id, name) VALUES
+INSERT INTO Genders(Id, Name) VALUES
 	(0, 'Female'),
 	(1, 'Male'),
 	(2, 'Other');
 	
--- Code for Marital status table --
-
-DROP TABLE IF EXISTS marital_statuses CASCADE;
-
-CREATE TABLE IF NOT EXISTS marital_statuses
-(
-	id INT PRIMARY KEY,
-	name VARCHAR(50) NOT NULL
-);
-
-INSERT INTO marital_statuses(id, name) VALUES
-	(0, 'No'),
-	(1, 'Yes');
-	
 -- Code for Race table --
 
-DROP TABLE IF EXISTS races CASCADE;
+DROP TABLE IF EXISTS Races CASCADE;
 
-CREATE TABLE IF NOT EXISTS races
+CREATE TABLE IF NOT EXISTS Races
 (
-	id INT PRIMARY KEY,
-	name VARCHAR(50) NOT NULL
+	Id INT PRIMARY KEY,
+	Name VARCHAR(50) NOT NULL
 );
 
-INSERT INTO races(id, name) VALUES
+INSERT INTO Races(Id, Name) VALUES
 	(0, 'Arab'),
 	(1, 'Hispanic'),
 	(2, 'Black'),
@@ -96,15 +96,15 @@ INSERT INTO races(id, name) VALUES
 	
 -- Code for Religion table --
 
-DROP TABLE IF EXISTS religions CASCADE;
+DROP TABLE IF EXISTS Religions CASCADE;
 
-CREATE TABLE IF NOT EXISTS religions
+CREATE TABLE IF NOT EXISTS Religions
 (
-	id INT PRIMARY KEY,
-	name VARCHAR(50) NOT NULL
+	Id INT PRIMARY KEY,
+	Name VARCHAR(50) NOT NULL
 );
 
-INSERT INTO religions(id, name) VALUES
+INSERT INTO Religions(Id, Name) VALUES
 	(0, 'Muslim'),
 	(1, 'Christian'),
 	(2, 'Hindu'),
@@ -114,30 +114,30 @@ INSERT INTO religions(id, name) VALUES
 	
 -- Code for Role type table --
 
-DROP TABLE IF EXISTS role_types CASCADE;
+DROP TABLE IF EXISTS RoleTypes CASCADE;
 
-CREATE TABLE IF NOT EXISTS role_types
+CREATE TABLE IF NOT EXISTS RoleTypes
 (
-	id INT PRIMARY KEY,
-	name VARCHAR(50) NOT NULL
+	Id INT PRIMARY KEY,
+	Name VARCHAR(50) NOT NULL
 );
 
-INSERT INTO role_types(id, name) VALUES
+INSERT INTO RoleTypes(Id, Name) VALUES
 	(1, 'Executive'),
 	(2, 'Board'),
 	(3, 'Both');
 	
 -- Code for Regions table --
 
-DROP TABLE IF EXISTS regions CASCADE;
+DROP TABLE IF EXISTS Regions CASCADE;
 
-CREATE TABLE IF NOT EXISTS regions
+CREATE TABLE IF NOT EXISTS Regions
 (
-	id INT PRIMARY KEY,
-	name VARCHAR(50) NOT NULL
+	Id INT PRIMARY KEY,
+	Name VARCHAR(50) NOT NULL
 );
 
-INSERT INTO regions(id, name) VALUES
+INSERT INTO Regions(Id, Name) VALUES
 	(0, 'North America'),
 	(1, 'South America'),
 	(2, 'Central America'),
@@ -149,15 +149,15 @@ INSERT INTO regions(id, name) VALUES
 
 -- Code for Education levels table --
 
-DROP TABLE IF EXISTS education_levels CASCADE;
+DROP TABLE IF EXISTS EducationLevels CASCADE;
 
-CREATE TABLE IF NOT EXISTS education_levels
+CREATE TABLE IF NOT EXISTS EducationLevels
 (
-	id INT PRIMARY KEY,
-	name VARCHAR(30) NOT NULL
+	Id INT PRIMARY KEY,
+	Name VARCHAR(30) NOT NULL
 );
 
-INSERT INTO education_levels(id, name) VALUES
+INSERT INTO EducationLevels(Id, Name) VALUES
 	(0, 'Elementary'),
 	(1, 'High School'),
 	(2, 'Bachelor'),
@@ -166,15 +166,15 @@ INSERT INTO education_levels(id, name) VALUES
 
 -- Code for Education subjects table --
 
-DROP TABLE IF EXISTS education_subjects CASCADE;
+DROP TABLE IF EXISTS EducationSubjects CASCADE;
 
-CREATE TABLE IF NOT EXISTS education_subjects
+CREATE TABLE IF NOT EXISTS EducationSubjects
 (
-	id INT PRIMARY KEY,
-	name VARCHAR(100) NOT NULL
+	Id INT PRIMARY KEY,
+	Name VARCHAR(100) NOT NULL
 );
 
-INSERT INTO education_subjects(id, name) VALUES
+INSERT INTO EducationSubjects(Id, Name) VALUES
 	(0, 'Agriculture'),
 	(1, 'Archaeology & Ethnology'),
 	(2, 'Architecture'),
@@ -218,16 +218,16 @@ INSERT INTO education_subjects(id, name) VALUES
 
 -- Code for country table
 
-DROP TABLE IF EXISTS countries CASCADE;
+DROP TABLE IF EXISTS Countries CASCADE;
 
-CREATE TABLE IF NOT EXISTS countries
+CREATE TABLE IF NOT EXISTS Countries
 (
-	id SERIAL PRIMARY KEY,
-	name VARCHAR(45) NOT NULL,
-	code VARCHAR(3) NOT NULL
+	Id SERIAL PRIMARY KEY,
+	Name VARCHAR(45) NOT NULL,
+	ISOCode VARCHAR(3) NOT NULL
 );
 
-INSERT INTO countries(name, code) VALUES
+INSERT INTO Countries(Name, ISOCode) VALUES
 	('Afghanistan','AF'),
 	('Albania','AL'),
 	('Algeria','DZ'),
@@ -431,537 +431,1283 @@ INSERT INTO countries(name, code) VALUES
 	('Zambia','ZM'),
 	('Zimbabwe','ZW');
 
+DROP TABLE IF EXISTS FieldTypes CASCADE;
+CREATE TABLE IF NOT EXISTS FieldTypes
+(
+	Id SMALLINT PRIMARY KEY,
+	Name VARCHAR(15) NOT NULL
+);
+
+INSERT INTO FieldTypes(Id, Name) VALUES
+	(0, 'String'),
+	(1, 'Boolean'),
+	(2, 'Integer'),
+	(3, 'Float'),
+	(4, 'Date'),
+	(5, 'Percentage'),
+	(6, 'DropDown'),
+	(7, 'Array'),
+	(8, 'Person');
+	
+DROP TABLE IF EXISTS PropertyMetadata CASCADE;
+CREATE TABLE IF NOT EXISTS PropertyMetadata
+(
+	Id SERIAL PRIMARY KEY,
+	EntityName VARCHAR(30) NOT NULL,
+	PropertyName VARCHAR(30) NOT NULL,
+	FrontendName VARCHAR(200) DEFAULT NULL,
+	Description VARCHAR(200) DEFAULT NULL,
+	FieldType SMALLINT NOT NULL REFERENCES FieldTypes(Id) ON DELETE CASCADE,
+	AllowsNull BOOLEAN NOT NULL DEFAULT TRUE,
+	IsEditable BOOLEAN NOT NULL DEFAULT TRUE,
+	DropDownDictionary VARCHAR(30) DEFAULT NULL,
+	ChildrenEntityName VARCHAR(30) DEFAULT NULL,
+	RangeLow VARCHAR(15) DEFAULT NULL,
+	RangeHigh VARCHAR(15) DEFAULT NULL
+);
+
+INSERT INTO PropertyMetadata(
+	EntityName,
+	PropertyName,
+	FrontendName,
+	Description,
+	FieldType,
+	AllowsNull,
+	IsEditable,
+	DropDownDictionary,
+	ChildrenEntityName,
+	RangeLow,
+	RangeHigh) 
+	VALUES
+	('Company','ID',NULL,NULL,2,False,False,NULL,NULL,NULL,NULL),
+	('Company','LEI','LEI','Identifier according to GLEIF database',0,True,True,NULL,NULL,NULL,NULL),
+	('Company','LegalName','Legal Name of company',NULL,0,False,True,NULL,NULL,NULL,NULL),
+	('Company','KeyFinancials','KeyFinancials',NULL,7,False,True,NULL,'CompanyKeyFinancialsMetrics',NULL,NULL),
+	('Company','CompanyIndustries','Industries',NULL,7,False,True,NULL,'CompanyIndustries',NULL,NULL),
+	('Company','CompanyExecutiveStatistics','Executive statistics',NULL,7,False,True,NULL,'CompanyExecutiveStatistics',NULL,NULL),
+	('Company','CompanyBoardStatistics','Board statistics',NULL,7,False,True,NULL,'CompanyBoardStatistics',NULL,NULL),
+	('Company','CompanyDIMetrics','DI Metrics',NULL,7,False,True,NULL,'CompanyDIMetrics',NULL,NULL),
+	('Company','CompanyJobMetrics','Job Metrics',NULL,7,False,True,NULL,'CompanyJobMetrics',NULL,NULL),
+	('Company','CompanyRaceMetrics','Race Metrics',NULL,7,False,True,NULL,'CompanyRaceMetrics',NULL,NULL),
+	('Company','CompanyGenderMetrics','Gender Metrics',NULL,7,False,True,NULL,'CompanyGenderMetrics',NULL,NULL),
+	('Company','CompanyHealthMetrics','Health Metrics',NULL,7,False,True,NULL,'CompanyHealthMetrics',NULL,NULL),
+	('Company','CompanyNames','Company names',NULL,7,False,True,NULL,'CompanyName',NULL,NULL),
+	('Company','Addresses','Addresses',NULL,7,False,True,NULL,'Address',NULL,NULL),
+	('Company','Roles','Board/Executive roles',NULL,7,False,True,NULL,'Role',NULL,NULL),
+	('CompanyName','Name','Name',NULL,0,False,True,NULL,NULL,NULL,NULL),
+	('CompanyName','NameType','NameType',NULL,0,False,True,NULL,NULL,NULL,NULL),
+	('Address','AddressType','Address type',NULL,6,False,True,'AddressTypes',NULL,NULL,NULL),
+	('Address','IsEditable','Is address editable',NULL,1,False,False,NULL,NULL,NULL,NULL),
+	('Address','StreetOne','Street Address 1',NULL,0,True,True,NULL,NULL,NULL,NULL),
+	('Address','StreetTwo','Street Address 2',NULL,0,True,True,NULL,NULL,NULL,NULL),
+	('Address','PostCode','PostCode',NULL,2,True,True,NULL,NULL,NULL,NULL),
+	('Address','City','City',NULL,0,True,True,NULL,NULL,NULL,NULL),
+	('Address','State','State',NULL,0,True,True,NULL,NULL,NULL,NULL),
+	('Address','CountryId','Country',NULL,6,True,True,'Countries',NULL,NULL,NULL),
+	('CompanyIndustry','Industry','Industry name',NULL,6,False,True,'Industries',NULL,NULL,NULL),
+	('CompanyIndustry','IndustryCode','Industry code source',NULL,6,False,True,'IndustryCodes',NULL,NULL,NULL),
+	('CompanyIndustry','TradeDescription','Description of a trade',NULL,0,True,True,NULL,NULL,NULL,NULL),
+	('CompanyIndustry','IsPrimary','Is this trade primary for a company?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyKeyFinancialsMetrics','Employees','Number of Employees',NULL,2,True,True,NULL,NULL,'0',NULL),
+	('CompanyExecutiveStatistics','FemaleRatio','Female Gender Ratio of Executives',NULL,5,True,True,NULL,NULL,'0','100'),
+	('CompanyBoardStatistics','FemaleRatio','Female Gender Ratio of Board',NULL,5,True,True,NULL,NULL,'0','100'),
+	('CompanyGenderMetrics','GenderRatioSenior','Senior Management female Ratio','Group consists of C-level, ExecutiveDirectors/ExecutiveVicePresidents, 	(SeniorDirectors/SeniorVicePresidents, VicePresidents,% female',5,True,True,NULL,NULL,'0','100'),
+	('CompanyGenderMetrics','GenderRatioMiddle','Middle Management female Ratio','Group consists of Directors, Senior Managers,  Managers and Team Leads, % female',5,True,True,NULL,NULL,'0','100'),
+	('CompanyGenderMetrics','GenderRatioAll','Percentage of female employees','Group consists of all FTE and Part time employee, % female',5,True,True,NULL,NULL,'0','100'),
+	('CompanyGenderMetrics','GenderPayGap','Gender Pay Gap in percentage (female)','% of female gap to men',5,True,True,NULL,NULL,'0','100'),
+	('CompanyGenderMetrics','GenderRatioBoard','Board female Ratio','% of female gap to men',5,True,True,NULL,NULL,'0','100'),
+	('CompanyRaceMetrics','RaceRatioExececutive','Ratio of visible minority in Executives',NULL,5,True,True,NULL,NULL,'0','100'),
+	('CompanyRaceMetrics','RaceRatioBoard','Ratio of visible minority in Board',NULL,5,True,True,NULL,NULL,'0','100'),
+	('CompanyRaceMetrics','RaceRatioSenior','Ratio of visible minority in Senior Management','Group consists of C-level, ExecutiveDirectors/ExecutiveVicePresidents,  SeniorDirectors/SeniorVicePresidents, VicePresidents, % minority',5,True,True,NULL,NULL,'0','100'),
+	('CompanyRaceMetrics','RaceRatioMiddle','Ratio of visible minority in Middle Management','Group consists of Directors, Senior Managers,  Managers and Team Leads, % minority',5,True,True,NULL,NULL,'0','100'),
+	('CompanyRaceMetrics','RaceRatioAll','Ratio of visible minority in all employees','Group consists of all FTE and Part time employee, % minority',5,True,True,NULL,NULL,'0','100'),
+	('CompanyJobMetrics','TotalHours','Total hours worked (FTE and contractors)',NULL,3,True,True,NULL,NULL,'0',NULL),
+	('CompanyJobMetrics','EmployTurnoverTotal','Total employee turnover rate',NULL,5,True,True,NULL,NULL,'0','100'),
+	('CompanyJobMetrics','EmployTurnoverVoluntary','Voluntary employee turnover rate',NULL,5,True,True,NULL,NULL,'0','100'),
+	('CompanyJobMetrics','EmployTurnoverFired','Unvoluntary employee turnover rate',NULL,5,True,True,NULL,NULL,'0','100'),
+	('CompanyJobMetrics','EmployTraining','Does company offer training and development?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','SocialProgram','Does company have social impact program(s) in place?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','Retaliation','Does company have no retaliation policy in place?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','SupplySpend','Percentage of company''s supplier spending is with D&I suppliers?',NULL,5,True,True,NULL,NULL,'0','100'),
+	('CompanyDIMetrics','ValueDISupplySpend','Value of company''s supplier spending with D&I suppliers?',NULL,3,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','DISupplySpendRevenueRatio','DI supply spend to revenue ratio',NULL,5,True,True,NULL,NULL,'0','100'),
+	('CompanyDIMetrics','MentorProgram','Does company have talent program in place for advancing minority groups',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','SocialEvents','Does company have social events with attendance from different departments?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','EmployEngagement','Does company meassure peoples Engagement/Satisfaction or similar employee metric?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','EmploySatisfactionSurvey','Engagement/Satisfaction Survey - score',NULL,3,True,True,NULL,NULL,'0','100'),
+	('CompanyDIMetrics','EmploySurveyResponseRate','Engagement/Satisfaction Survey - response rate',NULL,5,True,True,NULL,NULL,'0','100'),
+	('CompanyDIMetrics','DIPolicyEstablished','Does company have D&I policy established?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','DIPublicAvailable','Does company make any D&I policy publicly available?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','DIWebsite','Does D&I have a specific place on company''s website?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','DIPosition','Is Head of D&I an established position?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','DIFTEPosition','Is Head of D&I a sole position?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyDIMetrics','DIPositionExecutive','Is Head of D&I part of Executive team?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('CompanyHealthMetrics','Fatalities','Number of Fatalities in a year',NULL,2,True,True,NULL,NULL,'0',NULL),
+	('CompanyHealthMetrics','SickAbsence','Sickness absence - percentage',NULL,5,True,True,NULL,NULL,'0','100'),
+	('CompanyHealthMetrics','HealthTRI','Total recordable injuries (TRIs)',NULL,2,True,True,NULL,NULL,'0',NULL),
+	('CompanyHealthMetrics','HealthTRIR','Total recordable injury rate (TRIR)','TotalHours/HealthTRI',2,True,True,NULL,NULL,'0',NULL),
+	('Person','Name','Name of a person',NULL,0,True,True,NULL,NULL,NULL,NULL),
+	('Person','Age','Age of a person',NULL,2,True,True,NULL,NULL,'0',NULL),
+	('Person','Gender','Gender of a person',NULL,6,True,True,'Genders',NULL,NULL,NULL),
+	('Person','Race','Race/Ethnicity of a person',NULL,6,True,True,'Races',NULL,NULL,NULL),
+	('Person','Religion','Religion of a person',NULL,6,True,True,'Religions',NULL,NULL,NULL),
+	('Person','Married','Is person married?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('Person','Kids','Does person have kids?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('Person','HighEducation','Highest education level of a person',NULL,6,True,True,'EducationLevels',NULL,NULL,NULL),
+	('Person','EducationSubject','Educational subject of a person',NULL,6,True,True,'EducationSubjects',NULL,NULL,NULL),
+	('Person','EducationInstitute','Educational Institute of a person',NULL,0,True,True,NULL,NULL,NULL,NULL),
+	('Person','Sexuality','Person''s sexuality',NULL,0,True,True,NULL,NULL,NULL,NULL),
+	('Person','VisibleDisability','Does person have visible disability?',NULL,0,True,True,NULL,NULL,NULL,NULL),
+	('Person','Urban','Did person grow up in Urban location?',NULL,1,True,True,NULL,NULL,NULL,NULL),
+	('Person','PersonNationalities','Person Nationalities',NULL,7,False,True,NULL,'PersonNationality',NULL,NULL),
+	('PersonNationality','Country','Country',NULL,6,False,True,'Countries',NULL,NULL,NULL),
+	('Role','RoleType','Role type',NULL,6,False,True,'RoleTypes',NULL,NULL,NULL),
+	('Role','Title','Title',NULL,0,False,True,NULL,NULL,NULL,NULL),
+	('Role','BaseSalary','Base salary',NULL,3,True,True,NULL,NULL,'0',NULL),
+	('Role','OtherIncentives','Other incentives',NULL,3,True,True,NULL,NULL,'0',NULL),
+	('Role','JobTenure','Job tenure',NULL,2,True,True,NULL,NULL,'0',NULL),
+	('Role','PersonId','Person',NULL,8,False,True,NULL,NULL,NULL,NULL);
+
+
 -- DATA TABLES --
 
 --Code for country Demographics table
 
-DROP TABLE IF EXISTS country_demographics;
+DROP TABLE IF EXISTS CountryDemographics;
 
-CREATE TABLE IF NOT EXISTS country_demographics
+CREATE TABLE IF NOT EXISTS CountryDemographics
 (
-	id SERIAL PRIMARY KEY,
-	country_id INT REFERENCES countries(id),
-	population FLOAT NOT NULL,
-	immigrant_pop FLOAT NOT NULL,
-	immigrant_percent FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	Population FLOAT DEFAULT NULL,
+	ImmigrantPopulation FLOAT DEFAULT NULL,
+	ImmigrantPercentage FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
---Code for country_Economy table
+--Code for Country Economic Powers table
 
-DROP TABLE IF EXISTS country_economy;
+DROP TABLE IF EXISTS CountryEconomicPowers;
 
-CREATE TABLE IF NOT EXISTS country_economy
+CREATE TABLE IF NOT EXISTS CountryEconomicPowers
 (
-	id SERIAL PRIMARY KEY,
-	country_id INT REFERENCES countries(id),
-	gdp DOUBLE PRECISION NOT NULL,
-	gdp_per_capita DOUBLE PRECISION NOT NULL,
-	labour_force DOUBLE PRECISION NOT NULL,
-	gdp_world FLOAT NOT NULL,
-	labour_force_percent FLOAT NOT NULL,
-	male_unemploy FLOAT NOT NULL,
-	female_unemploy FLOAT NOT NULL,
-	avg_income FLOAT NOT NULL,
-	poor FLOAT NOT NULL,
-	equality_level FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	GDP DOUBLE PRECISION DEFAULT NULL,
+	GDPWorld DOUBLE PRECISION DEFAULT NULL,
+	GDPPerCapita DOUBLE PRECISION DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+--Code for Country Labor Forces table
+
+DROP TABLE IF EXISTS CountryLaborForces;
+
+CREATE TABLE IF NOT EXISTS CountryLaborForces
+(
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	LaborForce DOUBLE PRECISION DEFAULT NULL,
+	LaborForcePercentage FLOAT DEFAULT NULL,
+	MaleUnemployment FLOAT DEFAULT NULL,
+	FemaleUnemployment FLOAT DEFAULT NULL,
+	AverageIncome FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 --Code for country Gender table
 
-DROP TABLE IF EXISTS country_gender;
+DROP TABLE IF EXISTS CountryGenders;
 
-CREATE TABLE IF NOT EXISTS country_gender
+CREATE TABLE IF NOT EXISTS CountryGenders
 (
-	id SERIAL PRIMARY KEY,
-	country_id INT REFERENCES countries(id),
-	male_pop FLOAT NOT NULL,
-	female_pop FLOAT NOT NULL,
-	women_edu FLOAT NOT NULL,
-	female_work_force FLOAT NOT NULL,
-	female_work_force_percent FLOAT NOT NULL,
-	female_work_force_percent_pop FLOAT NOT NULL,
-	materinty_leave FLOAT NOT NULL,
-	paternity_leave FLOAT NOT NULL,
-	gender_work_gap FLOAT NOT NULL,
-	gender_health_gap FLOAT NOT NULL,
-	gender_edu_gap FLOAT NOT NULL,
-	gender_pol_gap FLOAT NOT NULL,
-	income_gap FLOAT NOT NULL,
-	women_violence FLOAT NOT NULL,
-	female_parliament_share FLOAT NOT NULL,
-	female_minister_share FLOAT NOT NULL,
-	female_promotion_policy FLOAT NOT NULL,
-	life_male FLOAT NOT NULL,
-	life_female FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	MalePopulationPercentage FLOAT DEFAULT NULL,
+	FemalePopulationPercetage FLOAT DEFAULT NULL,
+	FemaleWorkForce FLOAT DEFAULT NULL,
+	FemaleWorkForcePercentage FLOAT DEFAULT NULL,
+	FemaleWorkForcePopulationPercentage FLOAT DEFAULT NULL,
+	GenderWorkGap FLOAT DEFAULT NULL,
+	GenderHealthGap FLOAT DEFAULT NULL,
+	GenderEducationcationGap FLOAT DEFAULT NULL,
+	GenderPoliticalGap FLOAT DEFAULT NULL,
+	FemalePromotionPolicy FLOAT DEFAULT NULL,
+	WomenEducation FLOAT DEFAULT NULL,
+	Maternity FLOAT DEFAULT NULL,
+	Paternity FLOAT DEFAULT NULL,
+	IncomeGap FLOAT DEFAULT NULL,
+	WomenViolence FLOAT DEFAULT NULL,
+	FemaleParliamentShare FLOAT DEFAULT NULL,
+	FemaleMinisterShare FLOAT DEFAULT NULL,
+	LifeExpectancyMale FLOAT DEFAULT NULL,
+	LifeExpectancyFemale FLOAT DEFAULT NULL,
+	MaleSuicide FLOAT DEFAULT NULL,
+	FemaleSuicide FLOAT DEFAULT NULL,
+	EducatedMaleUnemploy FLOAT DEFAULT NULL,
+	EducatedFemaleUnemploy FLOAT DEFAULT NULL,
+	FirmsFemaleOwnership FLOAT DEFAULT NULL,
+	FirmsFemaleManager FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
---Code for country_Age table
+--Code for Country Ages table
 
 
-DROP TABLE IF EXISTS country_age;
+DROP TABLE IF EXISTS CountryAges;
 
-CREATE TABLE IF NOT EXISTS country_age
+CREATE TABLE IF NOT EXISTS CountryAges
 (
-	id SERIAL PRIMARY KEY,
-	country_id INT REFERENCES countries(id),
-	dis19 FLOAT NOT NULL,
-	dis39 FLOAT NOT NULL,
-	dis59 FLOAT NOT NULL,
-	dis70 FLOAT NOT NULL,
-	disx FLOAT NOT NULL,
-	avg18 FLOAT NOT NULL,
-	parliament FLOAT NOT NULL,
-	ministers FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	AgeDistribution19 FLOAT DEFAULT NULL,
+	AgeDistribution39 FLOAT DEFAULT NULL,
+	AgeDistribution59 FLOAT DEFAULT NULL,
+	AgeDistribution79 FLOAT DEFAULT NULL,
+	AgeDistributionX FLOAT DEFAULT NULL,
+	AgeAverage18 FLOAT DEFAULT NULL,
+	AgeParliament FLOAT DEFAULT NULL,
+	AgeMinisters FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
---Code for country_Religion table
+--Code for Country Religions table
 
-DROP TABLE IF EXISTS country_religion;
+DROP TABLE IF EXISTS CountryReligions;
 
-CREATE TABLE IF NOT EXISTS country_religion 
+CREATE TABLE IF NOT EXISTS CountryReligions
 (
-	id SERIAL PRIMARY KEY,
-	country_id INT REFERENCES countries(id),
-	muslim FLOAT NOT NULL,
-	christian FLOAT NOT NULL,
-	hindu FLOAT NOT NULL,
-	buddishm FLOAT NOT NULL,
-	judaism FLOAT NOT NULL,
-	other FLOAT NOT NULL,
-	statereligion FLOAT NOT NULL,
-	freedom FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	Muslim FLOAT DEFAULT NULL,
+	Christian FLOAT DEFAULT NULL,
+	Hindu FLOAT DEFAULT NULL,
+	Buddishm FLOAT DEFAULT NULL,
+	Judaism FLOAT DEFAULT NULL,
+	Other FLOAT DEFAULT NULL,
+	StateReligion BOOLEAN DEFAULT NULL,
+	ReligionFreedom BOOLEAN DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
---Code for country Edu table
+--Code for Country Education table
 
-DROP TABLE IF EXISTS country_edu;
+DROP TABLE IF EXISTS CountryEducation;
 
-CREATE TABLE IF NOT EXISTS country_edu 
+CREATE TABLE IF NOT EXISTS CountryEducation 
 (
-	id SERIAL PRIMARY KEY,
-	country_id INT REFERENCES countries(id),
-	elementary_mf FLOAT NOT NULL,
-	elementary_male FLOAT NOT NULL,
-	elementary_female FLOAT NOT NULL,
-	high_school_mf FLOAT NOT NULL,
-	high_school_male FLOAT NOT NULL,
-	high_school_female FLOAT NOT NULL,
-	bachelor_mf FLOAT NOT NULL,
-	bachelor_male FLOAT NOT NULL,
-	bachelor_female FLOAT NOT NULL,
-	master_mf FLOAT NOT NULL,
-	master_male FLOAT NOT NULL,
-	master_female FLOAT NOT NULL,
-	total_mf FLOAT NOT NULL,
-	expected_education FLOAT NOT NULL,
-	actual_education FLOAT NOT NULL,
-	public_funding_gdp FLOAT NOT NULL,
-	public_fund_fund FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	ElementaryMaleFemale FLOAT DEFAULT NULL,
+	ElementaryMale FLOAT DEFAULT NULL,
+	ElementaryFemale FLOAT DEFAULT NULL,
+	HighSchoolMaleFemale FLOAT DEFAULT NULL,
+	HighSchoolMale FLOAT DEFAULT NULL,
+	HighSchoolFemale FLOAT DEFAULT NULL,
+	BachelorMaleFemale FLOAT DEFAULT NULL,
+	BachelorMale FLOAT DEFAULT NULL,
+	BachelorFemale FLOAT DEFAULT NULL,
+	MasterMaleFemale FLOAT DEFAULT NULL,
+	MasterMale FLOAT DEFAULT NULL,
+	MasterFemale FLOAT DEFAULT NULL,
+	DoctoralMaleFemale FLOAT DEFAULT NULL,
+	DoctoralMale FLOAT DEFAULT NULL,
+	DoctoralFemale FLOAT DEFAULT NULL,
+	ExpectedEducation FLOAT DEFAULT NULL,
+	ActualEducation FLOAT DEFAULT NULL,
+	EducationPublicFundingGDP FLOAT DEFAULT NULL,
+	EducationPublicFundFund FLOAT DEFAULT NULL,
+	MaleLiteracy FLOAT DEFAULT NULL,
+	FemaleLiteracy FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
---Code for country Race table
+--Code for Country Race table
 
-DROP TABLE IF EXISTS country_race;
+DROP TABLE IF EXISTS CountryRaces;
 
-CREATE TABLE IF NOT EXISTS country_race 
+CREATE TABLE IF NOT EXISTS CountryRaces
 (
-	id SERIAL PRIMARY KEY,
-	country_id INT REFERENCES countries(id),
-	black FLOAT NOT NULL,
-	asian FLOAT NOT NULL,
-	hispanic FLOAT NOT NULL,
-	arab FLOAT NOT NULL,
-	caucasian FLOAT NOT NULL,
-	indegineous FLOAT NOT NULL,
-	discrimination_law FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	Black FLOAT DEFAULT NULL,
+	Asian FLOAT DEFAULT NULL,
+	Hispanic FLOAT DEFAULT NULL,
+	Arab FLOAT DEFAULT NULL,
+	Caucasian FLOAT DEFAULT NULL,
+	Indegineous FLOAT DEFAULT NULL,
+	RaceDiscriminationLaw FLOAT DEFAULT NULL,
+	CountryRaceHarassment FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
---Code for country_Sex table
+--Code for Country Sexualities table
 
-DROP TABLE IF EXISTS country_sex;
+DROP TABLE IF EXISTS CountrySexualities;
 
-CREATE TABLE IF NOT EXISTS country_sex
+CREATE TABLE IF NOT EXISTS CountrySexualities
 (
-	id SERIAL PRIMARY KEY,
-	country_id INT REFERENCES countries(id),
-	same_marriage FLOAT NOT NULL,
-	homosexual_tolerance FLOAT NOT NULL,
-	homosexual_pop FLOAT NOT NULL,
-	same_adopt FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	LGBTMarriage BOOLEAN DEFAULT NULL,
+	LGBTTolerance FLOAT DEFAULT NULL,
+	HomosexualPopulation FLOAT DEFAULT NULL,
+	LGBTAdoption BOOLEAN DEFAULT NULL,
+	TransgenderRights FLOAT DEFAULT NULL,
+	ConversionTherapy FLOAT DEFAULT NULL,
+	LGBTMarketing FLOAT DEFAULT NULL,
+	LGBTAntiLaws FLOAT DEFAULT NULL,
+	LGBTDeathSentences FLOAT DEFAULT NULL,
+	LGBTMurders FLOAT DEFAULT NULL,
+	LGBTDiscriminationLaw FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+--Code for Country Disabilities table
 
---Code for country_disability table
+DROP TABLE IF EXISTS CountryDisabilities;
 
-DROP TABLE IF EXISTS country_disability;
-
-CREATE TABLE IF NOT EXISTS country_disability
+CREATE TABLE IF NOT EXISTS CountryDisabilities
 (
-	id SERIAL PRIMARY KEY,
-	country_id INT REFERENCES countries(id),
-	disabled FLOAT NOT NULL,
-	discrimination_law FLOAT NOT NULL,
-	overweight FLOAT NOT NULL,
-	health_funding_gdp FLOAT NOT NULL,
-	health_funding_type FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	DisabilityDiscriminationLaw FLOAT DEFAULT NULL,
+	Disabled FLOAT DEFAULT NULL,
+	Overweight FLOAT DEFAULT NULL,
+	HealthFundingGDP FLOAT DEFAULT NULL,
+	HealthType FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
---Code for country_Urban table
+--Code for Country Urbanization table
 
-DROP TABLE IF EXISTS country_urban;
+DROP TABLE IF EXISTS CountryUrbanization;
 
-CREATE TABLE IF NOT EXISTS country_urban 
+CREATE TABLE IF NOT EXISTS CountryUrbanization 
 (
-	id SERIAL PRIMARY KEY,
-	country_id INT REFERENCES countries(id),
-	cities_pop FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	LiveCities FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
---Code for country Political table
+--Code for Country Political table
 
-DROP TABLE IF EXISTS country_political;
+DROP TABLE IF EXISTS CountryPolitical;
 
-CREATE TABLE IF NOT EXISTS country_political
+CREATE TABLE IF NOT EXISTS CountryPolitical
 (
-	id SERIAL PRIMARY KEY,
-	country_id INT REFERENCES countries(id),
-	democracy FLOAT NOT NULL,
-	corruption FLOAT NOT NULL,
-	freedom_speech FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	DemocracyIndex FLOAT DEFAULT NULL,
+	CorruptionIndex FLOAT DEFAULT NULL,
+	FreeSpeechIndex FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
---Code for industry country table
+--Code for Country Economic Equalities table
 
-DROP TABLE IF EXISTS industry_country;
+DROP TABLE IF EXISTS CountryEconomicEqualities;
 
-CREATE TABLE IF NOT EXISTS industry_country
-(	id SERIAL PRIMARY KEY,
-	industry_id INT REFERENCES industries(id),
-	country_id INT REFERENCES countries(id),
-	num_employees INT NOT NULL,
-	avg_pay FLOAT NOT NULL,
-	rentention_rate FLOAT NOT NULL,
-	education_spend FLOAT NOT NULL,
-	flexible_hours_pledge FLOAT NOT NULL,
-	di_pledge FLOAT NOT NULL,
-	harassment_pledge FLOAT NOT NULL,
-	industry_diversity FLOAT NOT NULL,
-	women_employeed_percent FLOAT NOT NULL,
-	materinty_leave_pledge FLOAT NOT NULL,
-	paternity_leave_pledge FLOAT NOT NULL,
-	lgbt_pledge FLOAT NOT NULL,
-	disabilities_pledge FLOAT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
---Code for address table:
-
-DROP TABLE IF EXISTS address CASCADE;
-
-CREATE TABLE IF NOT EXISTS address 
+CREATE TABLE IF NOT EXISTS CountryEconomicEqualities 
 (
-	id SERIAL PRIMARY KEY,
-	address_line VARCHAR(650) NOT NULL,
-	address_number VARCHAR(100) NULL DEFAULT NULL,
-	country_id INT REFERENCES countries(id),
-	city VARCHAR(100) NOT NULL,
-	postal_code VARCHAR(70) NULL DEFAULT NULL,
-	region VARCHAR(50) NULL DEFAULT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	Poor FLOAT DEFAULT NULL,
+	EqualityIndex INT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX address_id_pk
-    ON public.address USING btree
-    (id ASC NULLS LAST)
+--Code for Country Utilities table
+
+DROP TABLE IF EXISTS CountryUtilities;
+
+CREATE TABLE IF NOT EXISTS CountryUtilities 
+(
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	SlumsPopulation FLOAT DEFAULT NULL,
+	AccessToElectricity FLOAT DEFAULT NULL,
+	AccessToDrinkingWater FLOAT DEFAULT NULL,
+	AccessToSanitation FLOAT DEFAULT NULL,
+	AccessToHandwashing FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+--Code for Country Infrastructures table
+
+DROP TABLE IF EXISTS CountryInfrastructures;
+
+CREATE TABLE IF NOT EXISTS CountryInfrastructures
+(
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	InternetUse FLOAT DEFAULT NULL,
+	CellularSubscriptions FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+--Code for Country Labor And Social Protection table
+
+DROP TABLE IF EXISTS CountryLaborAndSocialProtection;
+
+CREATE TABLE IF NOT EXISTS CountryLaborAndSocialProtection 
+(
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	FemaleManagementPercentage FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+--Code for Country Private Sectors and Trades table
+
+DROP TABLE IF EXISTS CountryPrivateSectorsAndTrades;
+
+CREATE TABLE IF NOT EXISTS CountryPrivateSectorsAndTrades 
+(
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	CostOfBusiness FLOAT DEFAULT NULL,
+	FirmsBribery FLOAT DEFAULT NULL,
+	EaseOfBusiness FLOAT DEFAULT NULL,
+	FirmsTraining FLOAT DEFAULT NULL,
+	StartupBusiness FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+--Code for Country Public Sectors table
+
+DROP TABLE IF EXISTS CountryPublicSectors;
+
+CREATE TABLE IF NOT EXISTS CountryPublicSectors 
+(
+	Id SERIAL PRIMARY KEY,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	HumanCapital FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+--Code for CountryIndustries table
+
+DROP TABLE IF EXISTS CountryIndustries;
+
+CREATE TABLE IF NOT EXISTS CountryIndustries
+(	
+	Id SERIAL PRIMARY KEY,
+	IndustryId INT NOT NULL REFERENCES Industries(Id),
+	CountryId INT REFERENCES Countries(Id),
+	Employees INT DEFAULT NULL,
+	AveragePay FLOAT DEFAULT NULL,
+	Retention FLOAT DEFAULT NULL,
+	FlexibleHours FLOAT DEFAULT NULL,
+	Education_spend FLOAT DEFAULT NULL,
+	Race FLOAT DEFAULT NULL,
+	Age FLOAT DEFAULT NULL,
+	Harassment FLOAT DEFAULT NULL,
+	Gender FLOAT DEFAULT NULL,
+	Maternity FLOAT DEFAULT NULL,
+	Paternity FLOAT DEFAULT NULL,
+	LBGT FLOAT DEFAULT NULL,
+	Disabled FLOAT DEFAULT NULL,
+	InjuriesNonFatal FLOAT DEFAULT NULL,
+	InjuriesFatal FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+--Code for Companies table
+
+DROP TABLE IF EXISTS Companies CASCADE;
+
+CREATE TABLE IF NOT EXISTS Companies
+(
+	Id SERIAL PRIMARY KEY,
+	LEI CHAR(20) NULL DEFAULT NULL,
+	LegalName VARCHAR(400) NULL DEFAULT NULL,
+	DirectParent INT REFERENCES Companies(Id) DEFAULT NULL,
+	UltimateParent INT REFERENCES Companies(Id) DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompaniesIdPK
+    ON public.companies USING btree
+    (Id ASC NULLS LAST)
     TABLESPACE pg_default;
 
-ALTER TABLE public.address
-    CLUSTER ON address_id_pk;
-
---Code for Company table
-
-DROP TABLE IF EXISTS company CASCADE;
-
-CREATE TABLE IF NOT EXISTS company
-(
-	id SERIAL PRIMARY KEY,
-	lei CHAR(20) NULL DEFAULT NULL,
-	legal_name VARCHAR(400) NULL DEFAULT NULL,
-	effective_from TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE UNIQUE INDEX company_id_pk
-    ON public.company USING btree
-    (id ASC NULLS LAST)
-    TABLESPACE pg_default;
-
-ALTER TABLE public.company
-    CLUSTER ON company_id_pk;
+ALTER TABLE public.Companies
+    CLUSTER ON CompaniesIdPK;
 	
-CREATE INDEX company_lei_idx
-    ON public.company USING hash
+CREATE INDEX CompanyLEIIdx
+    ON public.Companies USING hash
     (lei COLLATE pg_catalog."default")
     TABLESPACE pg_default;
 	
-CREATE INDEX company_legal_name_idx
-    ON public.company USING btree
-    (legal_name COLLATE pg_catalog."default" ASC NULLS LAST)
+CREATE INDEX CompaniesLegalNameIdx
+    ON public.Companies USING btree
+    (LegalName COLLATE pg_catalog."default" ASC NULLS LAST)
     TABLESPACE pg_default;
 
---Code for Company Name table
+--Code for Addresses table:
 
-DROP TABLE IF EXISTS company_name CASCADE;
+DROP TABLE IF EXISTS Addresses CASCADE;
 
-CREATE TABLE IF NOT EXISTS company_name
+CREATE TABLE IF NOT EXISTS Addresses
 (
-	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id) ON DELETE CASCADE,
-	name VARCHAR(400) NOT NULL,
-	name_type VARCHAR(50) NOT NULL,
-	effective_from TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	AddressType INT NOT NULL REFERENCES AddressTypes(Id),
+	CompanyId INT NOT NULL REFERENCES Companies(Id),
+	CountryId INT REFERENCES Countries(Id),
+	IsEditable BOOLEAN NOT NULL DEFAULT TRUE,
+	StreetOne VARCHAR(650) DEFAULT NULL,
+	StreetTwo VARCHAR(650) DEFAULT NULL,
+	Postcode VARCHAR(70) DEFAULT NULL,
+	City VARCHAR(100) DEFAULT NULL,
+	State VARCHAR(100) DEFAULT NULL,
+
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX company_name_id_pk
-    ON public.company_name USING btree
-    (id ASC NULLS LAST)
+CREATE UNIQUE INDEX AddressesIdPK
+    ON public.Addresses USING btree
+    (Id ASC NULLS LAST)
     TABLESPACE pg_default;
 
-ALTER TABLE public.company_name
-    CLUSTER ON company_name_id_pk;
+ALTER TABLE public.Addresses
+    CLUSTER ON AddressesIdPK;
 	
-CREATE INDEX company_name_company_id_idx
-    ON public.company_name USING btree
-    (company_id ASC NULLS LAST)
+CREATE INDEX AddressesCompanyIdIdx
+    ON public.Addresses USING hash
+    (CompanyId)
     TABLESPACE pg_default;
 
---Code for Company Public Data table
+--Code for Company Identities table
 
-DROP TABLE IF EXISTS company_public_data CASCADE;
+DROP TABLE IF EXISTS CompanyIdentities CASCADE;
 
-CREATE TABLE IF NOT EXISTS company_public_data
+CREATE TABLE IF NOT EXISTS CompanyIdentities
 (
-	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id) ON DELETE CASCADE,
-	legal_address_editable BOOLEAN NOT NULL DEFAULT TRUE,
-	legal_address_id INT REFERENCES address(id),
-	hq_address_editable BOOLEAN NOT NULL DEFAULT TRUE,
-	hq_address_id INT REFERENCES address(id),
-	
-	num_employees INT NULL DEFAULT NULL,
-	
-	senior_mgmt_gender_ratio_female DOUBLE PRECISION DEFAULT NULL,
-	middle_mgmt_gender_ratio_female DOUBLE PRECISION DEFAULT NULL,
-	all_employees_gender_ratio_female DOUBLE PRECISION DEFAULT NULL,
-	gender_pay_gap_female DOUBLE PRECISION DEFAULT NULL,
-	
-	executives_visible_race_minority DOUBLE PRECISION DEFAULT NULL,
-	board_visible_race_minority DOUBLE PRECISION DEFAULT NULL,
-	middle_mgmt_visible_race_minority DOUBLE PRECISION DEFAULT NULL,
-	all_employees_visible_race_minority DOUBLE PRECISION DEFAULT NULL,
-	
-	total_hours_worked INT DEFAULT NULL,
-	
-	total_turnover_rate DOUBLE PRECISION DEFAULT NULL,
-	voluntary_turnover_rate DOUBLE PRECISION DEFAULT NULL,
-	involuntary_turnover_rate DOUBLE PRECISION DEFAULT NULL,
-	
-	DI_on_website BOOLEAN DEFAULT NULL,
-	company_offers_training BOOLEAN DEFAULT NULL,
-	company_has_social_impact_programs BOOLEAN DEFAULT NULL,
-	company_supplier_spending_with_DI DOUBLE PRECISION DEFAULT NULL,
-	company_has_program_for_advancing_minorities BOOLEAN DEFAULT NULL,
-	
-	company_measures_engagement BOOLEAN DEFAULT NULL,
-	engagement_survey DOUBLE PRECISION DEFAULT NULL,
-	engagement_survey_response_rate DOUBLE PRECISION DEFAULT NULL,
-	
-	fatalities INT DEFAULT NULL,
-	sickness_ansense DOUBLE PRECISION DEFAULT NULL,
-	total_recordable_injuries INT DEFAULT NULL,
-
-	effective_from TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	ISIN BIGINT DEFAULT NULL,
+	TaxID BIGINT DEFAULT NULL,
+	OtherNumber BIGINT DEFAULT NULL,
+	OtherLabel VARCHAR(50) DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX company_public_data_id_pk
-    ON public.company_public_data USING btree
-    (id ASC NULLS LAST)
+CREATE UNIQUE INDEX CompanyIdentitiesCompanyIdPK
+    ON public.CompanyIdentities USING btree
+    (CompanyId ASC NULLS LAST)
     TABLESPACE pg_default;
 
-ALTER TABLE public.company_public_data
-    CLUSTER ON company_public_data_id_pk;
-	
-CREATE INDEX company_public_data_company_id_idx
-    ON public.company_public_data USING btree
-    (company_id ASC NULLS LAST)
-    TABLESPACE pg_default;
-	
---Code for Company Private Data table
+ALTER TABLE public.CompanyIdentities
+    CLUSTER ON CompanyIdentitiesCompanyIdPK;
 
-DROP TABLE IF EXISTS company_private_data CASCADE;
+--Code for Company Names table
 
-CREATE TABLE IF NOT EXISTS company_private_data
+DROP TABLE IF EXISTS CompanyNames CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyNames
 (
-	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id) ON DELETE CASCADE,
-	below_national_avg_income DOUBLE PRECISION DEFAULT NULL,
-	disabled_employees DOUBLE PRECISION DEFAULT NULL,
-	hierarchy_level INT DEFAULT NULL,
-	median_salary DOUBLE PRECISION DEFAULT NULL,
-	retention_rate DOUBLE PRECISION DEFAULT NULL,
-	effective_from TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT REFERENCES Companies(Id) ON DELETE CASCADE,
+	Name VARCHAR(400) NOT NULL,
+	NameType VARCHAR(50) NOT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX company_private_data_id_pk
-    ON public.company_private_data USING btree
-    (id ASC NULLS LAST)
+CREATE UNIQUE INDEX CompanyNamesIdPk
+    ON public.CompanyNames USING btree
+    (Id ASC NULLS LAST)
     TABLESPACE pg_default;
 
-ALTER TABLE public.company_private_data
-    CLUSTER ON company_private_data_id_pk;
+ALTER TABLE public.CompanyNames
+    CLUSTER ON CompanyNamesIdPk;
 	
-CREATE INDEX company_private_data_company_id_idx
-    ON public.company_private_data USING btree
-    (company_id ASC NULLS LAST)
+CREATE INDEX CompanyNamesCompanyIdIdx
+    ON public.CompanyNames USING btree
+    (CompanyId ASC NULLS LAST)
     TABLESPACE pg_default;
-	
+
+-- Code for Company Urbanization table
+
+DROP TABLE IF EXISTS CompanyUrbanizationMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyUrbanizationMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	UrbanSites INT DEFAULT NULL,
+	RuralSites INT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyUrbanizationMetricsCompanyIdPK
+    ON public.CompanyUrbanizationMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyUrbanizationMetrics
+    CLUSTER ON CompanyUrbanizationMetricsCompanyIdPK;
+
+-- Code for Company Health table
+
+DROP TABLE IF EXISTS CompanyHealthMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyHealthMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	AgeAverage FLOAT DEFAULT NULL,
+	Fatalities INT DEFAULT NULL,
+	SickAbsence FLOAT DEFAULT NULL,
+	HealthTRI INT DEFAULT NULL,
+	HealthTRIR INT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyHealthMetricsCompanyIdPK
+    ON public.CompanyHealthMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyHealthMetrics
+    CLUSTER ON CompanyHealthMetricsCompanyIdPK;
+
+-- Code for Company Sexuality table
+
+DROP TABLE IF EXISTS CompanySexualityMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanySexualityMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	NonDiscriminationSexuality BOOLEAN DEFAULT NULL,
+	SupportDifferentSexuality BOOLEAN DEFAULT NULL,
+	LBGTQForum BOOLEAN DEFAULT NULL,
+	SexualityData BOOLEAN DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanySexualityMetricsCompanyIdPK
+    ON public.CompanySexualityMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanySexualityMetrics
+    CLUSTER ON CompanySexualityMetricsCompanyIdPK;
+
+-- Code for Company Nationality table
+
+DROP TABLE IF EXISTS CompanyNationalityMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyNationalityMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	NationalNumberOperation INT DEFAULT NULL,
+	NationalDifferent INT DEFAULT NULL,
+	NationalTopFive VARCHAR(100) DEFAULT NULL,
+	CultureERG BOOLEAN DEFAULT NULL,
+	SupportLanguages BOOLEAN DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyNationalityMetricsCompanyIdPK
+    ON public.CompanyNationalityMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyNationalityMetrics
+    CLUSTER ON CompanyNationalityMetricsCompanyIdPK;
+
+-- Code for Company Family table
+
+DROP TABLE IF EXISTS CompanyFamilyMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyFamilyMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	ParentalLeave BOOLEAN DEFAULT NULL,
+	ParentalTime INT DEFAULT NULL,
+	ParentalGender BOOLEAN DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyFamilyMetricsCompanyIdPK
+    ON public.CompanyFamilyMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyFamilyMetrics
+    CLUSTER ON CompanyFamilyMetricsCompanyIdPK;
+
+-- Code for Company Sentiment Scores table
+
+DROP TABLE IF EXISTS CompanySentimentScoreMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanySentimentScoreMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	SentimentNegative INT DEFAULT NULL,
+	SentimentPositive INT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanySentimentScoreMetricsCompanyIdPK
+    ON public.CompanySentimentScoreMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanySentimentScoreMetrics
+    CLUSTER ON CompanySentimentScoreMetricsCompanyIdPK;
+
+-- Code for Company Hierarchy table
+
+DROP TABLE IF EXISTS CompanyHierarchyMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyHierarchyMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	HierachyLevel INT DEFAULT NULL,
+	TownHalls BOOLEAN DEFAULT NULL,
+	Intranet BOOLEAN DEFAULT NULL,
+	OrganizationalStructure BOOLEAN DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyHierarchyMetricsCompanyIdPK
+    ON public.CompanyHierarchyMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyHierarchyMetrics
+    CLUSTER ON CompanyHierarchyMetricsCompanyIdPK;
+
+-- Code for Company Job table
+
+DROP TABLE IF EXISTS CompanyJobMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyJobMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	TotalHours INT DEFAULT NULL,
+	JobTenureAverage FLOAT DEFAULT NULL,
+	AverageSalary FLOAT DEFAULT NULL,
+	MedianSalary FLOAT DEFAULT NULL,
+	EmployTurnoverTotal FLOAT DEFAULT NULL,
+	EmployTurnoverVoluntary FLOAT DEFAULT NULL,
+	EmployTurnoverFired FLOAT DEFAULT NULL,
+	EmployTraining FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyJobMetricsCompanyIdPK
+    ON public.CompanyJobMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyJobMetrics
+    CLUSTER ON CompanyJobMetricsCompanyIdPK;
+
+-- Code for Company Key Financials table
+
+DROP TABLE IF EXISTS CompanyKeyFinancialsMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyKeyFinancialsMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	OperatingRevenue FLOAT DEFAULT NULL,
+	TotalAssets INT DEFAULT NULL,
+	Employees INT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyKeyFinancialsMetricsCompanyIdPK
+    ON public.CompanyKeyFinancialsMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyKeyFinancialsMetrics
+    CLUSTER ON CompanyKeyFinancialsMetricsCompanyIdPK;
+
+-- Code for Company Ownerships table
+
+DROP TABLE IF EXISTS CompanyOwnershipMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyOwnershipMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	MinorityOwnedMajority BOOLEAN DEFAULT NULL,
+	MinorityOwned25Percents BOOLEAN DEFAULT NULL,
+	WomanOwnedMajority BOOLEAN DEFAULT NULL,
+	WomanOwned25Percents BOOLEAN DEFAULT NULL,
+	DisabledOwnedMajority BOOLEAN DEFAULT NULL,
+	DisabledOwned25Percents BOOLEAN DEFAULT NULL,
+	LGBTOwnedMajority BOOLEAN DEFAULT NULL,
+	LGBTOwned25Percents BOOLEAN DEFAULT NULL,
+	VetranOwnedMajority BOOLEAN DEFAULT NULL,
+	VeteranOwned25Percents BOOLEAN DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyOwnershipMetricsCompanyIdPK
+    ON public.CompanyOwnershipMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyOwnershipMetrics
+    CLUSTER ON CompanyOwnershipMetricsCompanyIdPK;
+
+-- Code for Company Political table
+
+DROP TABLE IF EXISTS CompanyPoliticalMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyPoliticalMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	NonDiscriminationPolitical BOOLEAN DEFAULT NULL,
+	SupportPolitical BOOLEAN DEFAULT NULL,
+	PoliticalVote BOOLEAN DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyPoliticalMetricsCompanyIdPK
+    ON public.CompanyPoliticalMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyPoliticalMetrics
+    CLUSTER ON CompanyPoliticalMetricsCompanyIdPK;
+
+-- Code for Company Genders table
+
+DROP TABLE IF EXISTS CompanyGenderMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyGenderMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	GenderMale FLOAT DEFAULT NULL,
+	GenderOther FLOAT DEFAULT NULL,
+	GenderRatioSenior FLOAT DEFAULT NULL,
+	GenderRatioMiddle FLOAT DEFAULT NULL,
+	GenderRatioAll FLOAT DEFAULT NULL,
+	GenderPayGap FLOAT DEFAULT NULL,
+	GenderRatioBoard FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyGenderMetricsCompanyIdPK
+    ON public.CompanyGenderMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyGenderMetrics
+    CLUSTER ON CompanyGenderMetricsCompanyIdPK;
+
+-- Code for Company Race table
+
+DROP TABLE IF EXISTS CompanyRaceMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyRaceMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	RaceBlack FLOAT DEFAULT NULL,
+	RaceAsian FLOAT DEFAULT NULL,
+	RaceHispanic FLOAT DEFAULT NULL,
+	RaceArab FLOAT DEFAULT NULL,
+	RaceCaucasian FLOAT DEFAULT NULL,
+	RaceIndigenous FLOAT DEFAULT NULL,
+	RaceRatioExececutive FLOAT DEFAULT NULL,
+	RaceRatioBoard FLOAT DEFAULT NULL,
+	RaceRatioSenior FLOAT DEFAULT NULL,
+	RaceRatioMiddle FLOAT DEFAULT NULL,
+	RaceRatioAll FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyRaceMetricsCompanyIdPK
+    ON public.CompanyRaceMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyRaceMetrics
+    CLUSTER ON CompanyRaceMetricsCompanyIdPK;
+
+-- Code for Company Disability table
+
+DROP TABLE IF EXISTS CompanyDisabilityMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyDisabilityMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	DisabelTotal INT DEFAULT NULL,
+	DisabelMental INT DEFAULT NULL,
+	DisabelPhysical INT DEFAULT NULL,
+	DisabelProgram BOOLEAN DEFAULT NULL,
+	WheelChairAccess BOOLEAN DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyDisabilityMetricsCompanyIdPK
+    ON public.CompanyDisabilityMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyDisabilityMetrics
+    CLUSTER ON CompanyDisabilityMetricsCompanyIdPK;
+
+-- Code for Company Education table
+
+DROP TABLE IF EXISTS CompanyEducationMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyEducationMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	ElementaryShare FLOAT DEFAULT NULL,
+	HighSchoolShare FLOAT DEFAULT NULL,
+	BachelorShare FLOAT DEFAULT NULL,
+	MasterShare FLOAT DEFAULT NULL,
+	EducationLeaveSupport BOOLEAN DEFAULT NULL,
+	EducationSupportProgram BOOLEAN DEFAULT NULL,
+	StudentDebt BOOLEAN DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyEducationMetricsCompanyIdPK
+    ON public.CompanyEducationMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyEducationMetrics
+    CLUSTER ON CompanyEducationMetricsCompanyIdPK;
+
+-- Code for Company Religion table
+
+DROP TABLE IF EXISTS CompanyReligionMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyReligionMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	MuslimShare FLOAT DEFAULT NULL,
+	ChristianShare FLOAT DEFAULT NULL,
+	HinduShare FLOAT DEFAULT NULL,
+	BuddhismShare FLOAT DEFAULT NULL,
+	JudaismShare FLOAT DEFAULT NULL,
+	OtherShare FLOAT DEFAULT NULL,
+	NonDiscriminationReligion BOOLEAN DEFAULT NULL,
+	HolidayReligion BOOLEAN DEFAULT NULL,
+	PrayerRoom BOOLEAN DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyReligionMetricsCompanyIdPK
+    ON public.CompanyReligionMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyReligionMetrics
+    CLUSTER ON CompanyReligionMetricsCompanyIdPK;
+
+-- Code for Company DI metrics table
+
+DROP TABLE IF EXISTS CompanyDIMetrics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyDIMetrics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	HarassmentPolicy BOOLEAN DEFAULT NULL,
+	SocialProgram BOOLEAN DEFAULT NULL,
+	Retaliation BOOLEAN DEFAULT NULL,
+	SupplySpend FLOAT DEFAULT NULL,
+	ValueDISupplySpend FLOAT DEFAULT NULL,
+	DISupplySpendRevenueRatio FLOAT DEFAULT NULL,
+	MentorProgram BOOLEAN DEFAULT NULL,
+	SocialEvents BOOLEAN DEFAULT NULL,
+	EmployEngagement BOOLEAN DEFAULT NULL,
+	EmploySatisfactionSurvey FLOAT DEFAULT NULL,
+	EmploySurveyResponseRate FLOAT DEFAULT NULL,
+	DIPolicyEstablished BOOLEAN DEFAULT NULL,
+	DIPublicAvailable BOOLEAN DEFAULT NULL,
+	DIWebsite BOOLEAN DEFAULT NULL,
+	DIPosition BOOLEAN DEFAULT NULL,
+	DIFTEPosition BOOLEAN DEFAULT NULL,
+	DIPositionExecutive BOOLEAN DEFAULT NULL,
+	DIDivision BOOLEAN DEFAULT NULL,
+	DICodeConduct BOOLEAN DEFAULT NULL,
+	ManagingDiverse BOOLEAN DEFAULT NULL,
+	DIComplaint BOOLEAN DEFAULT NULL,
+	DISupplyChain BOOLEAN DEFAULT NULL,
+	DITalentGoals BOOLEAN DEFAULT NULL,
+	DIEarningCall BOOLEAN DEFAULT NULL,
+	HolidaySupport VARCHAR(300) DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyDIMetricsCompanyIdPK
+    ON public.CompanyDIMetrics USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyDIMetrics
+    CLUSTER ON CompanyDIMetricsCompanyIdPK;
+
 -- Code for matching table
 
-DROP TABLE IF EXISTS company_match CASCADE;
+DROP TABLE IF EXISTS CompanyMatches CASCADE;
 
-CREATE TABLE IF NOT EXISTS company_match
+CREATE TABLE IF NOT EXISTS CompanyMatches
 (
-	id SERIAL PRIMARY KEY,
-	name VARCHAR(400) NOT NULL,
-	company_id INT REFERENCES company(id) ON DELETE CASCADE DEFAULT NULL,
-	effective_from TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	Name VARCHAR(400) NOT NULL,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX company_match_id_pk
-    ON public.company_match USING btree
-    (id ASC NULLS LAST)
+CREATE UNIQUE INDEX CompanyMatchesIdPK
+    ON public.CompanyMatches USING btree
+    (Id ASC NULLS LAST)
     TABLESPACE pg_default;
 
-ALTER TABLE public.company_match
-    CLUSTER ON company_match_id_pk;
+ALTER TABLE public.CompanyMatches
+    CLUSTER ON CompanyMatchesIdPK;
+	
+CREATE INDEX CompanyMatchesCompanyIdIdx
+    ON public.CompanyMatches USING hash
+    (CompanyId)
+    TABLESPACE pg_default;
 
---Code for country Company table
+--Code for Company Countries table
 
-DROP TABLE IF EXISTS company_country;
+DROP TABLE IF EXISTS CompanyCountries;
 
-CREATE TABLE IF NOT EXISTS company_country
+CREATE TABLE IF NOT EXISTS CompanyCountries
 (
-	company_country_id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id) ON DELETE CASCADE,
-	country_id INT REFERENCES countries(id),
-	legal_jurisdiction BOOLEAN NOT NULL DEFAULT FALSE,
-	ticker VARCHAR(10) DEFAULT NULL,
-	stock_index VARCHAR(10) DEFAULT NULL,
-	is_primary BOOLEAN NOT NULL DEFAULT FALSE,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	Ticker VARCHAR(10) DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE UNIQUE INDEX CompanyCountriesIdPK
+    ON public.CompanyCountries USING btree
+    (Id ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyCountries
+    CLUSTER ON CompanyCountriesIdPK;
+	
+CREATE INDEX CompanyCountriesCompanyIdIdx
+    ON public.CompanyCountries USING hash
+    (CompanyId)
+    TABLESPACE pg_default;
+
+--Code for Company Legal Information table
+
+DROP TABLE IF EXISTS CompanyLegalInformation;
+
+CREATE TABLE IF NOT EXISTS CompanyLegalInformation
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	LegalForm VARCHAR(80) DEFAULT NULL,
+	CompanyPublic BOOLEAN DEFAULT NULL,
+	CompanyIndex VARCHAR(80) DEFAULT NULL,
+	Status VARCHAR(80) DEFAULT NULL,
+	IncorporationDate TIMESTAMP DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyCountriesCompanyIdPK
+    ON public.CompanyCountries USING btree
+    (CompanyId ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyCountries
+    CLUSTER ON CompanyCountriesCompanyIdPK;
 
 --Code for Company Industry table
 
-DROP TABLE IF EXISTS company_industry;
+DROP TABLE IF EXISTS CompanyIndustries;
 
-CREATE TABLE IF NOT EXISTS company_industry
+CREATE TABLE IF NOT EXISTS CompanyIndustries
 (
-	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id) ON DELETE CASCADE,
-	industry_id INT REFERENCES industries(id) DEFAULT NULL,
-	industry_code INT REFERENCES industry_codes(id) DEFAULT NULL,
-	primary_secondary CHAR(1) NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	IndustryId INT NOT NULL REFERENCES Industries(Id),
+	IndustryCode INT REFERENCES IndustryCodes(Id) NOT NULL,
+	TradeDescription VARCHAR(100) DEFAULT NULL,
+	IsPrimary BOOLEAN DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
---Code for Company Questionnaire table
+--Code for Company Executive Statistics table
 
-DROP TABLE IF EXISTS company_questionnaire;
+DROP TABLE IF EXISTS CompanyExecutiveStatistics CASCADE;
 
-CREATE TABLE IF NOT EXISTS company_questionnaire
+CREATE TABLE IF NOT EXISTS CompanyExecutiveStatistics
 (
-	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id) ON DELETE CASCADE,
-	question SMALLINT NOT NULL,
-	answer INT NOT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	MembersNumber INT NOT NULL,
+	SalaryAverage FLOAT DEFAULT NULL,
+	SalaryMean FLOAT DEFAULT NULL,
+	FemaleRatio FLOAT DEFAULT NULL,
+	ArabPercentage FLOAT DEFAULT NULL,
+	HispanicPercentage FLOAT DEFAULT NULL,
+	BlackPercentage FLOAT DEFAULT NULL,
+	AsianPercentage FLOAT DEFAULT NULL,
+	CaucasianPercentage FLOAT DEFAULT NULL,
+	IndigenousPercentage FLOAT DEFAULT NULL,
+	AverageAge FLOAT DEFAULT NULL,
+	AverageEducationLength FLOAT DEFAULT NULL,
+	Height FLOAT DEFAULT NULL,
+	Weight FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX company_questionnaire_id_pk
-    ON public.company_questionnaire USING btree
-    (id ASC NULLS LAST)
+CREATE UNIQUE INDEX CompanyExecutiveStatisticsCompanyIdPK
+    ON public.CompanyExecutiveStatistics USING btree
+    (CompanyId ASC NULLS LAST)
     TABLESPACE pg_default;
 
-ALTER TABLE public.company_questionnaire
-    CLUSTER ON company_questionnaire_id_pk;
-	
-CREATE INDEX company_questionnaire_company_id_idx
-    ON public.company_questionnaire USING btree
-    (company_id ASC NULLS LAST)
+ALTER TABLE public.CompanyExecutiveStatistics
+    CLUSTER ON CompanyExecutiveStatisticsCompanyIdPK;
+
+--Code for Company Board Statistics table
+
+DROP TABLE IF EXISTS CompanyBoardStatistics CASCADE;
+
+CREATE TABLE IF NOT EXISTS CompanyBoardStatistics
+(
+	Id SERIAL PRIMARY KEY,
+	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	MembersNumber INT NOT NULL,
+	SalaryAverage FLOAT DEFAULT NULL,
+	SalaryMean FLOAT DEFAULT NULL,
+	FemaleRatio FLOAT DEFAULT NULL,
+	ArabPercentage FLOAT DEFAULT NULL,
+	HispanicPercentage FLOAT DEFAULT NULL,
+	BlackPercentage FLOAT DEFAULT NULL,
+	AsianPercentage FLOAT DEFAULT NULL,
+	CaucasianPercentage FLOAT DEFAULT NULL,
+	IndigenousPercentage FLOAT DEFAULT NULL,
+	AverageAge FLOAT DEFAULT NULL,
+	AverageEducationLength FLOAT DEFAULT NULL,
+	Height FLOAT DEFAULT NULL,
+	Weight FLOAT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX CompanyBoardStatisticsCompanyIdPK
+    ON public.CompanyBoardStatistics USING btree
+    (CompanyId ASC NULLS LAST)
     TABLESPACE pg_default;
+
+ALTER TABLE public.CompanyBoardStatistics
+    CLUSTER ON CompanyBoardStatisticsCompanyIdPK;
 
 --Code for Person table
 
-DROP TABLE IF EXISTS person CASCADE;
+DROP TABLE IF EXISTS People CASCADE;
 
-CREATE TABLE IF NOT EXISTS person
+CREATE TABLE IF NOT EXISTS People
 (
-	id SERIAL PRIMARY KEY,
-	name VARCHAR(135) NOT NULL,
-	age SMALLINT NULL DEFAULT NULL,
-	birth_year SMALLINT NULL DEFAULT NULL,
-	gender INT REFERENCES genders(id) DEFAULT NULL,
-	picture VARCHAR(45) NULL DEFAULT NULL,
-	race INT REFERENCES races(id) DEFAULT NULL,
-	religion INT REFERENCES religions(id) DEFAULT NULL,
-	married INT REFERENCES marital_statuses(id) DEFAULT NULL,
-	has_kids SMALLINT NULL DEFAULT NULL,
-	education_level INT REFERENCES education_levels(id) DEFAULT NULL,
-	education_subject INT REFERENCES education_subjects(id) DEFAULT NULL,
-	education_institute VARCHAR(100) NULL DEFAULT NULL,
-	sexuality VARCHAR(45) NULL DEFAULT NULL,
-	visible_disability VARCHAR(45) NULL DEFAULT NULL,
-	urban INT NULL DEFAULT NULL,
-	website VARCHAR(200) DEFAULT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	Name VARCHAR(135) NOT NULL,
+	RandomName VARCHAR(135) NOT NULL,
+	Age SMALLINT NULL DEFAULT NULL,
+	Gender INT REFERENCES Genders(Id) DEFAULT NULL,
+	Race INT REFERENCES Races(id) DEFAULT NULL,
+	Religion INT REFERENCES Religions(id) DEFAULT NULL,
+	Married BOOLEAN DEFAULT NULL,
+	Kids BOOLEAN DEFAULT NULL,
+	HighEducation INT REFERENCES EducationLevels(id) DEFAULT NULL,
+	EducationSubject INT REFERENCES EducationSubjects(id) DEFAULT NULL,
+	EducationInstitute VARCHAR(100) NULL DEFAULT NULL,
+	Sexuality VARCHAR(45) NULL DEFAULT NULL,
+	VisibleDisability VARCHAR(45) NULL DEFAULT NULL,
+	Urban BOOLEAN NULL DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
---Code for Person country table
+CREATE UNIQUE INDEX PeopleIdPK
+    ON public.People USING btree
+    (Id ASC NULLS LAST)
+    TABLESPACE pg_default;
 
-DROP TABLE IF EXISTS person_country;
+ALTER TABLE public.People
+    CLUSTER ON PeopleIdPK;
+	
+CREATE INDEX PeopleNameIdx
+    ON public.People USING hash
+    (Name COLLATE pg_catalog."default")
+    TABLESPACE pg_default;
 
-CREATE TABLE IF NOT EXISTS person_country
+--Code for Person nationalities table
+
+DROP TABLE IF EXISTS PersonNationalities;
+
+CREATE TABLE IF NOT EXISTS PersonNationalities
 (
-	person_country_id SERIAL PRIMARY KEY,
-	person_id INT REFERENCES person(id) ON DELETE CASCADE,
-	country_id INT REFERENCES countries(id),
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	PersonId INT NOT NULL REFERENCES People(Id) ON DELETE CASCADE,
+	CountryId INT NOT NULL REFERENCES Countries(Id),
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE UNIQUE INDEX PersonNationalitiesIdPK
+    ON public.PersonNationalities USING btree
+    (Id ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.PersonNationalities
+    CLUSTER ON PersonNationalitiesIdPK;
+	
+CREATE INDEX PersonNationalitiesPersonIdx
+    ON public.PersonNationalities USING hash
+    (PersonId)
+    TABLESPACE pg_default;
 
 --Code for role table
 
-DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS Roles;
 
-CREATE TABLE IF NOT EXISTS role
+CREATE TABLE IF NOT EXISTS Roles
 (
-	id SERIAL PRIMARY KEY,
-	company_id INT REFERENCES company(id) ON DELETE CASCADE,
-	person_id INT REFERENCES person(id) ON DELETE CASCADE,
-	is_effective SMALLINT NULL DEFAULT NULL,
-	role_type INT REFERENCES role_types(id) NOT NULL,
-	title VARCHAR(200) NOT NULL,
-	base_salary DOUBLE PRECISION DEFAULT NULL,
-	other_incentives DOUBLE PRECISION DEFAULT NULL,
-	effective_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+	Id SERIAL PRIMARY KEY,
+	Companyid INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+	PersonId INT NOT NULL REFERENCES People(Id) ON DELETE CASCADE,
+	RoleType INT NOT NULL REFERENCES RoleTypes(Id),
+	Title VARCHAR(200) NOT NULL,
+	BaseSalary DOUBLE PRECISION DEFAULT NULL,
+	OtherIncentives DOUBLE PRECISION DEFAULT NULL,
+	JobTenure INT DEFAULT NULL,
+	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE UNIQUE INDEX RolesIdPK
+    ON public.Roles USING btree
+    (Id ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.Roles
+    CLUSTER ON RolesIdPK;
+	
+CREATE INDEX RolesPersonIdx
+    ON public.Roles USING btree
+    (PersonId)
+    TABLESPACE pg_default;
