@@ -124,12 +124,12 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 && PropertyMetadataStorage.CurrentPropertyMetadata["person"]["PersonNationalities"].IsEditable)
             {
 
-                if (source.PersonNationalities.Any(x => !countries.Contains(x.Country)))
+                if (source.Nationalities.Any(x => !countries.Contains(x.Country)))
                 {
                     throw new ArgumentException("Country not found");
                 }
 
-                var srcIds = source.PersonNationalities.Select(x => x.Country).ToHashSet();
+                var srcIds = source.Nationalities.Select(x => x.Country).ToHashSet();
 
                 var toRemove = new List<PersonNationality>();
                 foreach (var personCountry in targetPerson.PersonNationalities)
@@ -146,7 +146,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     silverContext.Remove(item);
                 }
 
-                foreach (var country in source.PersonNationalities)
+                foreach (var country in source.Nationalities)
                 {
                     if (!targetPerson.PersonNationalities.Any(x => x.CountryId == country.Country))
                     {

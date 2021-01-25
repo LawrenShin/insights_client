@@ -14,5 +14,6 @@ namespace DigitalInsights.DB.Common.Enums
         Percentage,
         DropDown,
         Array,
+        NestedEntity,
     }
 }

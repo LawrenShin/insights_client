@@ -50,9 +50,9 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
             var companies = companyService.GetCompanies(10, 0, null);
             foreach(var company in companies.Companies)
             {
-                Assert.NotNull(company.CompanyCountries);
-                Assert.NotZero(company.CompanyCountries.Length);
-                foreach(var companyCountry in company.CompanyCountries)
+                Assert.NotNull(company.Countries);
+                Assert.NotZero(company.Countries.Length);
+                foreach(var companyCountry in company.Countries)
                 {
                     Assert.IsFalse(string.IsNullOrEmpty(companyCountry.IsoCode));
                 }

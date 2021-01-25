@@ -168,9 +168,9 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
         private void FillCompanyDIMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.CompanyDIMetrics == null || source.CompanyDIMetrics.Length == 0) return;
+            if (source.DiMetrics == null) return;
 
-            var metricSource = source.CompanyDIMetrics[0];
+            var metricSource = source.DiMetrics;
 
             CompanyDIMetrics target;
             if (targetCompany.CompanyDIMetrics.Count == 1)
@@ -222,9 +222,9 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
         private void FillCompanyRaceMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.CompanyRaceMetrics == null || source.CompanyRaceMetrics.Length == 0) return;
+            if (source.RaceMetrics == null) return;
 
-            var metricSource = source.CompanyRaceMetrics[0];
+            var metricSource = source.RaceMetrics;
 
             CompanyRaceMetrics target;
             if (targetCompany.CompanyRaceMetrics.Count == 1)
@@ -262,9 +262,9 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
         private void FillCompanyGenderMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.CompanyGenderMetrics == null || source.CompanyGenderMetrics.Length == 0) return;
+            if (source.GenderMetrics == null) return;
 
-            var metricSource = source.CompanyGenderMetrics[0];
+            var metricSource = source.GenderMetrics;
 
             CompanyGenderMetrics target;
             if (targetCompany.CompanyGenderMetrics.Count == 1)
@@ -298,9 +298,9 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
         private void FillCompanyJobMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.CompanyJobMetrics == null || source.CompanyJobMetrics.Length == 0) return;
+            if (source.JobMetrics == null) return;
 
-            var metricSource = source.CompanyJobMetrics[0];
+            var metricSource = source.JobMetrics;
 
             CompanyJobMetrics target;
             if (targetCompany.CompanyJobMetrics.Count == 1)
@@ -335,9 +335,9 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
         private void FillCompanyHealthMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.CompanyHealthMetrics == null || source.CompanyHealthMetrics.Length == 0) return;
+            if (source.HealthMetrics == null) return;
 
-            var metricSource = source.CompanyHealthMetrics[0];
+            var metricSource = source.HealthMetrics;
 
             CompanyHealthMetrics target;
             if (targetCompany.CompanyHealthMetrics.Count == 1)
@@ -369,9 +369,9 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
         private void FillCompanyBoardStatistics(CompanyDTO source, Company targetCompany)
         {
-            if (source.CompanyBoardStatistics == null || source.CompanyBoardStatistics.Length == 0) return;
+            if (source.BoardStatistics == null) return;
 
-            var metricSource = source.CompanyBoardStatistics[0];
+            var metricSource = source.BoardStatistics;
 
             CompanyBoardStatistics target;
             if (targetCompany.CompanyBoardStatistics.Count == 1)
@@ -412,9 +412,9 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
         private void FillCompanyExecutiveStatistics(CompanyDTO source, Company targetCompany)
         {
-            if (source.CompanyExecutiveStatistics == null || source.CompanyExecutiveStatistics.Length == 0) return;
+            if (source.ExecutiveStatistics == null) return;
 
-            var metricSource = source.CompanyExecutiveStatistics[0];
+            var metricSource = source.ExecutiveStatistics;
 
             CompanyExecutiveStatistics target;
             if (targetCompany.CompanyExecutiveStatistics.Count == 1)
@@ -455,9 +455,9 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
         private void FillCompanyKeyFinancialsMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.CompanyKeyFinancialsMetrics == null || source.CompanyKeyFinancialsMetrics.Length == 0) return;
+            if (source.KeyFinancialsMetrics == null) return;
 
-            var metricSource = source.CompanyKeyFinancialsMetrics[0];
+            var metricSource = source.KeyFinancialsMetrics;
 
             CompanyKeyFinancialsMetrics target;
             if (targetCompany.CompanyKeyFinancialsMetrics.Count == 1)
@@ -488,7 +488,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
         private void FillCompanyCountries(CompanyDTO source, Company targetCompany)
         {
             // countries
-            var srcIds = source.CompanyCountries
+            var srcIds = source.Countries
                 .Select(x => x.Country)
                 .ToHashSet();
 
@@ -502,7 +502,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
             var targetCompanyCountries = targetCompany.CompanyCountries.ToDictionary(x => x.CountryId, x => x);
 
-            foreach (var companyCountry in source.CompanyCountries)
+            foreach (var companyCountry in source.Countries)
             {
                 CompanyCountry targetEntity;
 
@@ -530,7 +530,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             var industries = silverContext.Industries.Select(x => x.Id).ToHashSet();
             var industryCodes = silverContext.Industries.Select(x => x.Id).ToHashSet();
 
-            var srcIds = source.CompanyIndustries
+            var srcIds = source.Industries
                 .Select(x => x.Industry.Value)
                 .ToHashSet();
 
@@ -544,7 +544,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
             var targetCompanyIndustries = targetCompany.CompanyIndustries.ToDictionary(x => (int)x.Industry, x => x);
 
-            foreach (var companyIndustry in source.CompanyIndustries)
+            foreach (var companyIndustry in source.Industries)
             {
                 CompanyIndustry targetEntity;
 
@@ -574,7 +574,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
         {
             // names
 
-            if (source.CompanyNames.Any(
+            if (source.Names.Any(
                 x => x == null
                 || string.IsNullOrEmpty(x.NameType)
                 || string.IsNullOrEmpty(x.Name)))
@@ -582,7 +582,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 throw new ArgumentException("company names");
             }
 
-            var toRemove = targetCompany.CompanyNames.Where(x => !source.CompanyNames.Any(y=>y.Name == x.Name && x.NameType == y.NameType)).ToList();
+            var toRemove = targetCompany.CompanyNames.Where(x => !source.Names.Any(y=>y.Name == x.Name && x.NameType == y.NameType)).ToList();
 
             foreach (var item in toRemove)
             {
@@ -590,7 +590,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 silverContext.Remove(item);
             }
 
-            var toAdd = source.CompanyNames.Where(x => !targetCompany.CompanyNames.Any(y => y.Name == x.Name && x.NameType == y.NameType)).ToList();
+            var toAdd = source.Names.Where(x => !targetCompany.CompanyNames.Any(y => y.Name == x.Name && x.NameType == y.NameType)).ToList();
 
             foreach (var companyName in toAdd)
             {

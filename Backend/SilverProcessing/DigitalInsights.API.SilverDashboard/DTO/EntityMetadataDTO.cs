@@ -30,9 +30,9 @@ namespace DigitalInsights.API.SilverDashboard.DTO
                     RangeHigh = x.RangeHigh,
                     RangeLow = x.RangeLow,
                     PropertyName = x.PropertyName,
-                    EntityMetadata = 
-                        x.FieldType == DB.Common.Enums.FieldType.Array 
-                            ? new EntityMetadataDTO(x.ChildrenEntityName, groups) 
+                    EntityMetadata =
+                        x.FieldType == DB.Common.Enums.FieldType.Array || x.FieldType == DB.Common.Enums.FieldType.NestedEntity
+                            ? new EntityMetadataDTO(x.ChildrenEntityName, groups)
                             : null
                 }).ToArray();
         }

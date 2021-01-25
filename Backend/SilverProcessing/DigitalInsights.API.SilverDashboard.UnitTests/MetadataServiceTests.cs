@@ -1,5 +1,6 @@
 ﻿using DigitalInsights.API.SilverDashboard.Services;
 using DigitalInsights.DB.Silver;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,12 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
             var result = metadataService.GetUIMetadata("company");
 
             Assert.NotNull(result);
-            Assert.NotZero(result.Length);
-            var meta = result[0];
+            Assert.NotNull(result.Entities);
+            Assert.NotZero(result.Entities.Length);
+            var meta = result.Entities[0];
             Assert.AreEqual("company", meta.EntityName);
+
+            TestContext.Out.Write(JsonConvert.SerializeObject(result));
         }
     }
 }

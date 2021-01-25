@@ -19,11 +19,11 @@ namespace DigitalInsights.API.SilverDashboard.Services
             this.silverContext = silverContext;
         }
 
-        public EntityMetadataDTO[] GetUIMetadata(params string[] entities)
+        public UIMetadataDTO GetUIMetadata(params string[] entities)
         {
             var groups = PropertyMetadataStorage.CurrentPropertyMetadata;
 
-            return entities.Select(x => new EntityMetadataDTO(x, groups)).ToArray();
+            return new UIMetadataDTO() { Entities = entities.Select(x => new EntityMetadataDTO(x, groups)).ToArray() };
         }
     }
 }

@@ -14,12 +14,12 @@ namespace DigitalInsights.API.SilverDashboard.DTO
     {
         public PersonDTO()
         {
-            PersonNationalities = new PersonNationalityDTO[0];
+            Nationalities = new PersonNationalityDTO[0];
         }
 
         public PersonDTO(Person source)
         {
-            PersonNationalities = source.PersonNationalities.OrderBy(x => x.CountryId).Select(x=>new PersonNationalityDTO(x)).ToArray();
+            Nationalities = source.PersonNationalities.OrderBy(x => x.CountryId).Select(x=>new PersonNationalityDTO(x)).ToArray();
             Age = source.Age;
             EducationInstitute = source.EducationInstitute;
             EducationSubject = source.EducationSubject.HasValue ? (int)source.EducationSubject : null;
@@ -37,7 +37,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         }
 
 
-        public PersonNationalityDTO[] PersonNationalities { get; set; }
+        public PersonNationalityDTO[] Nationalities { get; set; }
         public short? Age { get; set; }
         public string EducationInstitute { get; set; }
         public int? EducationSubject { get; set; }
