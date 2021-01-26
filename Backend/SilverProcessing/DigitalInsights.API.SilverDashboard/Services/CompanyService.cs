@@ -142,347 +142,577 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 }
             }
 
-            if(PropertyMetadataStorage.CurrentPropertyMetadata["company"].ContainsKey("lei")
-                && PropertyMetadataStorage.CurrentPropertyMetadata["company"]["lei"].IsEditable)
-                targetCompany.LEI = source.Lei;
-            if (PropertyMetadataStorage.CurrentPropertyMetadata["company"].ContainsKey("legalname")
-                && PropertyMetadataStorage.CurrentPropertyMetadata["company"]["legalname"].IsEditable)
-                targetCompany.LegalName = source.LegalName;
-
-            FillRoles(source, targetCompany);
-            FillCompanyCountries(source, targetCompany);
-            FillCompanyIndustries(source, targetCompany);
-            FillCompanyNames(source, targetCompany);
-            FillCompanyBoardStatistics(source, targetCompany);
-            FillCompanyExecutiveStatistics(source, targetCompany);
-            FillCompanyKeyFinancialsMetrics(source, targetCompany);
-            FillCompanyHealthMetrics(source, targetCompany);
-            FillCompanyJobMetrics(source, targetCompany);
-            FillCompanyGenderMetrics(source, targetCompany);
-            FillCompanyRaceMetrics(source, targetCompany);
-            FillCompanyDIMetrics(source, targetCompany);
-            FillCompanyHealthMetrics(source, targetCompany);
+            var properties = PropertyMetadataStorage.CurrentPropertyMetadata["person"];
+            foreach (var property in properties.Values)
+            {
+                switch(property.PropertyName)
+                {
+                    case "lei":
+                        {
+                            ValidationHelper.ValidateAndSetProperty(property, () => source.Lei, x => targetCompany.LEI = x);
+                            break;
+                        }
+                    case "legalname":
+                        {
+                            ValidationHelper.ValidateAndSetProperty(property, () => source.LegalName, x => targetCompany.LegalName = x);
+                            break;
+                        }
+                    case "roles":
+                        {
+                            if(property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.Roles == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillRoles(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "countries":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.Countries == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillCompanyCountries(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "industries":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.Industries == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillCompanyIndustries(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "names":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.Names == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillCompanyNames(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "boardstatistics":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.BoardStatistics == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillCompanyBoardStatistics(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "executivestatistics":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.ExecutiveStatistics == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillCompanyExecutiveStatistics(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "keyfinancialsmetrics":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.KeyFinancialsMetrics == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillCompanyKeyFinancialsMetrics(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "jobmetrics":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.JobMetrics == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillCompanyJobMetrics(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "gendermetrics":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.GenderMetrics == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillCompanyGenderMetrics(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "racemetrics":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.RaceMetrics == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillCompanyRaceMetrics(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "dimetrics":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.DiMetrics == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillCompanyDIMetrics(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "healthmetrics":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.HealthMetrics == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillCompanyHealthMetrics(source, targetCompany);
+                            }
+                            break;
+                        }
+                    default:
+                        throw new NotSupportedException($"{property.EntityName} {property.PropertyName}");
+                }
+            }
 
             silverContext.SaveChanges();
         }
 
         private void FillCompanyDIMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.DiMetrics == null) return;
-
-            var metricSource = source.DiMetrics;
-
-            CompanyDIMetrics target;
-            if (targetCompany.CompanyDIMetrics.Count == 1)
+            if (source.DiMetrics == null)
             {
-                target = targetCompany.CompanyDIMetrics.First();
+                silverContext.CompanyDIMetrics.RemoveRange(targetCompany.CompanyDIMetrics);
             }
             else
             {
-                if (targetCompany.CompanyDIMetrics.Count > 1)
+                var metricSource = source.DiMetrics;
+
+                CompanyDIMetrics target;
+                if (targetCompany.CompanyDIMetrics.Count == 1)
                 {
-                    silverContext.CompanyDIMetrics.RemoveRange(targetCompany.CompanyDIMetrics);
-                    targetCompany.CompanyDIMetrics.Clear();
+                    target = targetCompany.CompanyDIMetrics.First();
+                }
+                else
+                {
+                    if (targetCompany.CompanyDIMetrics.Count > 1)
+                    {
+                        silverContext.CompanyDIMetrics.RemoveRange(targetCompany.CompanyDIMetrics);
+                        targetCompany.CompanyDIMetrics.Clear();
+                    }
+
+                    target = new CompanyDIMetrics()
+                    {
+                        CompanyId = targetCompany.Id,
+                    };
+                    silverContext.Add(target);
+                    targetCompany.CompanyDIMetrics.Add(target);
                 }
 
-                target = new CompanyDIMetrics()
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyDIMetrics).Name];
+                foreach(var property in properties.Values)
                 {
-                    CompanyId = targetCompany.Id,
-                };
-                silverContext.Add(target);
-                targetCompany.CompanyDIMetrics.Add(target);
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "dicodeconduct" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DICodeConduct, x => target.DICodeConduct = x),
+                        "dicomplaint" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DIComplaint, x => target.DIComplaint = x),
+                        "didivision" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DIDivision, x => target.DIDivision = x),
+                        "diearningcall" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DIEarningCall, x => target.DIEarningCall = x),
+                        "difteposition" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DIFTEPosition, x => target.DIFTEPosition = x),
+                        "dipolicyestablished" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DIPolicyEstablished, x => target.DIPolicyEstablished = x),
+                        "diposition" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DIPosition, x => target.DIPosition = x),
+                        "dipositionexecutive" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DIPositionExecutive, x => target.DIPositionExecutive = x),
+                        "dipublicavailable" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DIPublicAvailable, x => target.DIPublicAvailable = x),
+                        "disupplychain" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DISupplyChain, x => target.DISupplyChain = x),
+                        "disupplyspendrevenueratio" 
+                            => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DISupplySpendRevenueRatio, x => target.DISupplySpendRevenueRatio = x),
+                        "ditalentgoals" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DITalentGoals, x => target.DITalentGoals = x),
+                        "diwebsite" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.DIWebsite, x => target.DIWebsite = x),
+                        "employengagement" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.EmployEngagement, x => target.EmployEngagement = x),
+                        "employsatisfactionsurvey" 
+                            => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.EmploySatisfactionSurvey, x => target.EmploySatisfactionSurvey = x),
+                        "employsurveyresponserate" 
+                            => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.EmploySurveyResponseRate, x => target.EmploySurveyResponseRate = x),
+                        "harassmentpolicy" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.HarassmentPolicy, x => target.HarassmentPolicy = x),
+                        "holidaysupport" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.HolidaySupport, x => target.HolidaySupport = x),
+                        "managingdiverse" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.ManagingDiverse, x => target.ManagingDiverse = x),
+                        "mentorprogram" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.MentorProgram, x => target.MentorProgram = x),
+                        "retaliation" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.Retaliation, x => target.Retaliation = x),
+                        "socialevents" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.SocialEvents, x => target.SocialEvents = x),
+                        "socialprogram" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.SocialProgram, x => target.SocialProgram = x),
+                        "supplyspend" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.SupplySpend, x => target.SupplySpend = x),
+                        "valuedisupplyspend" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.ValueDISupplySpend, x => target.ValueDISupplySpend = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
             }
-
-            target.DICodeConduct = metricSource.DICodeConduct;
-            target.DIComplaint = metricSource.DIComplaint;
-            target.DIDivision = metricSource.DIDivision;
-            target.DIEarningCall = metricSource.DIEarningCall;
-            target.DIFTEPosition = metricSource.DIFTEPosition;
-            target.DIPolicyEstablished = metricSource.DIPolicyEstablished;
-            target.DIPosition = metricSource.DIPosition;
-            target.DIPositionExecutive = metricSource.DIPositionExecutive;
-            target.DIPublicAvailable = metricSource.DIPublicAvailable;
-            target.DISupplyChain = metricSource.DISupplyChain;
-            target.DISupplySpendRevenueRatio = metricSource.DISupplySpendRevenueRatio;
-            target.DITalentGoals = metricSource.DITalentGoals;
-            target.DIWebsite = metricSource.DIWebsite;
-            target.EmployEngagement = metricSource.EmployEngagement;
-            target.EmploySatisfactionSurvey = metricSource.EmploySatisfactionSurvey;
-            target.EmploySurveyResponseRate = metricSource.EmploySurveyResponseRate;
-            target.HarassmentPolicy = metricSource.HarassmentPolicy;
-            target.HolidaySupport = metricSource.HolidaySupport;
-            target.ManagingDiverse = metricSource.ManagingDiverse;
-            target.MentorProgram = metricSource.MentorProgram;
-            target.Retaliation = metricSource.Retaliation;
-            target.SocialEvents = metricSource.SocialEvents;
-            target.SocialProgram = metricSource.SocialProgram;
-            target.SupplySpend = metricSource.SupplySpend;
-            target.ValueDISupplySpend = metricSource.ValueDISupplySpend;
+            
         }
 
         private void FillCompanyRaceMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.RaceMetrics == null) return;
-
-            var metricSource = source.RaceMetrics;
-
-            CompanyRaceMetrics target;
-            if (targetCompany.CompanyRaceMetrics.Count == 1)
+            if (source.RaceMetrics == null)
             {
-                target = targetCompany.CompanyRaceMetrics.First();
+                silverContext.CompanyRaceMetrics.RemoveRange(targetCompany.CompanyRaceMetrics);
             }
             else
             {
-                if (targetCompany.CompanyRaceMetrics.Count > 1)
+
+                var metricSource = source.RaceMetrics;
+
+                CompanyRaceMetrics target;
+                if (targetCompany.CompanyRaceMetrics.Count == 1)
                 {
-                    silverContext.CompanyRaceMetrics.RemoveRange(targetCompany.CompanyRaceMetrics);
-                    targetCompany.CompanyRaceMetrics.Clear();
+                    target = targetCompany.CompanyRaceMetrics.First();
+                }
+                else
+                {
+                    if (targetCompany.CompanyRaceMetrics.Count > 1)
+                    {
+                        silverContext.CompanyRaceMetrics.RemoveRange(targetCompany.CompanyRaceMetrics);
+                        targetCompany.CompanyRaceMetrics.Clear();
+                    }
+
+                    target = new CompanyRaceMetrics()
+                    {
+                        CompanyId = targetCompany.Id,
+                    };
+                    silverContext.Add(target);
+                    targetCompany.CompanyRaceMetrics.Add(target);
                 }
 
-                target = new CompanyRaceMetrics()
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyRaceMetrics).Name];
+                foreach (var property in properties.Values)
                 {
-                    CompanyId = targetCompany.Id,
-                };
-                silverContext.Add(target);
-                targetCompany.CompanyRaceMetrics.Add(target);
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "racearab" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.RaceArab, x => target.RaceArab = x),
+                        "raceasian" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.RaceAsian, x => target.RaceAsian = x),
+                        "raceblack" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.RaceBlack, x => target.RaceBlack = x),
+                        "racecaucasian" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.RaceCaucasian, x => target.RaceCaucasian = x),
+                        "racehispanic" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.RaceHispanic, x => target.RaceHispanic = x),
+                        "raceindigenous" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.RaceIndigenous, x => target.RaceIndigenous = x),
+                        "raceratioall" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.RaceRatioAll, x => target.RaceRatioAll = x),
+                        "raceratioboard" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.RaceRatioBoard, x => target.RaceRatioBoard = x),
+                        "raceratioexececutive" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.RaceRatioExececutive, x => target.RaceRatioExececutive = x),
+                        "raceratiomiddle" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.RaceRatioMiddle, x => target.RaceRatioMiddle = x),
+                        "raceratiosenior"
+                            => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.RaceRatioSenior, x => target.RaceRatioSenior = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
             }
-
-            target.RaceArab = metricSource.RaceArab;
-            target.RaceAsian = metricSource.RaceAsian;
-            target.RaceBlack = metricSource.RaceBlack;
-            target.RaceCaucasian = metricSource.RaceCaucasian;
-            target.RaceHispanic = metricSource.RaceHispanic;
-            target.RaceIndigenous = metricSource.RaceIndigenous;
-            target.RaceRatioAll = metricSource.RaceRatioAll;
-            target.RaceRatioBoard = metricSource.RaceRatioBoard;
-            target.RaceRatioExececutive = metricSource.RaceRatioExececutive;
-            target.RaceRatioMiddle = metricSource.RaceRatioMiddle;
-            target.RaceRatioSenior = metricSource.RaceRatioSenior;
         }
 
         private void FillCompanyGenderMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.GenderMetrics == null) return;
-
-            var metricSource = source.GenderMetrics;
-
-            CompanyGenderMetrics target;
-            if (targetCompany.CompanyGenderMetrics.Count == 1)
+            if (source.GenderMetrics == null)
             {
-                target = targetCompany.CompanyGenderMetrics.First();
+                silverContext.CompanyGenderMetrics.RemoveRange(targetCompany.CompanyGenderMetrics);
             }
             else
             {
-                if (targetCompany.CompanyGenderMetrics.Count > 1)
+                var metricSource = source.GenderMetrics;
+
+                CompanyGenderMetrics target;
+                if (targetCompany.CompanyGenderMetrics.Count == 1)
                 {
-                    silverContext.CompanyGenderMetrics.RemoveRange(targetCompany.CompanyGenderMetrics);
-                    targetCompany.CompanyGenderMetrics.Clear();
+                    target = targetCompany.CompanyGenderMetrics.First();
+                }
+                else
+                {
+                    if (targetCompany.CompanyGenderMetrics.Count > 1)
+                    {
+                        silverContext.CompanyGenderMetrics.RemoveRange(targetCompany.CompanyGenderMetrics);
+                        targetCompany.CompanyGenderMetrics.Clear();
+                    }
+
+                    target = new CompanyGenderMetrics()
+                    {
+                        CompanyId = targetCompany.Id,
+                    };
+                    silverContext.Add(target);
+                    targetCompany.CompanyGenderMetrics.Add(target);
                 }
 
-                target = new CompanyGenderMetrics()
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyGenderMetrics).Name];
+                foreach (var property in properties.Values)
                 {
-                    CompanyId = targetCompany.Id,
-                };
-                silverContext.Add(target);
-                targetCompany.CompanyGenderMetrics.Add(target);
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "gendermale" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.GenderMale, x => target.GenderMale = x),
+                        "genderother" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.GenderOther, x => target.GenderOther = x),
+                        "genderpaygap" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.GenderPayGap, x => target.GenderPayGap = x),
+                        "genderratioall" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.GenderRatioAll, x => target.GenderRatioAll = x),
+                        "genderratioboard" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.GenderRatioBoard, x => target.GenderRatioBoard = x),
+                        "genderratiomiddle" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.GenderRatioMiddle, x => target.GenderRatioMiddle = x),
+                        "genderratiosenior" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.GenderRatioSenior, x => target.GenderRatioSenior = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
             }
-
-            target.GenderMale = metricSource.GenderMale;
-            target.GenderOther = metricSource.GenderOther;
-            target.GenderPayGap = metricSource.GenderPayGap;
-            target.GenderRatioAll = metricSource.GenderRatioAll;
-            target.GenderRatioBoard = metricSource.GenderRatioBoard;
-            target.GenderRatioMiddle = metricSource.GenderRatioMiddle;
-            target.GenderRatioSenior = metricSource.GenderRatioSenior;
         }
 
         private void FillCompanyJobMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.JobMetrics == null) return;
-
-            var metricSource = source.JobMetrics;
-
-            CompanyJobMetrics target;
-            if (targetCompany.CompanyJobMetrics.Count == 1)
+            if (source.JobMetrics == null)
             {
-                target = targetCompany.CompanyJobMetrics.First();
+                silverContext.CompanyJobMetrics.RemoveRange(targetCompany.CompanyJobMetrics);
             }
             else
             {
-                if (targetCompany.CompanyJobMetrics.Count > 1)
+                var metricSource = source.JobMetrics;
+
+                CompanyJobMetrics target;
+                if (targetCompany.CompanyJobMetrics.Count == 1)
                 {
-                    silverContext.CompanyJobMetrics.RemoveRange(targetCompany.CompanyJobMetrics);
-                    targetCompany.CompanyJobMetrics.Clear();
+                    target = targetCompany.CompanyJobMetrics.First();
+                }
+                else
+                {
+                    if (targetCompany.CompanyJobMetrics.Count > 1)
+                    {
+                        silverContext.CompanyJobMetrics.RemoveRange(targetCompany.CompanyJobMetrics);
+                        targetCompany.CompanyJobMetrics.Clear();
+                    }
+
+                    target = new CompanyJobMetrics()
+                    {
+                        CompanyId = targetCompany.Id,
+                    };
+                    silverContext.Add(target);
+                    targetCompany.CompanyJobMetrics.Add(target);
                 }
 
-                target = new CompanyJobMetrics()
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyJobMetrics).Name];
+                foreach (var property in properties.Values)
                 {
-                    CompanyId = targetCompany.Id,
-                };
-                silverContext.Add(target);
-                targetCompany.CompanyJobMetrics.Add(target);
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "averagesalary" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.AverageSalary, x => target.AverageSalary = x),
+                        "employtraining" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.EmployTraining, x => target.EmployTraining = x),
+                        "employturnoverfired" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.EmployTurnoverFired, x => target.EmployTurnoverFired = x),
+                        "employturnovertotal" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.EmployTurnoverTotal, x => target.EmployTurnoverTotal = x),
+                        "employturnovervoluntary" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.EmployTurnoverVoluntary, x => target.EmployTurnoverVoluntary = x),
+                        "jobtenureaverage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.JobTenureAverage, x => target.JobTenureAverage = x),
+                        "mediansalary" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.MedianSalary, x => target.MedianSalary = x),
+                        "totalhours" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.TotalHours, x => target.TotalHours = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
             }
-
-            target.AverageSalary = metricSource.AverageSalary;
-            target.EmployTraining = metricSource.EmployTraining;
-            target.EmployTurnoverFired = metricSource.EmployTurnoverFired;
-            target.EmployTurnoverTotal = metricSource.EmployTurnoverTotal;
-            target.EmployTurnoverVoluntary = metricSource.EmployTurnoverVoluntary;
-            target.JobTenureAverage = metricSource.JobTenureAverage;
-            target.MedianSalary = metricSource.MedianSalary;
-            target.TotalHours = metricSource.TotalHours;
         }
 
         private void FillCompanyHealthMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.HealthMetrics == null) return;
-
-            var metricSource = source.HealthMetrics;
-
-            CompanyHealthMetrics target;
-            if (targetCompany.CompanyHealthMetrics.Count == 1)
+            if (source.HealthMetrics == null)
             {
-                target = targetCompany.CompanyHealthMetrics.First();
+                silverContext.CompanyHealthMetrics.RemoveRange(targetCompany.CompanyHealthMetrics);
             }
             else
             {
-                if (targetCompany.CompanyHealthMetrics.Count > 1)
+
+                var metricSource = source.HealthMetrics;
+
+                CompanyHealthMetrics target;
+                if (targetCompany.CompanyHealthMetrics.Count == 1)
                 {
-                    silverContext.CompanyHealthMetrics.RemoveRange(targetCompany.CompanyHealthMetrics);
-                    targetCompany.CompanyHealthMetrics.Clear();
+                    target = targetCompany.CompanyHealthMetrics.First();
+                }
+                else
+                {
+                    if (targetCompany.CompanyHealthMetrics.Count > 1)
+                    {
+                        silverContext.CompanyHealthMetrics.RemoveRange(targetCompany.CompanyHealthMetrics);
+                        targetCompany.CompanyHealthMetrics.Clear();
+                    }
+
+                    target = new CompanyHealthMetrics()
+                    {
+                        CompanyId = targetCompany.Id,
+                    };
+                    silverContext.Add(target);
+                    targetCompany.CompanyHealthMetrics.Add(target);
                 }
 
-                target = new CompanyHealthMetrics()
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyHealthMetrics).Name];
+                foreach (var property in properties.Values)
                 {
-                    CompanyId = targetCompany.Id,
-                };
-                silverContext.Add(target);
-                targetCompany.CompanyHealthMetrics.Add(target);
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "ageaverage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.AgeAverage, x => target.AgeAverage = x),
+                        "fatalities" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.Fatalities, x => target.Fatalities = x),
+                        "healthtri" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.HealthTRI, x => target.HealthTRI = x),
+                        "healthtrir" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.HealthTRIR, x => target.HealthTRIR = x),
+                        "sickabsence" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.SickAbsence, x => target.SickAbsence = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
             }
-
-            target.AgeAverage = metricSource.AgeAverage;
-            target.Fatalities = metricSource.Fatalities;
-            target.HealthTRI = metricSource.HealthTRI;
-            target.HealthTRIR = metricSource.HealthTRIR;
-            target.SickAbsence = metricSource.SickAbsence;
         }
 
         private void FillCompanyBoardStatistics(CompanyDTO source, Company targetCompany)
         {
-            if (source.BoardStatistics == null) return;
-
-            var metricSource = source.BoardStatistics;
-
-            CompanyBoardStatistics target;
-            if (targetCompany.CompanyBoardStatistics.Count == 1)
+            if (source.BoardStatistics == null)
             {
-                target = targetCompany.CompanyBoardStatistics.First();
+                targetCompany.CompanyBoardStatistics.Clear();
             }
             else
             {
-                if (targetCompany.CompanyBoardStatistics.Count > 1)
+                var metricSource = source.BoardStatistics;
+
+                CompanyBoardStatistics target;
+                if (targetCompany.CompanyBoardStatistics.Count == 1)
                 {
-                    silverContext.CompanyBoardStatistics.RemoveRange(targetCompany.CompanyBoardStatistics);
-                    targetCompany.CompanyBoardStatistics.Clear();
+                    target = targetCompany.CompanyBoardStatistics.First();
+                }
+                else
+                {
+                    if (targetCompany.CompanyBoardStatistics.Count > 1)
+                    {
+                        silverContext.CompanyBoardStatistics.RemoveRange(targetCompany.CompanyBoardStatistics);
+                        targetCompany.CompanyBoardStatistics.Clear();
+                    }
+
+                    target = new CompanyBoardStatistics()
+                    {
+                        CompanyId = targetCompany.Id,
+                    };
+                    silverContext.Add(target);
+                    targetCompany.CompanyBoardStatistics.Add(target);
                 }
 
-                target = new CompanyBoardStatistics()
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyBoardStatistics).Name];
+                foreach (var property in properties.Values)
                 {
-                    CompanyId = targetCompany.Id,
-                };
-                silverContext.Add(target);
-                targetCompany.CompanyBoardStatistics.Add(target);
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "arabpercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.ArabPercentage, x => target.ArabPercentage = x),
+                        "asianpercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.AsianPercentage, x => target.AsianPercentage = x),
+                        "averageage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.AverageAge, x => target.AverageAge = x),
+                        "averageeducationlength" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.AverageEducationLength, x => target.AverageEducationLength = x),
+                        "blackpercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.BlackPercentage, x => target.BlackPercentage = x),
+                        "caucasianpercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.CaucasianPercentage, x => target.CaucasianPercentage = x),
+                        "femaleratio" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.FemaleRatio, x => target.FemaleRatio = x),
+                        "height" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.Height, x => target.Height = x),
+                        "hispanicpercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.HispanicPercentage, x => target.HispanicPercentage = x),
+                        "indigenouspercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.IndigenousPercentage, x => target.IndigenousPercentage = x),
+                        "membersnumber" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.MembersNumber, x => target.MembersNumber = x),
+                        "salaryaverage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.SalaryAverage, x => target.SalaryAverage = x),
+                        "salarymean" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.SalaryMean, x => target.SalaryMean = x),
+                        "weight" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.Weight, x => target.Weight = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
             }
-
-            target.ArabPercentage = metricSource.ArabPercentage;
-            target.AsianPercentage = metricSource.AsianPercentage;
-            target.AverageAge = metricSource.AverageAge;
-            target.AverageEducationLength = metricSource.AverageEducationLength;
-            target.BlackPercentage = metricSource.BlackPercentage;
-            target.CaucasianPercentage = metricSource.CaucasianPercentage;
-            target.FemaleRatio = metricSource.FemaleRatio;
-            target.Height = metricSource.Height;
-            target.HispanicPercentage = metricSource.HispanicPercentage;
-            target.IndigenousPercentage = metricSource.IndigenousPercentage;
-            target.MembersNumber = metricSource.MembersNumber;
-            target.SalaryAverage = metricSource.SalaryAverage;
-            target.SalaryMean = metricSource.SalaryMean;
-            target.Weight = metricSource.Weight;
         }
 
         private void FillCompanyExecutiveStatistics(CompanyDTO source, Company targetCompany)
         {
-            if (source.ExecutiveStatistics == null) return;
-
-            var metricSource = source.ExecutiveStatistics;
-
-            CompanyExecutiveStatistics target;
-            if (targetCompany.CompanyExecutiveStatistics.Count == 1)
+            if (source.ExecutiveStatistics == null)
             {
-                target = targetCompany.CompanyExecutiveStatistics.First();
+                targetCompany.CompanyExecutiveStatistics.Clear();
             }
             else
             {
-                if (targetCompany.CompanyExecutiveStatistics.Count > 1)
+                var metricSource = source.ExecutiveStatistics;
+
+                CompanyExecutiveStatistics target;
+                if (targetCompany.CompanyExecutiveStatistics.Count == 1)
                 {
-                    silverContext.CompanyExecutiveStatistics.RemoveRange(targetCompany.CompanyExecutiveStatistics);
-                    targetCompany.CompanyExecutiveStatistics.Clear();
+                    target = targetCompany.CompanyExecutiveStatistics.First();
+                }
+                else
+                {
+                    if (targetCompany.CompanyExecutiveStatistics.Count > 1)
+                    {
+                        silverContext.CompanyExecutiveStatistics.RemoveRange(targetCompany.CompanyExecutiveStatistics);
+                        targetCompany.CompanyExecutiveStatistics.Clear();
+                    }
+
+                    target = new CompanyExecutiveStatistics()
+                    {
+                        CompanyId = targetCompany.Id,
+                    };
+                    silverContext.Add(target);
+                    targetCompany.CompanyExecutiveStatistics.Add(target);
                 }
 
-                target = new CompanyExecutiveStatistics()
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyExecutiveStatistics).Name];
+                foreach (var property in properties.Values)
                 {
-                    CompanyId = targetCompany.Id,
-                };
-                silverContext.Add(target);
-                targetCompany.CompanyExecutiveStatistics.Add(target);
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "arabpercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.ArabPercentage, x => target.ArabPercentage = x),
+                        "asianpercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.AsianPercentage, x => target.AsianPercentage = x),
+                        "averageage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.AverageAge, x => target.AverageAge = x),
+                        "averageeducationlength" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.AverageEducationLength, x => target.AverageEducationLength = x),
+                        "blackpercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.BlackPercentage, x => target.BlackPercentage = x),
+                        "caucasianpercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.CaucasianPercentage, x => target.CaucasianPercentage = x),
+                        "femaleratio" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.FemaleRatio, x => target.FemaleRatio = x),
+                        "height" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.Height, x => target.Height = x),
+                        "hispanicpercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.HispanicPercentage, x => target.HispanicPercentage = x),
+                        "indigenouspercentage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.IndigenousPercentage, x => target.IndigenousPercentage = x),
+                        "membersnumber" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.MembersNumber, x => target.MembersNumber = x),
+                        "salaryaverage" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.SalaryAverage, x => target.SalaryAverage = x),
+                        "salarymean" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.SalaryMean, x => target.SalaryMean = x),
+                        "weight" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.Weight, x => target.Weight = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
             }
-
-            target.ArabPercentage = metricSource.ArabPercentage;
-            target.AsianPercentage = metricSource.AsianPercentage;
-            target.AverageAge = metricSource.AverageAge;
-            target.AverageEducationLength = metricSource.AverageEducationLength;
-            target.BlackPercentage = metricSource.BlackPercentage;
-            target.CaucasianPercentage = metricSource.CaucasianPercentage;
-            target.FemaleRatio = metricSource.FemaleRatio;
-            target.Height = metricSource.Height;
-            target.HispanicPercentage = metricSource.HispanicPercentage;
-            target.IndigenousPercentage = metricSource.IndigenousPercentage;
-            target.MembersNumber = metricSource.MembersNumber;
-            target.SalaryAverage = metricSource.SalaryAverage;
-            target.SalaryMean = metricSource.SalaryMean;
-            target.Weight = metricSource.Weight;
         }
 
         private void FillCompanyKeyFinancialsMetrics(CompanyDTO source, Company targetCompany)
         {
-            if (source.KeyFinancialsMetrics == null) return;
-
-            var metricSource = source.KeyFinancialsMetrics;
-
-            CompanyKeyFinancialsMetrics target;
-            if (targetCompany.CompanyKeyFinancialsMetrics.Count == 1)
+            if (source.KeyFinancialsMetrics == null)
             {
-                target = targetCompany.CompanyKeyFinancialsMetrics.First();
+                silverContext.CompanyKeyFinancialsMetrics.RemoveRange(targetCompany.CompanyKeyFinancialsMetrics);
             }
             else
             {
-                if (targetCompany.CompanyKeyFinancialsMetrics.Count > 1)
+
+                var metricSource = source.KeyFinancialsMetrics;
+
+                CompanyKeyFinancialsMetrics target;
+                if (targetCompany.CompanyKeyFinancialsMetrics.Count == 1)
                 {
-                    silverContext.CompanyKeyFinancialsMetrics.RemoveRange(targetCompany.CompanyKeyFinancialsMetrics);
-                    targetCompany.CompanyKeyFinancialsMetrics.Clear();
+                    target = targetCompany.CompanyKeyFinancialsMetrics.First();
                 }
-
-                target = new CompanyKeyFinancialsMetrics()
+                else
                 {
-                    CompanyId = targetCompany.Id,
-                };
-                silverContext.Add(target);
-                targetCompany.CompanyKeyFinancialsMetrics.Add(target);
-            }
+                    if (targetCompany.CompanyKeyFinancialsMetrics.Count > 1)
+                    {
+                        silverContext.CompanyKeyFinancialsMetrics.RemoveRange(targetCompany.CompanyKeyFinancialsMetrics);
+                        targetCompany.CompanyKeyFinancialsMetrics.Clear();
+                    }
 
-            target.Employees = metricSource.Employees;
-            target.OperatingRevenue = metricSource.OperatingRevenue;
-            target.TotalAssets = metricSource.TotalAssets;
+                    target = new CompanyKeyFinancialsMetrics()
+                    {
+                        CompanyId = targetCompany.Id,
+                    };
+                    silverContext.Add(target);
+                    targetCompany.CompanyKeyFinancialsMetrics.Add(target);
+                }
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyKeyFinancialsMetrics).Name];
+                foreach (var property in properties.Values)
+                {
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "employees" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.Employees, x => target.Employees = x),
+                        "operatingrevenue" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.OperatingRevenue, x => target.OperatingRevenue = x),
+                        "totalassets" => ValidationHelper.ValidateAndSetProperty(property, () => metricSource.TotalAssets, x => target.TotalAssets = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
+            }
         }
 
         private void FillCompanyCountries(CompanyDTO source, Company targetCompany)
@@ -510,7 +740,8 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 {
                     targetEntity = new CompanyCountry()
                     {
-                        Company = targetCompany
+                        Company = targetCompany,
+                        CountryId = companyCountry.Country,
                     };
 
                     targetCompany.CompanyCountries.Add(targetEntity);
@@ -520,7 +751,12 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 {
                     targetEntity = targetCompanyCountries[companyCountry.Country];
                 }
-                targetEntity.Ticker = companyCountry.Ticker;
+
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyCountry).Name];
+                if(properties.ContainsKey("ticker"))
+                {
+                    ValidationHelper.ValidateAndSetProperty(properties["ticker"], () => companyCountry.Ticker, x => targetEntity.Ticker = x);
+                }
             }
         }
 
@@ -564,15 +800,29 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     targetEntity = targetCompanyIndustries[companyIndustry.Industry.Value];
                 }
 
-                targetEntity.IndustryCode = (IndustryCode)companyIndustry.IndustryCode.Value;
-                targetEntity.IsPrimary = companyIndustry.IsPrimary.Value;
-                targetEntity.TradeDescription = companyIndustry.TradeDescription;
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyIndustry).Name];
+                foreach(var property in properties.Values)
+                {
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "industry" => true,
+                        "industrycode" => ValidationHelper.ValidateAndSetProperty(property, () => companyIndustry.IndustryCode, x => targetEntity.IndustryCode = (IndustryCode)x.Value),
+                        "isprimary" => ValidationHelper.ValidateAndSetProperty(property, () => companyIndustry.IsPrimary, x => targetEntity.IsPrimary = x),
+                        "tradedescription" => ValidationHelper.ValidateAndSetProperty(property, () => companyIndustry.TradeDescription, x => targetEntity.TradeDescription = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
             }
         }
 
         private void FillCompanyNames(CompanyDTO source, Company targetCompany)
         {
             // names
+
+            var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyName).Name];
+            if (!(properties.ContainsKey("name") && properties["name"].IsEditable
+                && properties.ContainsKey("nametype") && properties["nametype"].IsEditable))
+                return;
 
             if (source.Names.Any(
                 x => x == null
@@ -642,10 +892,20 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 {
                     targetEntity = toUpsert[role];
                 }
-                
-                targetEntity.BaseSalary = role.BaseSalary;
-                targetEntity.JobTenure = role.JobTenure;
-                targetEntity.OtherIncentives = role.OtherIncentives;
+
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(Role).Name];
+                foreach (var property in properties.Values)
+                {
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "roletype" => true,
+                        "title" => true,
+                        "BaseSalary" => ValidationHelper.ValidateAndSetProperty(property, () => role.BaseSalary, x => targetEntity.BaseSalary = x),
+                        "jobtenure" => ValidationHelper.ValidateAndSetProperty(property, () => role.JobTenure, x => targetEntity.JobTenure = x),
+                        "otherincentives" => ValidationHelper.ValidateAndSetProperty(property, () => role.OtherIncentives, x => targetEntity.OtherIncentives = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
             }
         }
     }
