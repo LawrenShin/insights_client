@@ -192,18 +192,6 @@ namespace DigitalInsights.DataLoaders.Gold.SilverLoader
                                 //goldContext.Add(newCompanyName);
                             }
 
-                            // todo: add when becomes relevant
-                            /*foreach (var companyOperation in company.CompanyOperation)
-                            {
-                                var newCompanyOperation = new CompanyOperation()
-                                {
-                                    Company = newCompany,
-                                    Name = companyOperation.,
-                                };
-                                newCompany.CompanyOperation.Add(newCompanyOperation);
-                                GoldContext.Add(newCompanyOperation);
-                            }*/
-
                             foreach (var companyQuestion in company.CompanyQuestionnaires)
                             {
                                 var newCompanyQuestion = new CompanyQuestion()

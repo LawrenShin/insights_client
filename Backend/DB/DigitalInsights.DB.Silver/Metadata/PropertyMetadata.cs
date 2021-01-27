@@ -26,5 +26,6 @@ namespace DigitalInsights.DB.Silver
 		public string ChildrenEntityName { get; set; }
 		public string RangeLow { get; set; }
 		public string RangeHigh { get; set; }
+		public int FieldOrder { get; set; }
 	}
 }

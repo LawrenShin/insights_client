@@ -1987,6 +1987,8 @@ namespace DigitalInsights.DB.Silver
                     .HasMaxLength(30)
                     .HasColumnName("childrenentityname")
                     .HasDefaultValueSql("NULL::character varying");
+
+                entity.Property(e => e.FieldOrder).HasColumnName("fieldorder");
             });
 
             modelBuilder.Entity<User>(entity =>

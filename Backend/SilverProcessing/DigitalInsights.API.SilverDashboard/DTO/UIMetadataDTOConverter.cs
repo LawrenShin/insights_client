@@ -54,6 +54,9 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             writer.WritePropertyName("fieldType");
             writer.WriteValue(property.FieldType);
 
+            writer.WritePropertyName("fieldOrder");
+            writer.WriteValue(property.FieldOrder);
+
             if (property.ShouldSerializeAllowsNull())
             {
                 writer.WritePropertyName("allowsNull");

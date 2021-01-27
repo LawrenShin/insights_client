@@ -18,7 +18,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         {
             EntityName = entityName;
 
-            PropertyMetadata = groups[entityName].Values.Select(x =>
+            PropertyMetadata = groups[entityName].Values.OrderBy(x=>x.FieldOrder).Select(x =>
                 new PropertyMetadataDTO()
                 {
                     AllowsNull = x.AllowsNull,
@@ -26,6 +26,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
                     Dictionary = x.DropDownDictionary,
                     DisplayName = x.FrontendName,
                     FieldType = x.FieldType.ToString(),
+                    FieldOrder = x.FieldOrder,
                     IsEditable = x.IsEditable,
                     RangeHigh = x.RangeHigh,
                     RangeLow = x.RangeLow,

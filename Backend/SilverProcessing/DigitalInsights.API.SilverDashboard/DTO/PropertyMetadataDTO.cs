@@ -25,6 +25,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         public string RangeHigh { get; set; }
         public bool IsEditable { get; set; }
         public bool AllowsNull { get; set; }
+        public int FieldOrder { get; set; }
 
         public bool ShouldSerializeDictionary()
         {
