@@ -82,6 +82,7 @@ namespace DigitalInsights.DB.Silver
         public virtual DbSet<PropertyMetadata> PropertyMetadata { get; set; }
         public virtual DbSet<PersonNationality> PersonNationalities { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -1986,6 +1987,26 @@ namespace DigitalInsights.DB.Silver
                     .HasMaxLength(30)
                     .HasColumnName("childrenentityname")
                     .HasDefaultValueSql("NULL::character varying");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(e => e.UserName)
+                    .HasName("users_pkey");
+
+                entity.ToTable("users");
+
+                entity.HasIndex(e => e.UserName, "usersidpk")
+                    .IsUnique();
+
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(50)
+                    .HasColumnName("username");
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(300)
+                    .HasColumnName("password");
             });
 
             OnModelCreatingPartial(modelBuilder);

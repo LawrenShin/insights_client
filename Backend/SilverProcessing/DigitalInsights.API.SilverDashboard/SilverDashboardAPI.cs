@@ -8,6 +8,7 @@ using DigitalInsights.DB.Silver.Entities;
 using DigitalInsights.API.SilverDashboard.Services;
 using DigitalInsights.API.SilverDashboard.Helpers;
 using DigitalInsights.API.SilverDashboard.DTO;
+using Microsoft.IdentityModel.Tokens;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
@@ -33,50 +34,13 @@ namespace DigitalInsights.API.SilverDashboard
         {
         }
 
-        //public APIGatewayCustomAuthorizerResponse Authorize(APIGatewayCustomAuthorizerRequest request, ILambdaContext context)
-        //{
-        //    var defaultAnswer =
-        //        new APIGatewayCustomAuthorizerResponse()
-        //        {
-        //            PolicyDocument = new APIGatewayCustomAuthorizerPolicy
-        //            {
-        //                Version = "2012-10-17",
-        //                Statement = new List<APIGatewayCustomAuthorizerPolicy.IAMPolicyStatement>() {
-        //                    new APIGatewayCustomAuthorizerPolicy.IAMPolicyStatement()
-        //                    {
-        //                        Action = new HashSet<string>(){"executeApi:Invoke"},
-        //                        Effect = "Deny",
-        //                        Resource = new HashSet<string>(){  request.MethodArn }
-        //                    }
-        //                }
-        //            }
-        //        };
-
-        //    try
-        //    {
-        //        context.Logger.LogLine("Get Request\n");
-
-        //        if (request.Headers != null && request.Headers.ContainsKey(AUTH_HEADER))
-        //        {
-        //            var result = JWTHelper.ValidateToken(request.Headers[AUTH_HEADER]);
-
-        //            defaultAnswer.PolicyDocument.Statement.First().Effect = result ? "Allow" : "Deny";
-        //        }
-        //    }
-        //    catch
-        //    {
-
-        //    }
-        //    return defaultAnswer;
-        //}
-
         private bool ValidateRequest(APIGatewayProxyRequest request)
         {
             if (request.Headers != null && request.Headers.ContainsKey(AUTH_HEADER))
             {
                 var token = request.Headers[AUTH_HEADER];
 
-                return new LoginService().ValidateToken(token);
+                return new LoginService(new SilverContext()).ValidateToken(token);
             }
             return false;
         }
@@ -108,7 +72,13 @@ namespace DigitalInsights.API.SilverDashboard
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
                     .WithJsonContent()
-                    .WithBody(JsonConvert.SerializeObject(new LoginService().CreateToken(authInfo)))
+                    .WithBody(JsonConvert.SerializeObject(new LoginService(new SilverContext()).CreateToken(authInfo)))
+                    .Build();
+            }
+            catch(SecurityTokenValidationException securityException)
+            {
+                return new APIGatewayProxyResponseBuilder()
+                    .WithSimpleError(securityException.Message)
                     .Build();
             }
             catch (Exception ex)

@@ -577,6 +577,24 @@ INSERT INTO PropertyMetadata(
 
 -- DATA TABLES --
 
+--Code for Users table
+
+DROP TABLE IF EXISTS Users;
+
+CREATE TABLE IF NOT EXISTS Users
+(
+	UserName VARCHAR(50) NOT NULL PRIMARY KEY,
+	Password VARCHAR(300) NOT NULL
+);
+
+CREATE UNIQUE INDEX UsersIdPk
+    ON public.Users USING btree
+    (UserName ASC)
+    TABLESPACE pg_default;
+
+ALTER TABLE public.Users
+    CLUSTER ON UsersIdPk;
+
 --Code for country Demographics table
 
 DROP TABLE IF EXISTS CountryDemographics;

@@ -1,5 +1,7 @@
 using DigitalInsights.API.SilverDashboard.DTO;
+using DigitalInsights.API.SilverDashboard.Security;
 using DigitalInsights.API.SilverDashboard.Services;
+using DigitalInsights.DB.Silver;
 using NUnit.Framework;
 
 namespace DigitalInsights.API.SilverDashboard.UnitTests
@@ -11,16 +13,16 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
         [SetUp]
         public void Setup()
         {
-            loginService = new LoginService();
+            loginService = new LoginService(new SilverContext());
         }
 
         [Test]
-        public void TestCreatAndValidateToken()
+        public void TestCreateAndValidateToken()
         {
             var login = new AuthInfoDTO()
             {
-                UserName = "123",
-                Password = "123"
+                UserName = "testUser",
+                Password = "1qaz@@wsx"
             };
 
             var tokenData = loginService.CreateToken(login);
@@ -29,6 +31,14 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
             Assert.IsNotNull(tokenData.Token);
 
             Assert.IsTrue(loginService.ValidateToken(tokenData.Token));
+        }
+
+        [Test]
+        public void PasswordHelperTest()
+        {
+            var password = "mko)),lp-";
+            var result = PasswordHelper.HashPassword(password);
+            Assert.AreEqual(PasswordVerificationResult.Success, PasswordHelper.VerifyHashedPassword(result, password));
         }
     }
 }
