@@ -7,11 +7,11 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Family
 {
     internal class OverallFamilyScoreModel : ASpecificModel
     {
-        public override ScoreType ScoreType => ScoreType.FamilyScore;
+        public override RatingType ScoreType => RatingType.FamilyScore;
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
-            return  new KeyValuePair<ScoreType, double>(ScoreType, 0);
+            return  new KeyValuePair<RatingType, double>(ScoreType, 0);
         }
     }
 }

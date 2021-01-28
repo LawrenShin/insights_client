@@ -7,7 +7,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Educatio
 {
     internal class CompanyEducationScoreModel : AQuestionnaireBasedModel
     {
-        public override ScoreType ScoreType => ScoreType.EducationScore;
+        public override RatingType ScoreType => RatingType.EducationScore;
 
         public CompanyEducationScoreModel()
         {

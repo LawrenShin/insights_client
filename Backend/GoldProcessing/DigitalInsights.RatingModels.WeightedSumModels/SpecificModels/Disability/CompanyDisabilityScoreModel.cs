@@ -13,9 +13,9 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Disabili
         {
         }
 
-        public override ScoreType ScoreType => ScoreType.DisabilityScore;
+        public override RatingType ScoreType => RatingType.DisabilityScore;
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             var wheelchairWeight = 0;
             var disabledWeight = 0d;
@@ -34,7 +34,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Disabili
                 var code = company.LegalJurisdiction.Split('-')[0];
                 if (!countries.ContainsKey(code))
                 {
-                    return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+                    return new KeyValuePair<RatingType, double>(ScoreType, 0);
                 }
                 var country = countries[code];
                 var countryPercentage = country.CountryDisabilities.First().Disabled;
@@ -42,7 +42,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Disabili
                 disabledWeight = Math.Min(companyPercentage, countryPercentage) / Math.Max(companyPercentage, countryPercentage) * 100d;
             }
 
-            return new KeyValuePair<ScoreType, double>(ScoreType,
+            return new KeyValuePair<RatingType, double>(ScoreType,
                 0.7 * wheelchairWeight + 0.3 * disabledWeight);
         }
     }

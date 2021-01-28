@@ -12,5 +12,5 @@
   "function-runtime": "dotnetcore3.1",
   "function-memory-size": 256,
   "function-timeout": 30,
-  "function-handler": "DigitalInsights.SnapshotUpdaters.SilverToGoldUpdater::DigitalInsights.SnapshotUpdaters.SilverToGoldUpdater.SilverToGoldUpdater::FunctionHandler"
+  "function-handler": "DigitalInsights.DataLoaders.Gold.SilverLoader::DigitalInsights.DataLoaders.Gold.SilverLoader.SilverLoader::FunctionHandler"
 }

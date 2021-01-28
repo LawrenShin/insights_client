@@ -7,7 +7,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Sexualit
 {
     internal class CompanySexualityScoreModel : AQuestionnaireBasedModel
     {
-        public override ScoreType ScoreType => ScoreType.SexualityScore;
+        public override RatingType ScoreType => RatingType.SexualityScore;
 
         public CompanySexualityScoreModel()
         {

@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalInsights.DB.Gold", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalInsights.DB.Silver", "..\DB\DigitalInsights.DB.Silver\DigitalInsights.DB.Silver.csproj", "{F9622C25-135C-48F5-B4C1-6D1647F4E241}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalInsights.DB.Common", "..\DB\DigitalInsights.DB.Common\DigitalInsights.DB.Common.csproj", "{E7AF74F0-B554-4EA1-B2C7-1B567048ED2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{F9622C25-135C-48F5-B4C1-6D1647F4E241}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9622C25-135C-48F5-B4C1-6D1647F4E241}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9622C25-135C-48F5-B4C1-6D1647F4E241}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7AF74F0-B554-4EA1-B2C7-1B567048ED2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7AF74F0-B554-4EA1-B2C7-1B567048ED2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7AF74F0-B554-4EA1-B2C7-1B567048ED2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7AF74F0-B554-4EA1-B2C7-1B567048ED2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{A67A2310-DD45-447C-AB81-1B83A316A4C0} = {D27C8DC2-C5D7-407E-93EE-2CB960132ED3}
 		{17C39974-D56F-42F8-A55D-765E23B2A3E5} = {FE15A932-D71D-40B7-83A5-22BDD8BA7ECB}
 		{F9622C25-135C-48F5-B4C1-6D1647F4E241} = {FE15A932-D71D-40B7-83A5-22BDD8BA7ECB}
+		{E7AF74F0-B554-4EA1-B2C7-1B567048ED2B} = {FE15A932-D71D-40B7-83A5-22BDD8BA7ECB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A56D719-1089-48CB-9828-EF552B7332C3}

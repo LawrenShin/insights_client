@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DigitalInsights.RatingModels.WeightedSumModels
+namespace DigitalInsights.DB.Gold.Enums
 {
-    public enum ScoreType
+    public enum RatingType
     {
         CertifiedScore,
         QuantitativeScore,

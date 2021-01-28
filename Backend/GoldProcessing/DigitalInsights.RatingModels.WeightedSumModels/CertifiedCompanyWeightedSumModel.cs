@@ -44,34 +44,34 @@ namespace DigitalInsights.RatingModels.WeightedSumModels
                 { new NegativeSentimentScoreModel()},
             };
 
-        private Dictionary<ScoreType, double> weights =
-            new Dictionary<ScoreType, double>()
+        private Dictionary<RatingType, double> weights =
+            new Dictionary<RatingType, double>()
             {
-                { ScoreType.ExecScore, 0.12 },
-                { ScoreType.BoardScore,0.12},
-                { ScoreType.DIScore, 0.1},
-                { ScoreType.GenderScore,0.1},
-                { ScoreType.RaceScore,0.1},
-                { ScoreType.ReligionScore,0.03},
-                { ScoreType.NationalityScore,0.005},
-                { ScoreType.UrbanScore,0.04},
-                { ScoreType.FamilyScore,0.02},
-                { ScoreType.SalaryScore,0.03},
-                { ScoreType.OrganizationalScore,0.04},
-                { ScoreType.DisabilityScore,0.02},
-                { ScoreType.SexualityScore,0.05},
-                { ScoreType.EducationScore,0.04},
-                { ScoreType.CountryScore,0.05},
-                { ScoreType.IndustryScore,0.01},
-                { ScoreType.PositiveSentimentScore,0.05},
-                { ScoreType.NegativeSentimentScore,-0.2}
+                { RatingType.ExecScore, 0.12 },
+                { RatingType.BoardScore,0.12},
+                { RatingType.DIScore, 0.1},
+                { RatingType.GenderScore,0.1},
+                { RatingType.RaceScore,0.1},
+                { RatingType.ReligionScore,0.03},
+                { RatingType.NationalityScore,0.005},
+                { RatingType.UrbanScore,0.04},
+                { RatingType.FamilyScore,0.02},
+                { RatingType.SalaryScore,0.03},
+                { RatingType.OrganizationalScore,0.04},
+                { RatingType.DisabilityScore,0.02},
+                { RatingType.SexualityScore,0.05},
+                { RatingType.EducationScore,0.04},
+                { RatingType.CountryScore,0.05},
+                { RatingType.IndustryScore,0.01},
+                { RatingType.PositiveSentimentScore,0.05},
+                { RatingType.NegativeSentimentScore,-0.2}
             };
 
         public IEnumerable<ISpecificModel> RatingModels => models;
 
-        public ScoreType ScoreType => ScoreType.CertifiedScore;
+        public RatingType ScoreType => RatingType.CertifiedScore;
 
-        public double CalculateRating(IDictionary<ScoreType, double> scores)
+        public double CalculateRating(IDictionary<RatingType, double> scores)
         {
             if (!weights.All(x => scores.ContainsKey(x.Key)))
             {

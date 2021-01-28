@@ -7,7 +7,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Family
 {
     internal class CompanyFamilyScoreModel : AQuestionnaireBasedModel
     {
-        public override ScoreType ScoreType => ScoreType.FamilyScore;
+        public override RatingType ScoreType => RatingType.FamilyScore;
 
         public CompanyFamilyScoreModel()
         {

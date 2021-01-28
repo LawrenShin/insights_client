@@ -19,11 +19,11 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels
             };
         }
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             var answers = company.CompanyQuestionnaires.ToDictionary(x => x.Question, x => x.Answer);
 
-            return new KeyValuePair<ScoreType, double>(ScoreType,
+            return new KeyValuePair<RatingType, double>(ScoreType,
                 questions.Select(x => x.Item2 * (answers.ContainsKey(x.Item1) ? answers[x.Item1] : 0)).Sum());
         }
     }

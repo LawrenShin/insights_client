@@ -6,14 +6,14 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.National
 {
     internal class OverallNationalityScoreModel : ASpecificModel
     {
-        public override ScoreType ScoreType => ScoreType.NationalityScore;
+        public override RatingType ScoreType => RatingType.NationalityScore;
 
         protected virtual bool IsRoleMatching(Role role)
         {
             return true;
         }
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             var roles = company.Roles.ToList();
 
@@ -22,7 +22,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.National
             var code = company.LegalJurisdiction.Split('-')[0];
             if (!countries.ContainsKey(code))
             {
-                return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+                return new KeyValuePair<RatingType, double>(ScoreType, 0);
             }
             var country = countries[code];
 
@@ -50,9 +50,9 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.National
                 }
             }
 
-            if (count == 0) return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+            if (count == 0) return new KeyValuePair<RatingType, double>(ScoreType, 0);
 
-            return new KeyValuePair<ScoreType, double>(ScoreType, 100d * inCount / count);
+            return new KeyValuePair<RatingType, double>(ScoreType, 100d * inCount / count);
         }
     }
 }

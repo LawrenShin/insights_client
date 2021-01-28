@@ -7,14 +7,14 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Age
 {
     internal class OverallAgeScoreModel : ASpecificModel
     {
-        public override ScoreType ScoreType => ScoreType.AgeScore;
+        public override RatingType ScoreType => RatingType.AgeScore;
 
         protected virtual bool IsRoleMatching(Role role)
         {
             return true;
         }
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             var roles = company.Roles.ToList();
 
@@ -32,19 +32,19 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Age
                 }
             }
 
-            if (count == 0) return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+            if (count == 0) return new KeyValuePair<RatingType, double>(ScoreType, 0);
 
             double averageAge = (double)total / count;
 
             var code = company.LegalJurisdiction.Split('-')[0];
             if (!countries.ContainsKey(code))
             {
-                return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+                return new KeyValuePair<RatingType, double>(ScoreType, 0);
             }
             var country = countries[code];
             var countryAge = country.CountryAges.First().Avg18;
 
-            return new KeyValuePair<ScoreType, double>(ScoreType, Math.Min(averageAge, countryAge) / Math.Max(averageAge, countryAge));
+            return new KeyValuePair<RatingType, double>(ScoreType, Math.Min(averageAge, countryAge) / Math.Max(averageAge, countryAge));
         }
     }
 }

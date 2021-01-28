@@ -46,11 +46,11 @@ namespace DigitalInsights.RatingModels.WeightedSumModels
             Tuple.Create<ASpecificModel, double>(new BoardDisabilityScoreModel(), DISABILITY_WEIGHT),
         };
 
-        public override ScoreType ScoreType => ScoreType.BoardScore;
+        public override RatingType ScoreType => RatingType.BoardScore;
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
-            return new KeyValuePair<ScoreType, double>(ScoreType,
+            return new KeyValuePair<RatingType, double>(ScoreType,
                 models.Aggregate(0.0d, (x, y) => x + y.Item1.CalculateScore(company).Value * y.Item2));
         }
     }

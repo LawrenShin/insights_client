@@ -7,14 +7,14 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Gender
 {
     internal class OverallGenderScoreModel : ASpecificModel
     {
-        public override ScoreType ScoreType => ScoreType.GenderScore;
+        public override RatingType ScoreType => RatingType.GenderScore;
 
         protected virtual bool IsRoleMatching(Role role)
         {
             return true;
         }
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             var roles = company.Roles.ToList();
 
@@ -45,9 +45,9 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Gender
                 }
             }
 
-            if (male == 0 || female == 0) return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+            if (male == 0 || female == 0) return new KeyValuePair<RatingType, double>(ScoreType, 0);
 
-            return new KeyValuePair<ScoreType, double>(ScoreType, (other > 0 ? 5d : -5d) + Math.Min(male, female) / Math.Max(male, female));
+            return new KeyValuePair<RatingType, double>(ScoreType, (other > 0 ? 5d : -5d) + Math.Min(male, female) / Math.Max(male, female));
         }
     }
 }

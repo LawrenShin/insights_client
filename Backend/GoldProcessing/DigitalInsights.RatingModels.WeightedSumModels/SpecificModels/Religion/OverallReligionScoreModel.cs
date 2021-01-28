@@ -7,14 +7,14 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Religion
 {
     internal class OverallReligionScoreModel : ASpecificModel
     {
-        public override ScoreType ScoreType => ScoreType.ReligionScore;
+        public override RatingType ScoreType => RatingType.ReligionScore;
 
         protected virtual bool IsRoleMatching(Role role)
         {
             return true;
         }
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             var roles = company.Roles.ToList();
 
@@ -42,12 +42,12 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Religion
                 }
             }
 
-            if (count == 0) new KeyValuePair<ScoreType, double>(ScoreType, 0);
+            if (count == 0) new KeyValuePair<RatingType, double>(ScoreType, 0);
 
             var code = company.LegalJurisdiction.Split('-')[0];
             if (!countries.ContainsKey(code))
             {
-                return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+                return new KeyValuePair<RatingType, double>(ScoreType, 0);
             }
             var country = countries[code];
             var countryReligion = country.CountryReligions.First();
@@ -66,10 +66,10 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Religion
 
             if(!moreThanZero.Any())
             {
-                return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+                return new KeyValuePair<RatingType, double>(ScoreType, 0);
             }
 
-            return new KeyValuePair<ScoreType, double>(ScoreType, specificReligionScores.Where(x => x > 0).Average());
+            return new KeyValuePair<RatingType, double>(ScoreType, specificReligionScores.Where(x => x > 0).Average());
         }
     }
 }

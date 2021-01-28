@@ -7,14 +7,14 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Educatio
 {
     internal class OverallEducationScoreModel : ASpecificModel
     {
-        public override ScoreType ScoreType => ScoreType.EducationScore;
+        public override RatingType ScoreType => RatingType.EducationScore;
 
         protected virtual bool IsRoleMatching(Role role)
         {
             return true;
         }
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             const double HIGH_WEIGHT = 0.4d;
             const double SUBJECT_WEIGHT = 0.3d;
@@ -51,9 +51,9 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Educatio
                 }
             }
 
-            if (count == 0) return new KeyValuePair<ScoreType, double>(ScoreType,0);
+            if (count == 0) return new KeyValuePair<RatingType, double>(ScoreType,0);
 
-            return new KeyValuePair<ScoreType, double>(ScoreType,
+            return new KeyValuePair<RatingType, double>(ScoreType,
                 HIGH_WEIGHT * (
                     (totalHigh > 0 ? 50d : 0) + 
                     (totalBachelor > 1 || totalMaster > 1 || totalMasterPlus > 1 ? 0: 25d) +

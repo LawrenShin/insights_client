@@ -10,7 +10,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Organiza
 {
     internal class CompanyOrganizationalScoreModel : AQuestionnaireBasedModel
     {
-        public override ScoreType ScoreType => ScoreType.OrganizationalScore;
+        public override RatingType ScoreType => RatingType.OrganizationalScore;
 
         public CompanyOrganizationalScoreModel()
         {
@@ -22,7 +22,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Organiza
             };
         }
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             var baseResult = base.CalculateScore(company);
 
@@ -44,7 +44,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Organiza
                                 ? 30
                                 : 0;
             }
-            return new KeyValuePair<ScoreType, double>(ScoreType, baseResult.Value + 0.3 * hierarchyScore);
+            return new KeyValuePair<RatingType, double>(ScoreType, baseResult.Value + 0.3 * hierarchyScore);
         }
     }
 }

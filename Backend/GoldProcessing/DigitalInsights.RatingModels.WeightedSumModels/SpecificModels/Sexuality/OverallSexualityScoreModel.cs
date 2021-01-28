@@ -8,14 +8,14 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Sexualit
 {
     internal class OverallSexualityScoreModel : ASpecificModel
     {
-        public override ScoreType ScoreType => ScoreType.SexualityScore;
+        public override RatingType ScoreType => RatingType.SexualityScore;
 
         protected virtual bool IsRoleMatching(Role role)
         {
             return true;
         }
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             var roles = company.Roles.ToList();
 
@@ -35,11 +35,11 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Sexualit
                 }
             }
 
-            if (count == 0) return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+            if (count == 0) return new KeyValuePair<RatingType, double>(ScoreType, 0);
 
             double percentageLBGTQ = ((double)totalLBGTQ) / count;
 
-            return new KeyValuePair<ScoreType, double>(ScoreType, 
+            return new KeyValuePair<RatingType, double>(ScoreType, 
                 (totalReported > 0 ? 50d : 0) +
                 (percentageLBGTQ > 0.1d && percentageLBGTQ < 0.15 ? 50d : 0));
         }

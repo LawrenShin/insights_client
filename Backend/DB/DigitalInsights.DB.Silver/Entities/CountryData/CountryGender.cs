@@ -9,7 +9,7 @@ namespace DigitalInsights.DB.Silver.Entities.CountryData
         public int Id { get; set; }
         public int CountryId { get; set; }
         public double MalePopulationPercentage { get; set; }
-        public double FemalePopulationpercetage { get; set; }
+        public double FemalePopulationPercentage { get; set; }
         public double FemaleWorkforce { get; set; }
         public double FemaleWorkforcePercentage { get; set; }
         public double FemaleWorkforcePopulationPercentage { get; set; }

@@ -617,9 +617,9 @@ namespace DigitalInsights.DB.Silver
                     .HasColumnName("effectivefrom")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                var industryCodeConverter = new ValueConverter<IndustryCode?, int?>(
+                var industryCodeConverter = new ValueConverter<Common.Enums.IndustryCode?, int?>(
                     v => v != null ? (int)v : null,
-                    v => v != null ? (IndustryCode)v : null
+                    v => v != null ? (Common.Enums.IndustryCode)v : null
                     );
 
                 entity.Property(e => e.IndustryCode)
@@ -1277,7 +1277,7 @@ namespace DigitalInsights.DB.Silver
 
                 entity.Property(e => e.FemaleParliamentShare).HasColumnName("femaleparliamentshare");
 
-                entity.Property(e => e.FemalePopulationpercetage).HasColumnName("femalepopulationpercetage");
+                entity.Property(e => e.FemalePopulationPercentage).HasColumnName("femalepopulationpercetage");
 
                 entity.Property(e => e.FemalePromotionPolicy).HasColumnName("femalepromotionpolicy");
 

@@ -8,14 +8,14 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Race
 {
     internal class OverallRaceScoreModel : ASpecificModel
     {
-        public override ScoreType ScoreType => ScoreType.RaceScore;
+        public override RatingType ScoreType => RatingType.RaceScore;
 
         protected virtual bool IsRoleMatching(Role role)
         {
             return true;
         }
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             var roles = company.Roles.ToList();
 
@@ -44,12 +44,12 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Race
             }
 
             if (count == 0)
-                return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+                return new KeyValuePair<RatingType, double>(ScoreType, 0);
 
             var code = company.LegalJurisdiction.Split('-')[0];
             if (!countries.ContainsKey(code))
             {
-                return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+                return new KeyValuePair<RatingType, double>(ScoreType, 0);
             }
             var country = countries[code];
             var countryRace = country.CountryRaces.First();
@@ -64,7 +64,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Race
                 Math.Min((double)indigenious / count, countryRace.Indegineous) / Math.Max((double)indigenious / count, countryRace.Indegineous),
             };
 
-            return new KeyValuePair<ScoreType, double>(ScoreType, specificRaceScores.Where(x => x > 0).Average());
+            return new KeyValuePair<RatingType, double>(ScoreType, specificRaceScores.Where(x => x > 0).Average());
         }
     }
 }

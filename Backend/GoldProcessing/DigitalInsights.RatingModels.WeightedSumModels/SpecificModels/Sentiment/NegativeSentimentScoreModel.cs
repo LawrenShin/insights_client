@@ -6,12 +6,12 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Sentimen
 {
     internal class NegativeSentimentScoreModel : ASpecificModel
     {
-        public override ScoreType ScoreType => ScoreType.NegativeSentimentScore;
+        public override RatingType ScoreType => RatingType.NegativeSentimentScore;
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             double result = 0;
-            return new KeyValuePair<ScoreType, double>(ScoreType, result);
+            return new KeyValuePair<RatingType, double>(ScoreType, result);
         }
     }
 }

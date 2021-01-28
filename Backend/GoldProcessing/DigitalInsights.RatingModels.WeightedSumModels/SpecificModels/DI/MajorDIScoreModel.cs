@@ -28,6 +28,6 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.DI
             };
         }
 
-        public override ScoreType ScoreType => ScoreType.DIScore;
+        public override RatingType ScoreType => RatingType.DIScore;
     }
 }

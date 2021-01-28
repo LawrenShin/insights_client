@@ -13,10 +13,10 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Salary
         {
         }
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             var companyExtendedData = company.CompanyExtendedData.FirstOrDefault();
-            if (companyExtendedData == null) return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+            if (companyExtendedData == null) return new KeyValuePair<RatingType, double>(ScoreType, 0);
 
             double execSalaryCoefficient = 0;
 
@@ -46,7 +46,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Salary
                 }
             }
 
-            return new KeyValuePair<ScoreType, double>(ScoreType,
+            return new KeyValuePair<RatingType, double>(ScoreType,
                 (companyExtendedData.RetentionRate.HasValue 
                     ? companyExtendedData.RetentionRate.Value * 0.7 
                     : 0) +

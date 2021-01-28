@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 #nullable disable
 
-namespace DigitalInsights.DB.Gold.Entities
+namespace DigitalInsights.DB.Gold.Entities.CompanyData
 {
     public partial class CompanyMatch
     {

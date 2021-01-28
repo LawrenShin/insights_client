@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace DigitalInsights.DB.Gold.Entities
 {
-    public partial class CompanyQuestion
+    public partial class Rating
     {
         public int Id { get; set; }
-        public int? CompanyId { get; set; }
-        public Enums.CompanyQuestion Question { get; set; }
-        public int Answer { get; set; }
+        public int CompanyId { get; set; }
+        public Enums.RatingType RatingType { get; set; }
+        public double RatingValue { get; set; }
         public DateTime EffectiveFrom { get; set; }
 
         public virtual Company Company { get; set; }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace DigitalInsights.DataLoaders.Silver.GLEIFLoader
+namespace DigitalInsights.DB.Silver.Entities
 {
     public partial class IndustryCode
     {

@@ -6,12 +6,12 @@ namespace DigitalInsights.RatingModels.WeightedSumModels
 {
     internal class CountryScoreModel : ASpecificModel
     {
-        public override ScoreType ScoreType => ScoreType.CountryScore;
+        public override RatingType ScoreType => RatingType.CountryScore;
 
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             double result = 0;
-            return new KeyValuePair<ScoreType, double>(ScoreType, result);
+            return new KeyValuePair<RatingType, double>(ScoreType, result);
         }
     }
 }

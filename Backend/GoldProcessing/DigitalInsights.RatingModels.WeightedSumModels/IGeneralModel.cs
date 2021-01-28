@@ -7,9 +7,9 @@ namespace DigitalInsights.RatingModels.WeightedSumModels
 {
     public interface IGeneralModel
     {
-        public ScoreType ScoreType { get; }
+        public RatingType ScoreType { get; }
 
-        public double CalculateRating(IDictionary<ScoreType, double> scores);
+        public double CalculateRating(IDictionary<RatingType, double> scores);
 
         public double CalculateRating(Company company);
 

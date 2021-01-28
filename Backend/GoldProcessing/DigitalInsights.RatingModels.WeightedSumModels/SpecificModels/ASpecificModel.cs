@@ -28,8 +28,8 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels
                     .Include(x => x.CountryUrbans).ToDictionary(x => x.Code, x => x);
         }
 
-        public abstract ScoreType ScoreType { get; }
+        public abstract RatingType ScoreType { get; }
 
-        public abstract KeyValuePair<ScoreType, double> CalculateScore(Company company);
+        public abstract KeyValuePair<RatingType, double> CalculateScore(Company company);
     }
 }

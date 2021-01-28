@@ -8,7 +8,7 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Urban
 {
     internal class BoardUrbanScoreModel : OverallUrbanScoreModel
     {
-        public override KeyValuePair<ScoreType, double> CalculateScore(Company company)
+        public override KeyValuePair<RatingType, double> CalculateScore(Company company)
         {
             var roles = company.Roles.ToList();
 
@@ -46,9 +46,9 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels.Urban
                 }
             }
 
-            if (count == 0) return new KeyValuePair<ScoreType, double>(ScoreType, 0);
+            if (count == 0) return new KeyValuePair<RatingType, double>(ScoreType, 0);
 
-            return new KeyValuePair<ScoreType, double>(ScoreType, (totalUrban > 0 ? 50d : 0) +
+            return new KeyValuePair<RatingType, double>(ScoreType, (totalUrban > 0 ? 50d : 0) +
                 (totalUrban == 0 ?
                     0d :
                     (boardUrban + bothUrban > 1) || (boardRural + bothRural > 1) ?

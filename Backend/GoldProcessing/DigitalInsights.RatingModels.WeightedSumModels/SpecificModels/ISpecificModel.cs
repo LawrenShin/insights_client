@@ -8,8 +8,8 @@ namespace DigitalInsights.RatingModels.WeightedSumModels.SpecificModels
 {
     public interface ISpecificModel
     {
-        public ScoreType ScoreType { get; }
+        public RatingType ScoreType { get; }
 
-        public KeyValuePair<ScoreType, double> CalculateScore(Company company);
+        public KeyValuePair<RatingType, double> CalculateScore(Company company);
     }
 }

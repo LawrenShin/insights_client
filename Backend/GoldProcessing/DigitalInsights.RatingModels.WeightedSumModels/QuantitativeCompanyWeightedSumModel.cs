@@ -33,23 +33,23 @@ namespace DigitalInsights.RatingModels.WeightedSumModels
                 { new NegativeSentimentScoreModel()},
             };
 
-        private Dictionary<ScoreType, double> weights =
-            new Dictionary<ScoreType, double>()
+        private Dictionary<RatingType, double> weights =
+            new Dictionary<RatingType, double>()
             {
-                { ScoreType.ExecScore, 0.3 },
-                { ScoreType.BoardScore,0.2 },
-                { ScoreType.DIScore, 0.1 },
-                { ScoreType.CountryScore, 0.15 },
-                { ScoreType.IndustryScore, 0.05 },
-                { ScoreType.PositiveSentimentScore, 0.05 },
-                { ScoreType.NegativeSentimentScore, -0.15 }
+                { RatingType.ExecScore, 0.3 },
+                { RatingType.BoardScore,0.2 },
+                { RatingType.DIScore, 0.1 },
+                { RatingType.CountryScore, 0.15 },
+                { RatingType.IndustryScore, 0.05 },
+                { RatingType.PositiveSentimentScore, 0.05 },
+                { RatingType.NegativeSentimentScore, -0.15 }
             };
 
         public IEnumerable<ISpecificModel> RatingModels => models;
 
-        public ScoreType ScoreType => ScoreType.QuantitativeScore;
+        public RatingType ScoreType => RatingType.QuantitativeScore;
 
-        public double CalculateRating(IDictionary<ScoreType, double> scores)
+        public double CalculateRating(IDictionary<RatingType, double> scores)
         {
             if (!weights.All(x => scores.ContainsKey(x.Key)))
             {
