@@ -9,6 +9,10 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 {
     public class CompanyGenderMetricsDTO
     {
+        public CompanyGenderMetricsDTO()
+        {
+
+        }
         public CompanyGenderMetricsDTO(CompanyGenderMetrics source)
         {
             GenderMale = source.GenderMale;
@@ -20,12 +24,12 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             GenderRatioSenior = source.GenderRatioSenior;
         }
 
-        public double? GenderMale { get; private set; }
-        public double? GenderOther { get; private set; }
-        public double? GenderPayGap { get; private set; }
-        public double? GenderRatioAll { get; private set; }
-        public double? GenderRatioBoard { get; private set; }
-        public double? GenderRatioMiddle { get; private set; }
-        public double? GenderRatioSenior { get; private set; }
+        public double? GenderMale { get; set; }
+        public double? GenderOther { get; set; }
+        public double? GenderPayGap { get; set; }
+        public double? GenderRatioAll { get; set; }
+        public double? GenderRatioBoard { get; set; }
+        public double? GenderRatioMiddle { get; set; }
+        public double? GenderRatioSenior { get; set; }
     }
 }

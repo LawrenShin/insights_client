@@ -279,8 +279,6 @@ namespace DigitalInsights.API.SilverDashboard
         {
             try
             {
-                context.Logger.LogLine("Get Request\n");
-
                 if (!ValidateRequest(request))
                 {
                     return new APIGatewayProxyResponseBuilder()
@@ -295,8 +293,10 @@ namespace DigitalInsights.API.SilverDashboard
                 }
 
                 var service = new CompanyService(new SilverContext());
-                service.UpdateOrInsertCompany(
-                    JsonConvert.DeserializeObject<CompanyDTO>(request.Body));                
+                var dto = JsonConvert.DeserializeObject<CompanyDTO>(
+                    request.Body, 
+                    new JsonSerializerSettings() { ContractResolver = new MetadataBasedContractResolver() });
+                service.UpdateOrInsertCompany(dto);
 
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
@@ -445,7 +445,10 @@ namespace DigitalInsights.API.SilverDashboard
 
                 var service = new PeopleService(new SilverContext());
                 service.UpdateOrInsertPerson(
-                    JsonConvert.DeserializeObject<PersonDTO>(request.Body));
+                    JsonConvert.DeserializeObject<PersonDTO>(
+                        request.Body,
+                        new JsonSerializerSettings() { ContractResolver = new MetadataBasedContractResolver() })
+                    );
 
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()

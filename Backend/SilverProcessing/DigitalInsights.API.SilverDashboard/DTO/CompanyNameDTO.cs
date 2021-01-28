@@ -20,7 +20,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             }
         }
 
-        public string Name { get; private set; }
-        public string NameType { get; private set; }
+        public string Name { get; set; }
+        public string NameType { get; set; }
     }
 }

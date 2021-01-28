@@ -83,5 +83,35 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
                             new JsonSerializerSettings() { ContractResolver = new MetadataBasedContractResolver() });
             });
         }
+
+        [Test]
+        public void TemporaryIntegrationTest()
+        {
+            var json = @"{legalName: ""lets test it out"",
+boardStatistics: {},
+diMetrics: {diPolicyEstablished: true, diPublicAvailable: true},
+diPolicyEstablished: true,
+diPublicAvailable: true,
+executiveStatistics: {},
+genderMetrics: {genderRatioBoard: 44,
+genderRatioBoard: 44},
+healthMetrics: {fatalities: 53531, healthTRI: 3,
+fatalities: 53531,
+healthTRI: 3},
+jobMetrics: {employTurnoverTotal: 38,
+employTurnoverTotal: 38},
+keyFinancialsMetrics: {},
+raceMetrics: { }}";
+
+            new SilverDashboardAPI().SaveCompany(new Amazon.Lambda.APIGatewayEvents.APIGatewayProxyRequest()
+            {
+                Headers = new Dictionary<string, string>()
+                {
+                    {"Content-Type", "application/json" },
+                    {"x-api-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxMjMiLCJuYmYiOjE2MTEzMzE2ODIsImV4cCI6MTYxMjYyNzY4MiwiaWF0IjoxNjExMzMxNjgyLCJpc3MiOiJodHRwczovL2RpZ2l0YWwtaW5zaWdodHMuY29tIiwiYXVkIjoiaHR0cHM6Ly9kaWdpdGFsLWluc2lnaHRzLmNvbSJ9.J3-LPboKm2PIptnH-xJSAEtxSwFtpo-eN5_TPsx9byo" }
+                },
+                Body = json,
+            }, null);
+        }
     }
 }

@@ -528,7 +528,7 @@ INSERT INTO PropertyMetadata(
 	('CompanyRaceMetrics','raceRatioSenior','Ratio of visible minority in Senior Management','Group consists of C-level, ExecutiveDirectors/ExecutiveVicePresidents,  SeniorDirectors/SeniorVicePresidents, VicePresidents, % minority',5,True,True,NULL,NULL,'0','100',44),
 	('CompanyRaceMetrics','raceRatioMiddle','Ratio of visible minority in Middle Management','Group consists of Directors, Senior Managers,  Managers and Team Leads, % minority',5,True,True,NULL,NULL,'0','100',45),
 	('CompanyRaceMetrics','raceRatioAll','Ratio of visible minority in all employees','Group consists of all FTE and Part time employee, % minority',5,True,True,NULL,NULL,'0','100',46),
-	('CompanyJobMetrics','totalHours','Total hours worked (FTE and contractors)',NULL,3,True,True,NULL,NULL,'0',NULL,47),
+	('CompanyJobMetrics','totalHours','Total hours worked (FTE and contractors)',NULL,2,True,True,NULL,NULL,'0',NULL,47),
 	('CompanyJobMetrics','employTurnoverTotal','Total employee turnover rate',NULL,5,True,True,NULL,NULL,'0','100',48),
 	('CompanyJobMetrics','employTurnoverVoluntary','Voluntary employee turnover rate',NULL,5,True,True,NULL,NULL,'0','100',49),
 	('CompanyJobMetrics','employTurnoverFired','Unvoluntary employee turnover rate',NULL,5,True,True,NULL,NULL,'0','100',50),
@@ -1227,7 +1227,7 @@ CREATE TABLE IF NOT EXISTS CompanyJobMetrics
 	EmployTurnoverTotal FLOAT DEFAULT NULL,
 	EmployTurnoverVoluntary FLOAT DEFAULT NULL,
 	EmployTurnoverFired FLOAT DEFAULT NULL,
-	EmployTraining FLOAT DEFAULT NULL,
+	EmployTraining BOOLEAN DEFAULT NULL,
 	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
 );
 

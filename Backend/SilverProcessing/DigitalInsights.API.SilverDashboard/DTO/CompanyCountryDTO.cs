@@ -17,8 +17,8 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             IsoCode = source.Country.ISOCode;
         }
 
-        public int Country { get; private set; }
-        public string Ticker { get; private set; }
-        public string IsoCode { get; private set; }
+        public int Country { get; set; }
+        public string Ticker { get; set; }
+        public string IsoCode { get; set; }
     }
 }

@@ -1097,7 +1097,7 @@ CREATE TABLE IF NOT EXISTS CompanyJobMetrics
 	EmployTurnoverTotal FLOAT DEFAULT NULL,
 	EmployTurnoverVoluntary FLOAT DEFAULT NULL,
 	EmployTurnoverFired FLOAT DEFAULT NULL,
-	EmployTraining FLOAT DEFAULT NULL,
+	EmployTraining BOOLEAN DEFAULT NULL,
 	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -28,14 +28,14 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             }
         }
 
-        public int? Country { get; private set; }
-        public string IsoCode { get; private set; }
-        public bool IsEditable { get; private set; }
-        public string PostCode { get; private set; }
-        public string State { get; private set; }
-        public string StreetOne { get; private set; }
-        public string StreetTwo { get; private set; }
-        public int AddressType { get; private set; }
-        public string City { get; private set; }
+        public int? Country { get; set; }
+        public string IsoCode { get; set; }
+        public bool IsEditable { get; set; }
+        public string PostCode { get; set; }
+        public string State { get; set; }
+        public string StreetOne { get; set; }
+        public string StreetTwo { get; set; }
+        public int AddressType { get; set; }
+        public string City { get; set; }
     }
 }

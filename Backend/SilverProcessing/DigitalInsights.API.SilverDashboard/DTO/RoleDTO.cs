@@ -30,6 +30,6 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         public int? PersonId { get; set; }
         public int? RoleType { get; set; }
         public double? BaseSalary { get; set; }
-        public int? JobTenure { get; private set; }
+        public int? JobTenure { get; set; }
     }
 }

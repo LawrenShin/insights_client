@@ -15,7 +15,7 @@ namespace DigitalInsights.DB.Gold.Entities.CompanyData
         public double? EmployTurnoverTotal { get; set; }
         public double? EmployTurnoverVoluntary { get; set; }
         public double? EmployTurnoverFired { get; set; }
-        public double? EmployTraining { get; set; }
+        public bool? EmployTraining { get; set; }
         public DateTime? EffectiveFrom { get; set; }
 
         public virtual Company Company { get; set; }

@@ -41,7 +41,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
         public EnumDTO[] GetIndustryCodes()
         {
-            return Enum.GetValues<IndustryCode>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
+            return Enum.GetValues<DB.Common.Enums.IndustryCode>().Select(x => new EnumDTO { Id = (int)x, Name = x.ToString() }).ToArray();
         }
 
         public EnumDTO[] GetIndustries()

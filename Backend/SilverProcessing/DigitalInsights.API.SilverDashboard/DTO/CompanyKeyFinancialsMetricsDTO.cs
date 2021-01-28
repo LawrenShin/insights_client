@@ -9,6 +9,10 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 {
     public class CompanyKeyFinancialsMetricsDTO
     {
+        public CompanyKeyFinancialsMetricsDTO()
+        {
+
+        }
         public CompanyKeyFinancialsMetricsDTO(CompanyKeyFinancialsMetrics source)
         {
             Employees = source.Employees;
@@ -16,8 +20,8 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             TotalAssets = source.TotalAssets;
         }
 
-        public int? Employees { get; private set; }
-        public double? OperatingRevenue { get; private set; }
-        public int? TotalAssets { get; private set; }
+        public int? Employees { get; set; }
+        public double? OperatingRevenue { get; set; }
+        public int? TotalAssets { get; set; }
     }
 }

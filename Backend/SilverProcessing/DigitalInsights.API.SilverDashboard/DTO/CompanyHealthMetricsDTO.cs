@@ -9,6 +9,10 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 {
     public class CompanyHealthMetricsDTO
     {
+        public CompanyHealthMetricsDTO()
+        {
+
+        }
         public CompanyHealthMetricsDTO(CompanyHealthMetrics source)
         {
             AgeAverage = source.AgeAverage;
@@ -18,10 +22,10 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             SickAbsence = source.SickAbsence;
         }
 
-        public double? AgeAverage { get; private set; }
-        public int? Fatalities { get; private set; }
-        public int? HealthTRI { get; private set; }
-        public int? HealthTRIR { get; private set; }
-        public double? SickAbsence { get; private set; }
+        public double? AgeAverage { get; set; }
+        public int? Fatalities { get; set; }
+        public int? HealthTRI { get; set; }
+        public int? HealthTRIR { get; set; }
+        public double? SickAbsence { get; set; }
     }
 }

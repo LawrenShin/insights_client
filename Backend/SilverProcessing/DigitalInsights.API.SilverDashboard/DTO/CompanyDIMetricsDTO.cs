@@ -9,6 +9,10 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 {
     public class CompanyDIMetricsDTO
     {
+        public CompanyDIMetricsDTO()
+        {
+
+        }
         public CompanyDIMetricsDTO(CompanyDIMetrics source)
         {
             DICodeConduct = source.DICodeConduct;
@@ -38,30 +42,30 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             ValueDISupplySpend = source.ValueDISupplySpend;
         }
 
-        public bool? DICodeConduct { get; private set; }
-        public bool? DIComplaint { get; private set; }
-        public bool? DIDivision { get; private set; }
-        public bool? DIEarningCall { get; private set; }
-        public bool? DIFTEPosition { get; private set; }
-        public bool? DIPolicyEstablished { get; private set; }
-        public bool? DIPosition { get; private set; }
-        public bool? DIPositionExecutive { get; private set; }
-        public bool? DIPublicAvailable { get; private set; }
-        public bool? DISupplyChain { get; private set; }
-        public double? DISupplySpendRevenueRatio { get; private set; }
-        public bool? DITalentGoals { get; private set; }
-        public bool? DIWebsite { get; private set; }
-        public bool? EmployEngagement { get; private set; }
-        public double? EmploySatisfactionSurvey { get; private set; }
-        public double? EmploySurveyResponseRate { get; private set; }
-        public bool? HarassmentPolicy { get; private set; }
-        public string HolidaySupport { get; private set; }
-        public bool? ManagingDiverse { get; private set; }
-        public bool? MentorProgram { get; private set; }
-        public bool? Retaliation { get; private set; }
-        public bool? SocialEvents { get; private set; }
-        public bool? SocialProgram { get; private set; }
-        public double? SupplySpend { get; private set; }
-        public double? ValueDISupplySpend { get; private set; }
+        public bool? DICodeConduct { get; set; }
+        public bool? DIComplaint { get; set; }
+        public bool? DIDivision { get; set; }
+        public bool? DIEarningCall { get; set; }
+        public bool? DIFTEPosition { get; set; }
+        public bool? DIPolicyEstablished { get; set; }
+        public bool? DIPosition { get; set; }
+        public bool? DIPositionExecutive { get; set; }
+        public bool? DIPublicAvailable { get; set; }
+        public bool? DISupplyChain { get; set; }
+        public double? DISupplySpendRevenueRatio { get; set; }
+        public bool? DITalentGoals { get; set; }
+        public bool? DIWebsite { get; set; }
+        public bool? EmployEngagement { get; set; }
+        public double? EmploySatisfactionSurvey { get; set; }
+        public double? EmploySurveyResponseRate { get; set; }
+        public bool? HarassmentPolicy { get; set; }
+        public string HolidaySupport { get; set; }
+        public bool? ManagingDiverse { get; set; }
+        public bool? MentorProgram { get; set; }
+        public bool? Retaliation { get; set; }
+        public bool? SocialEvents { get; set; }
+        public bool? SocialProgram { get; set; }
+        public double? SupplySpend { get; set; }
+        public double? ValueDISupplySpend { get; set; }
     }
 }

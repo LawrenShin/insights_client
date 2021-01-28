@@ -7,6 +7,19 @@ namespace DigitalInsights.API.SilverDashboard.DTO
     {
         public CompanyDTO()
         {
+            Addresses = new AddressDTO[0];
+            BoardStatistics = new CompanyBoardStatisticsDTO();
+            Countries = new CompanyCountryDTO[0];
+            DiMetrics = new CompanyDIMetricsDTO();
+            ExecutiveStatistics = new CompanyExecutiveStatisticsDTO();
+            GenderMetrics = new CompanyGenderMetricsDTO();
+            HealthMetrics = new CompanyHealthMetricsDTO();
+            Industries = new CompanyIndustryDTO[0];
+            JobMetrics = new CompanyJobMetricsDTO();
+            KeyFinancialsMetrics = new CompanyKeyFinancialsMetricsDTO();
+            Names = new CompanyNameDTO[0];
+            RaceMetrics = new CompanyRaceMetricsDTO();
+            Roles = new RoleDTO[0];
         }
 
         public CompanyDTO(Company source)
@@ -30,17 +43,17 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         }
 
         public int Id { get; private set; }
-        public string LegalName { get; private set; }
+        public string LegalName { get; set; }
         public string Lei { get; private set; }
-        public AddressDTO[] Addresses { get; private set; }
+        public AddressDTO[] Addresses { get; set; }
         public CompanyBoardStatisticsDTO BoardStatistics { get; set; }
-        public CompanyCountryDTO[] Countries { get; }
-        public CompanyDIMetricsDTO DiMetrics { get; }
-        public CompanyExecutiveStatisticsDTO ExecutiveStatistics { get; }
-        public CompanyGenderMetricsDTO GenderMetrics { get; }
-        public CompanyHealthMetricsDTO HealthMetrics { get; }
-        public CompanyIndustryDTO[] Industries { get; }
-        public CompanyJobMetricsDTO JobMetrics { get; }
+        public CompanyCountryDTO[] Countries { get; set; }
+        public CompanyDIMetricsDTO DiMetrics { get; set; }
+        public CompanyExecutiveStatisticsDTO ExecutiveStatistics { get; set; }
+        public CompanyGenderMetricsDTO GenderMetrics { get; set; }
+        public CompanyHealthMetricsDTO HealthMetrics { get; set; }
+        public CompanyIndustryDTO[] Industries { get; set; }
+        public CompanyJobMetricsDTO JobMetrics { get; set; }
         public CompanyKeyFinancialsMetricsDTO KeyFinancialsMetrics { get; set; }
         public CompanyNameDTO[] Names { get; set; }
         public CompanyRaceMetricsDTO RaceMetrics { get; set; }

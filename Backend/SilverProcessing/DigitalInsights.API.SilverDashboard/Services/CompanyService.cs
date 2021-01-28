@@ -142,11 +142,15 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 }
             }
 
-            var properties = PropertyMetadataStorage.CurrentPropertyMetadata["person"];
+            var properties = PropertyMetadataStorage.CurrentPropertyMetadata["company"];
             foreach (var property in properties.Values)
             {
-                switch(property.PropertyName)
+                switch(property.PropertyName.ToLower())
                 {
+                    case "id":
+                        {
+                            break;
+                        }
                     case "lei":
                         {
                             ValidationHelper.ValidateAndSetProperty(property, () => source.Lei, x => targetCompany.LEI = x);
@@ -164,6 +168,16 @@ namespace DigitalInsights.API.SilverDashboard.Services
                                 if (!property.AllowsNull && source.Roles == null)
                                     throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
                                 FillRoles(source, targetCompany);
+                            }
+                            break;
+                        }
+                    case "addresses":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.Addresses == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillAddresses(source, targetCompany);
                             }
                             break;
                         }
@@ -715,6 +729,65 @@ namespace DigitalInsights.API.SilverDashboard.Services
             }
         }
 
+        private void FillAddresses(CompanyDTO source, Company targetCompany)
+        {
+            if(source.Addresses.Length > 2)
+            {
+                throw new ArgumentException("Too many addresses");
+            }
+            // addresses
+            var srcIds = source.Addresses
+                .Select(x => x.AddressType)
+                .ToHashSet();
+
+            var toRemove = targetCompany.CompanyAddresses.Where(x => !srcIds.Contains((int)x.AddressType)).ToList();
+
+            foreach (var item in toRemove)
+            {
+                targetCompany.CompanyAddresses.Remove(item);
+                silverContext.Remove(item);
+            }
+
+            var targetCompanyAddresses = targetCompany.CompanyAddresses.ToDictionary(x => x.CountryId, x => x);
+
+            foreach (var companyAddress in source.Addresses)
+            {
+                Address targetEntity;
+
+                if (!targetCompanyAddresses.ContainsKey((int)companyAddress.AddressType))
+                {
+                    targetEntity = new Address()
+                    {
+                        Company = targetCompany,
+                        AddressType = (AddressType)companyAddress.AddressType,
+                    };
+
+                    targetCompany.CompanyAddresses.Add(targetEntity);
+                    silverContext.Addresses.Add(targetEntity);
+                }
+                else
+                {
+                    targetEntity = targetCompanyAddresses[companyAddress.AddressType];
+                }
+
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyIndustry).Name];
+                foreach (var property in properties.Values)
+                {
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "addresstype" => true,
+                        "city" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.City, x => targetEntity.City = x),
+                        "country" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.Country, x => targetEntity.CountryId = x),
+                        "postcode" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.PostCode, x => targetEntity.PostCode = x),
+                        "state" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.State, x => targetEntity.State = x),
+                        "streetone" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.StreetOne, x => targetEntity.StreetOne = x),
+                        "streettwo" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.StreetTwo, x => targetEntity.StreetTwo = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
+            }
+        }
+
         private void FillCompanyCountries(CompanyDTO source, Company targetCompany)
         {
             // countries
@@ -806,7 +879,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     var result = (property.PropertyName.ToLower() switch
                     {
                         "industry" => true,
-                        "industrycode" => ValidationHelper.ValidateAndSetProperty(property, () => companyIndustry.IndustryCode, x => targetEntity.IndustryCode = (IndustryCode)x.Value),
+                        "industrycode" => ValidationHelper.ValidateAndSetProperty(property, () => companyIndustry.IndustryCode, x => targetEntity.IndustryCode = (DB.Common.Enums.IndustryCode)x.Value),
                         "isprimary" => ValidationHelper.ValidateAndSetProperty(property, () => companyIndustry.IsPrimary, x => targetEntity.IsPrimary = x),
                         "tradedescription" => ValidationHelper.ValidateAndSetProperty(property, () => companyIndustry.TradeDescription, x => targetEntity.TradeDescription = x),
                         _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),

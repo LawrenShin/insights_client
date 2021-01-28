@@ -11,7 +11,7 @@ namespace DigitalInsights.DataLoaders.Silver.CountryLoader.Model.CSV
         public CountryGenderMap()
         {
             Map(m => m.MalePopulationPercentage).Name("MalePop%");
-            Map(m => m.FemalePopulationpercetage).Name("FemalePop%");
+            Map(m => m.FemalePopulationPercentage).Name("FemalePop%");
             Map(m => m.WomenEducation).Name("WomenEdu");
             Map(m => m.FemaleWorkforce).Name("FemaleWorkForce");
             Map(m => m.FemaleWorkforcePercentage).Name("FemaleWorkForcePercentage");

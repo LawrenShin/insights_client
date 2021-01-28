@@ -9,6 +9,10 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 {
     public class CompanyJobMetricsDTO
     {
+        public CompanyJobMetricsDTO()
+        {
+
+        }
         public CompanyJobMetricsDTO(CompanyJobMetrics source)
         {
             AverageSalary = source.AverageSalary;
@@ -21,13 +25,13 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             TotalHours = source.TotalHours;
         }
 
-        public double? AverageSalary { get; private set; }
-        public double? EmployTraining { get; private set; }
-        public double? EmployTurnoverFired { get; private set; }
-        public double? EmployTurnoverTotal { get; private set; }
-        public double? EmployTurnoverVoluntary { get; private set; }
-        public double? JobTenureAverage { get; private set; }
-        public double? MedianSalary { get; private set; }
-        public int? TotalHours { get; private set; }
+        public double? AverageSalary { get; set; }
+        public bool? EmployTraining { get; set; }
+        public double? EmployTurnoverFired { get; set; }
+        public double? EmployTurnoverTotal { get; set; }
+        public double? EmployTurnoverVoluntary { get; set; }
+        public double? JobTenureAverage { get; set; }
+        public double? MedianSalary { get; set; }
+        public int? TotalHours { get; set; }
     }
 }

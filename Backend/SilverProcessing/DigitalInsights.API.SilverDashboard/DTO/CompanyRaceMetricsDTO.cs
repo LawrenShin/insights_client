@@ -9,6 +9,10 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 {
     public class CompanyRaceMetricsDTO
     {
+        public CompanyRaceMetricsDTO()
+        {
+
+        }
         public CompanyRaceMetricsDTO(CompanyRaceMetrics source)
         {
             RaceArab = source.RaceArab;
@@ -24,16 +28,16 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             RaceRatioSenior = source.RaceRatioSenior;
         }
 
-        public double? RaceArab { get; private set; }
-        public double? RaceAsian { get; private set; }
-        public double? RaceBlack { get; private set; }
-        public double? RaceCaucasian { get; private set; }
-        public double? RaceHispanic { get; private set; }
-        public double? RaceIndigenous { get; private set; }
-        public double? RaceRatioAll { get; private set; }
-        public double? RaceRatioBoard { get; private set; }
-        public double? RaceRatioExececutive { get; private set; }
-        public double? RaceRatioMiddle { get; private set; }
-        public double? RaceRatioSenior { get; private set; }
+        public double? RaceArab { get; set; }
+        public double? RaceAsian { get; set; }
+        public double? RaceBlack { get; set; }
+        public double? RaceCaucasian { get; set; }
+        public double? RaceHispanic { get; set; }
+        public double? RaceIndigenous { get; set; }
+        public double? RaceRatioAll { get; set; }
+        public double? RaceRatioBoard { get; set; }
+        public double? RaceRatioExececutive { get; set; }
+        public double? RaceRatioMiddle { get; set; }
+        public double? RaceRatioSenior { get; set; }
     }
 }
