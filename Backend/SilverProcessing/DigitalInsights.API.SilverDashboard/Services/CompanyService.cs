@@ -770,7 +770,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     targetEntity = targetCompanyAddresses[companyAddress.AddressType];
                 }
 
-                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(CompanyIndustry).Name];
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(Address).Name];
                 foreach (var property in properties.Values)
                 {
                     var result = (property.PropertyName.ToLower() switch

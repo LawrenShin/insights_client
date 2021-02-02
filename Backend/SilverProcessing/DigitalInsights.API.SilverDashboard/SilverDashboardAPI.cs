@@ -300,7 +300,8 @@ namespace DigitalInsights.API.SilverDashboard
 
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
-                    .WithPlainTextContent()
+                    .WithJsonContent()
+                    .WithBody("{ \"status\" : \"ok\" }")
                     .Build();
             }
             catch (Exception ex)
@@ -452,7 +453,8 @@ namespace DigitalInsights.API.SilverDashboard
 
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
-                    .WithPlainTextContent()
+                    .WithJsonContent()
+                    .WithBody("{ \"status\" : \"ok\" }")
                     .Build();
             }
             catch (Exception ex)
