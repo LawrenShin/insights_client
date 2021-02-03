@@ -496,7 +496,6 @@ INSERT INTO PropertyMetadata(
 	('Company','healthMetrics','Health Metrics',NULL,8,False,True,NULL,'CompanyHealthMetrics',NULL,NULL,12),
 	('Company','names','Company names',NULL,7,False,True,NULL,'CompanyName',NULL,NULL,13),
 	('Company','addresses','Addresses',NULL,7,False,True,NULL,'Address',NULL,NULL,14),
-	('Company','roles','Board/Executive roles',NULL,7,False,True,NULL,'Role',NULL,NULL,15),
 	('CompanyName','name','Name',NULL,0,False,True,NULL,NULL,NULL,NULL,16),
 	('CompanyName','nameType','NameType',NULL,0,False,True,NULL,NULL,NULL,NULL,17),
 	('CompanyCountry','country','Country',NULL,6,True,True,'countries',NULL,NULL,NULL,18),
@@ -567,14 +566,15 @@ INSERT INTO PropertyMetadata(
 	('Person','visibleDisability','Does person have visible disability?',NULL,0,True,True,NULL,NULL,NULL,NULL,83),
 	('Person','urban','Did person grow up in Urban location?',NULL,1,True,True,NULL,NULL,NULL,NULL,84),
 	('Person','nationalities','Person Nationalities',NULL,7,False,True,NULL,'PersonNationality',NULL,NULL,85),
-	('PersonNationality','country','Country',NULL,6,False,True,'Countries',NULL,NULL,NULL,86),
-	('PersonNationality','isoCode',NULL,NULL,0,True,False,NULL,NULL,NULL,NULL,87),
-	('Role','roleType','Role type',NULL,6,False,True,'RoleTypes',NULL,NULL,NULL,88),
-	('Role','title','Title',NULL,0,False,True,NULL,NULL,NULL,NULL,89),
-	('Role','baseSalary','Base salary',NULL,3,True,True,NULL,NULL,'0',NULL,90),
-	('Role','otherIncentives','Other incentives',NULL,3,True,True,NULL,NULL,'0',NULL,91),
-	('Role','jobTenure','Job tenure',NULL,2,True,True,NULL,NULL,'0',NULL,92),
-	('Role','personId','Person',NULL,6,False,True,'people',NULL,NULL,NULL,93);
+	('Person','roles','Board/Executive roles',NULL,7,False,True,NULL,'Role',NULL,NULL,86),
+	('PersonNationality','country','Country',NULL,6,False,True,'Countries',NULL,NULL,NULL,87),
+	('PersonNationality','isoCode',NULL,NULL,0,True,False,NULL,NULL,NULL,NULL,88),
+	('Role','roleType','Role type',NULL,6,False,True,'RoleTypes',NULL,NULL,NULL,89),
+	('Role','title','Title',NULL,0,False,True,NULL,NULL,NULL,NULL,90),
+	('Role','baseSalary','Base salary',NULL,3,True,True,NULL,NULL,'0',NULL,91),
+	('Role','otherIncentives','Other incentives',NULL,3,True,True,NULL,NULL,'0',NULL,92),
+	('Role','jobTenure','Job tenure',NULL,2,True,True,NULL,NULL,'0',NULL,93),
+	('Role','companyId',NULL,NULL,6,False,True,'companies',NULL,NULL,NULL,94);
 
 
 -- DATA TABLES --

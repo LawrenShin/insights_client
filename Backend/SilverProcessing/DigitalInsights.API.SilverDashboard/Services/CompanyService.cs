@@ -38,7 +38,6 @@ namespace DigitalInsights.API.SilverDashboard.Services
             }
 
             var result = companiesQuery
-                    .Include(x => x.Roles)
                     .Include(x => x.CompanyCountries).ThenInclude(x => x.Country)
                     .Include(x => x.CompanyAddresses).ThenInclude(x=>x.Country)
                     .Include(x => x.CompanyIndustries)
@@ -121,7 +120,6 @@ namespace DigitalInsights.API.SilverDashboard.Services
             else
             {
                 targetCompany = silverContext.Companies.Where(x => x.Id == source.Id)
-                    .Include(x => x.Roles)
                     .Include(x => x.CompanyCountries)
                     .Include(x => x.CompanyIndustries)
                     .Include(x => x.CompanyNames)
@@ -159,16 +157,6 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     case "legalname":
                         {
                             ValidationHelper.ValidateAndSetProperty(property, () => source.LegalName, x => targetCompany.LegalName = x);
-                            break;
-                        }
-                    case "roles":
-                        {
-                            if(property.IsEditable)
-                            {
-                                if (!property.AllowsNull && source.Roles == null)
-                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
-                                FillRoles(source, targetCompany);
-                            }
                             break;
                         }
                     case "addresses":
@@ -927,58 +915,6 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 
                 targetEntity.Name = companyName.Name;
                 targetEntity.NameType = companyName.NameType;
-            }
-        }
-
-        private void FillRoles(CompanyDTO source, Company targetCompany)
-        {
-            // roles
-            var roleTypes = Enum.GetValues<RoleType>().Select(x => (int)x).ToArray();
-
-            var toRemove = targetCompany.Roles.Where(x => !source.Roles.Any(y => y.RoleType.Value == (int)x.RoleType && x.Title == y.Title)).ToList();
-
-            foreach (var item in toRemove)
-            {
-                targetCompany.Roles.Remove(item);
-                silverContext.Remove(item);
-            }
-
-            var toUpsert = source.Roles
-                .ToDictionary(x => x, y => targetCompany.Roles.FirstOrDefault(x => y.RoleType.Value == (int)x.RoleType && x.Title == y.Title));
-
-            foreach (var role in toUpsert.Keys)
-            {
-                Role targetEntity;
-                if (toUpsert[role] == null)
-                {
-                    targetEntity = new Role()
-                    {
-                        Company = targetCompany,
-                        RoleType = (RoleType)role.RoleType.Value,
-                        Title = role.Title
-                    };
-
-                    targetCompany.Roles.Add(targetEntity);
-                    silverContext.Roles.Add(targetEntity);
-                }
-                else
-                {
-                    targetEntity = toUpsert[role];
-                }
-
-                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(Role).Name];
-                foreach (var property in properties.Values)
-                {
-                    var result = (property.PropertyName.ToLower() switch
-                    {
-                        "roletype" => true,
-                        "title" => true,
-                        "BaseSalary" => ValidationHelper.ValidateAndSetProperty(property, () => role.BaseSalary, x => targetEntity.BaseSalary = x),
-                        "jobtenure" => ValidationHelper.ValidateAndSetProperty(property, () => role.JobTenure, x => targetEntity.JobTenure = x),
-                        "otherincentives" => ValidationHelper.ValidateAndSetProperty(property, () => role.OtherIncentives, x => targetEntity.OtherIncentives = x),
-                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
-                    });
-                }
             }
         }
     }

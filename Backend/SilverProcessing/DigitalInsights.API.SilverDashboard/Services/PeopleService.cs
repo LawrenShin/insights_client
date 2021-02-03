@@ -1,5 +1,6 @@
 ﻿using DigitalInsights.API.SilverDashboard.DTO;
 using DigitalInsights.API.SilverDashboard.Helpers;
+using DigitalInsights.DB.Common.Enums;
 using DigitalInsights.DB.Silver;
 using DigitalInsights.DB.Silver.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             return new PeopleDTO(
                 peopleQuery
                     .Include(x => x.PersonNationalities).ThenInclude(x=>x.Country)
+                    .Include(x => x.Roles)
                     .OrderBy(x => x.Name)
                     .Skip(pageIndex * pageSize).Take(pageSize)
                     .ToArray(),
@@ -70,6 +72,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             {
                 targetPerson = silverContext.People.Where(x => x.Id == source.Id)
                     .Include(x=>x.PersonNationalities)
+                    .Include(x => x.Roles)
                     .FirstOrDefault();
 
                 if (targetPerson == null)
@@ -125,6 +128,16 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     case "visibledisability":
                         ValidationHelper.ValidateAndSetProperty(property, () => source.VisibleDisability, x => targetPerson.VisibleDisability = x);
                         break;
+                    case "roles":
+                        {
+                            if (property.IsEditable)
+                            {
+                                if (!property.AllowsNull && source.Roles == null)
+                                    throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
+                                FillRoles(source, targetPerson);
+                            }
+                            break;
+                        }
                     case "nationalities":
                         if (!property.IsEditable) break;
                         if (source.Nationalities.Any(x => !countries.Contains(x.Country)))
@@ -170,6 +183,60 @@ namespace DigitalInsights.API.SilverDashboard.Services
             }
 
             silverContext.SaveChanges();
+        }
+
+
+        private void FillRoles(PersonDTO source, Person targetPerson)
+        {
+            // roles
+            var roleTypes = Enum.GetValues<RoleType>().Select(x => (int)x).ToArray();
+
+            var toRemove = targetPerson.Roles.Where(x => !source.Roles.Any(y => y.RoleType.Value == (int)x.RoleType && x.Title == y.Title)).ToList();
+
+            foreach (var item in toRemove)
+            {
+                targetPerson.Roles.Remove(item);
+                silverContext.Remove(item);
+            }
+
+            var toUpsert = source.Roles
+                .ToDictionary(x => x, y => targetPerson.Roles.FirstOrDefault(x => y.RoleType.Value == (int)x.RoleType && x.Title == y.Title));
+
+            foreach (var role in toUpsert.Keys)
+            {
+                Role targetEntity;
+                if (toUpsert[role] == null)
+                {
+                    targetEntity = new Role()
+                    {
+                        Person = targetPerson,
+                        RoleType = (RoleType)role.RoleType.Value,
+                        Title = role.Title
+                    };
+
+                    targetPerson.Roles.Add(targetEntity);
+                    silverContext.Roles.Add(targetEntity);
+                }
+                else
+                {
+                    targetEntity = toUpsert[role];
+                }
+
+                var properties = PropertyMetadataStorage.CurrentPropertyMetadata[typeof(Role).Name];
+                foreach (var property in properties.Values)
+                {
+                    var result = (property.PropertyName.ToLower() switch
+                    {
+                        "roletype" => true,
+                        "title" => true,
+                        "baseSalary" => ValidationHelper.ValidateAndSetProperty(property, () => role.BaseSalary, x => targetEntity.BaseSalary = x),
+                        "jobtenure" => ValidationHelper.ValidateAndSetProperty(property, () => role.JobTenure, x => targetEntity.JobTenure = x),
+                        "companyId" => ValidationHelper.ValidateAndSetProperty(property, () => role.CompanyId, x => targetEntity.CompanyId = x.Value),
+                        "otherincentives" => ValidationHelper.ValidateAndSetProperty(property, () => role.OtherIncentives, x => targetEntity.OtherIncentives = x),
+                        _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
+                    });
+                }
+            }
         }
     }
 }

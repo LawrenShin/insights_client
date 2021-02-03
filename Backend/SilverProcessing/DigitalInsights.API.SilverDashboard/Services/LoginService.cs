@@ -37,15 +37,14 @@ namespace DigitalInsights.API.SilverDashboard.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            /*var user = silverContext.Users.Where(x => x.UserName == authInfo.UserName).FirstOrDefault();
+            var user = silverContext.Users.Where(x => x.UserName == authInfo.UserName).FirstOrDefault();
 
-            if(user == null)
+            if (user == null)
             {
                 throw new SecurityTokenValidationException("User not found");
-            }*/
+            }
 
-            if (true)
-                //PasswordHelper.VerifyHashedPassword(user.Password, authInfo.Password) == PasswordVerificationResult.Success)
+            if (PasswordHelper.VerifyHashedPassword(user.Password, authInfo.Password) == PasswordVerificationResult.Success)
             {
                 return new AuthResponseDTO()
                 {

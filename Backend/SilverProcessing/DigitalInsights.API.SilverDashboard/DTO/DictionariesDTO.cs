@@ -9,34 +9,34 @@ namespace DigitalInsights.API.SilverDashboard.DTO
 {
     public class DictionariesDTO
     {
-        [JsonProperty(PropertyName = "addressTypes")]
+        [JsonProperty(PropertyName = "addressType")]
         public EnumDTO[] AddressTypes { get; set; }
 
-        [JsonProperty(PropertyName = "countries")]
+        [JsonProperty(PropertyName = "country")]
         public CountryDTO[] Countries { get; set; }
 
-        [JsonProperty(PropertyName = "educationLevels")]
+        [JsonProperty(PropertyName = "educationLevel")]
         public EnumDTO[] EducationLevels { get; set; }
 
-        [JsonProperty(PropertyName = "educationSubjects")]
+        [JsonProperty(PropertyName = "educationSubject")]
         public EnumDTO[] EducationSubjects { get; set; }
 
-        [JsonProperty(PropertyName = "genders")]
+        [JsonProperty(PropertyName = "gender")]
         public EnumDTO[] Genders { get; set; }
 
-        [JsonProperty(PropertyName = "industries")]
+        [JsonProperty(PropertyName = "industry")]
         public EnumDTO[] Industries { get; set; }
 
-        [JsonProperty(PropertyName = "industryCodes")]
+        [JsonProperty(PropertyName = "industryCode")]
         public EnumDTO[] IndustryCodes { get; set; }
 
-        [JsonProperty(PropertyName = "races")]
+        [JsonProperty(PropertyName = "race")]
         public EnumDTO[] Races { get; set; }
 
-        [JsonProperty(PropertyName = "religions")]
+        [JsonProperty(PropertyName = "religion")]
         public EnumDTO[] Religions { get; set; }
 
-        [JsonProperty(PropertyName = "roleTypes")]
+        [JsonProperty(PropertyName = "roleType")]
         public EnumDTO[] RoleTypes { get; set; }
     }
 }
