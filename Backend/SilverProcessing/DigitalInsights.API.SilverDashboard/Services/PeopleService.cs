@@ -96,13 +96,15 @@ namespace DigitalInsights.API.SilverDashboard.Services
                         ValidationHelper.ValidateAndSetProperty(
                             property,
                             () => source.EducationSubject,
-                            x => targetPerson.EducationSubject = (DB.Common.Enums.EducationSubject?)x);
+                            x => targetPerson.EducationSubject = (DB.Common.Enums.EducationSubject?)x,
+                            Enum.GetValues<DB.Common.Enums.EducationSubject>().Select(x => (int)x).ToHashSet());
                         break;
                     case "higheducation":
                         ValidationHelper.ValidateAndSetProperty(
                             property,
                             () => source.HighEducation,
-                            x => targetPerson.HighEducation = (DB.Common.Enums.EducationLevel?)x);
+                            x => targetPerson.HighEducation = (DB.Common.Enums.EducationLevel?)x,
+                            Enum.GetValues<DB.Common.Enums.EducationLevel>().Select(x => (int)x).ToHashSet());
                         break;
                     case "kids":
                         ValidationHelper.ValidateAndSetProperty(property, () => source.Kids, x => targetPerson.Kids = x);
@@ -114,10 +116,12 @@ namespace DigitalInsights.API.SilverDashboard.Services
                         ValidationHelper.ValidateAndSetProperty(property, () => source.Married, x => targetPerson.Married = x);
                         break;
                     case "race":
-                        ValidationHelper.ValidateAndSetProperty(property, () => source.Race, x => targetPerson.Race = (DB.Common.Enums.Race?)x);
+                        ValidationHelper.ValidateAndSetProperty(property, () => source.Race, x => targetPerson.Race = (DB.Common.Enums.Race?)x,
+                            Enum.GetValues<DB.Common.Enums.Race>().Select(x => (int)x).ToHashSet());
                         break;
                     case "religion":
-                        ValidationHelper.ValidateAndSetProperty(property, () => source.Religion, x => targetPerson.Religion = (DB.Common.Enums.Religion?)x);
+                        ValidationHelper.ValidateAndSetProperty(property, () => source.Religion, x => targetPerson.Religion = (DB.Common.Enums.Religion?)x,
+                            Enum.GetValues<DB.Common.Enums.Religion>().Select(x => (int)x).ToHashSet());
                         break;
                     case "sexuality":
                         ValidationHelper.ValidateAndSetProperty(property, () => source.Sexuality, x => targetPerson.Sexuality = x);

@@ -764,8 +764,10 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     var result = (property.PropertyName.ToLower() switch
                     {
                         "addresstype" => true,
+                        "iseditable" => true,
+                        "isocode" => true,
                         "city" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.City, x => targetEntity.City = x),
-                        "country" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.Country, x => targetEntity.CountryId = x),
+                        "country" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.Country, x => targetEntity.CountryId = x, countries),
                         "postcode" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.PostCode, x => targetEntity.PostCode = x),
                         "state" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.State, x => targetEntity.State = x),
                         "streetone" => ValidationHelper.ValidateAndSetProperty(property, () => companyAddress.StreetOne, x => targetEntity.StreetOne = x),
@@ -867,7 +869,8 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     var result = (property.PropertyName.ToLower() switch
                     {
                         "industry" => true,
-                        "industrycode" => ValidationHelper.ValidateAndSetProperty(property, () => companyIndustry.IndustryCode, x => targetEntity.IndustryCode = (DB.Common.Enums.IndustryCode)x.Value),
+                        "industrycode" => ValidationHelper.ValidateAndSetProperty(property, () => companyIndustry.IndustryCode, x => targetEntity.IndustryCode = (DB.Common.Enums.IndustryCode)x.Value,
+                            Enum.GetValues<DB.Common.Enums.IndustryCode>().Select(x=>(int)x).ToHashSet()),
                         "isprimary" => ValidationHelper.ValidateAndSetProperty(property, () => companyIndustry.IsPrimary, x => targetEntity.IsPrimary = x),
                         "tradedescription" => ValidationHelper.ValidateAndSetProperty(property, () => companyIndustry.TradeDescription, x => targetEntity.TradeDescription = x),
                         _ => throw new NotSupportedException($"{property.EntityName} {property.PropertyName}"),
