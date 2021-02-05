@@ -493,6 +493,7 @@ INSERT INTO PropertyMetadata(
 	('Company','raceMetrics','Race Metrics',NULL,8,False,True,NULL,'CompanyRaceMetrics',NULL,NULL,9),
 	('Company','jobMetrics','Job Metrics',NULL,8,False,True,NULL,'CompanyJobMetrics',NULL,NULL,10),
 	('Company','healthMetrics','Health Metrics',NULL,8,False,True,NULL,'CompanyHealthMetrics',NULL,NULL,11),
+	('Company','people',NULL,NULL,7,True,False,NULL,'Person',NULL,NULL,100),
 	('CompanyName','name','Name',NULL,0,False,True,NULL,NULL,NULL,NULL,12),
 	('CompanyName','nameType','NameType',NULL,0,False,True,NULL,NULL,NULL,NULL,13),
 	('CompanyCountry','country','Country',NULL,6,False,True,'countries',NULL,NULL,NULL,14),

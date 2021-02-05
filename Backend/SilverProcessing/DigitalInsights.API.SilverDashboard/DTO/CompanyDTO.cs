@@ -20,6 +20,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             Names = new CompanyNameDTO[0];
             RaceMetrics = new CompanyRaceMetricsDTO();
             Roles = new RoleDTO[0];
+            People = new PersonDTO[0];
         }
 
         public CompanyDTO(Company source)
@@ -40,6 +41,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             Id = source.Id;
             LegalName = source.LegalName;
             Lei = source.LEI;
+            People = source.Roles.Select(x => new PersonDTO(x.Person)).ToArray();
         }
 
         public int Id { get; set; }
@@ -58,5 +60,6 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         public CompanyNameDTO[] Names { get; set; }
         public CompanyRaceMetricsDTO RaceMetrics { get; set; }
         public RoleDTO[] Roles { get; set; }
+        public PersonDTO[] People { get; set; }
     }
 }

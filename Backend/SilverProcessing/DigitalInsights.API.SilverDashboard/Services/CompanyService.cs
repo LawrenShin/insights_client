@@ -37,9 +37,11 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 companiesQuery = companiesQuery.Where(x => x.LegalName.StartsWith(searchPrefix));
             }
 
+            var count = companiesQuery.Count();
+
             var result = companiesQuery
                     .Include(x => x.CompanyCountries).ThenInclude(x => x.Country)
-                    .Include(x => x.CompanyAddresses).ThenInclude(x=>x.Country)
+                    .Include(x => x.CompanyAddresses).ThenInclude(x => x.Country)
                     .Include(x => x.CompanyIndustries)
                     .Include(x => x.CompanyNames)
                     .Include(x => x.CompanyBoardStatistics)
@@ -50,6 +52,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     .Include(x => x.CompanyGenderMetrics)
                     .Include(x => x.CompanyRaceMetrics)
                     .Include(x => x.CompanyDIMetrics)
+                    .Include(x => x.Roles).ThenInclude(x => x.Person)
                     .OrderBy(x => x.LegalName).Skip(pageIndex * pageSize).Take(pageSize).ToArray();
 
             foreach(var company in result)
@@ -92,7 +95,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
                 result,
                 pageSize,
                 pageIndex,
-                (int)Math.Ceiling((double)silverContext.Companies.Count() / pageSize));
+                (int)Math.Ceiling((double)count / pageSize));
         }
 
         public void DeleteCompany(int id)
@@ -277,6 +280,10 @@ namespace DigitalInsights.API.SilverDashboard.Services
                                     throw new ArgumentException($"{property.EntityName} {property.PropertyName}");
                                 FillCompanyHealthMetrics(source, targetCompany);
                             }
+                            break;
+                        }
+                    case "people":
+                        {
                             break;
                         }
                     default:
