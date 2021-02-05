@@ -21,7 +21,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
             silverContext = context;
         }
 
-        public PeopleDTO GetPeople(int pageSize, int pageIndex, string searchPrefix)
+        public PeopleDTO GetPeople(int pageSize, int pageIndex, string searchPrefix, int? companyId)
         {
             var peopleQuery = silverContext.People.AsQueryable<Person>();
 
@@ -29,6 +29,12 @@ namespace DigitalInsights.API.SilverDashboard.Services
             {
                 peopleQuery = peopleQuery.Where(x => x.Name.StartsWith(searchPrefix));
             }
+            if(companyId.HasValue)
+            {
+                peopleQuery = peopleQuery.Where(x => x.Roles.Any(x => x.CompanyId == companyId));
+            }
+
+            var count = peopleQuery.Count();
 
             return new PeopleDTO(
                 peopleQuery
@@ -39,7 +45,7 @@ namespace DigitalInsights.API.SilverDashboard.Services
                     .ToArray(),
                 pageSize,
                 pageIndex,
-                (int)Math.Ceiling((double)silverContext.People.Count() / pageSize));
+                (int)Math.Ceiling((double)count / pageSize));
         }
 
         public void DeletePerson(int id)

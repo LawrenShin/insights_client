@@ -1084,22 +1084,22 @@ ALTER TABLE public.CompanyHierarchyMetrics
 
 -- Code for Company Job table
 
-DROP TABLE IF EXISTS CompanyJobMetrics CASCADE;
+	DROP TABLE IF EXISTS CompanyJobMetrics CASCADE;
 
-CREATE TABLE IF NOT EXISTS CompanyJobMetrics
-(
-	Id SERIAL PRIMARY KEY,
-	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
-	TotalHours INT DEFAULT NULL,
-	JobTenureAverage FLOAT DEFAULT NULL,
-	AverageSalary FLOAT DEFAULT NULL,
-	MedianSalary FLOAT DEFAULT NULL,
-	EmployTurnoverTotal FLOAT DEFAULT NULL,
-	EmployTurnoverVoluntary FLOAT DEFAULT NULL,
-	EmployTurnoverFired FLOAT DEFAULT NULL,
-	EmployTraining BOOLEAN DEFAULT NULL,
-	EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
-);
+	CREATE TABLE IF NOT EXISTS CompanyJobMetrics
+	(
+		Id SERIAL PRIMARY KEY,
+		CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
+		TotalHours INT DEFAULT NULL,
+		JobTenureAverage FLOAT DEFAULT NULL,
+		AverageSalary FLOAT DEFAULT NULL,
+		MedianSalary FLOAT DEFAULT NULL,
+		EmployTurnoverTotal FLOAT DEFAULT NULL,
+		EmployTurnoverVoluntary FLOAT DEFAULT NULL,
+		EmployTurnoverFired FLOAT DEFAULT NULL,
+		EmployTraining BOOLEAN DEFAULT NULL,
+		EffectiveFrom TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
+	);
 
 CREATE UNIQUE INDEX CompanyJobMetricsCompanyIdPK
     ON public.CompanyJobMetrics USING btree

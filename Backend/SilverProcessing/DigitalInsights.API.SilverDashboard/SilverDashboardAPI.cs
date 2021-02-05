@@ -21,6 +21,7 @@ namespace DigitalInsights.API.SilverDashboard
         const string PAGE_SIZE = "page_size";
         const string PAGE_INDEX = "page_index";
         const string SEARCH_PREFIX = "search_prefix";
+        const string COMPANY_ID = "company_id";
 
         // Delete company query string parameters
         const string ID = "id";
@@ -354,13 +355,26 @@ namespace DigitalInsights.API.SilverDashboard
                     prefix = request.QueryStringParameters[SEARCH_PREFIX];
                 }
 
+                int? companyId = null;
+                if (request.QueryStringParameters.ContainsKey(COMPANY_ID))
+                {
+                    int value;
+                    if(!int.TryParse(request.QueryStringParameters[COMPANY_ID], out value))
+                    {
+                        return new APIGatewayProxyResponseBuilder()
+                        .WithSimpleError("Wrong number format")
+                        .Build();
+                    }
+                    companyId = value;
+                }
+
                 var service = new PeopleService(new SilverContext());
 
                 return new APIGatewayProxyResponseBuilder()
                     .WithOkCode()
                     .WithJsonContent()
                     .WithBody(JsonConvert.SerializeObject(
-                        service.GetPeople(pageSize, pageIndex, prefix),
+                        service.GetPeople(pageSize, pageIndex, prefix, companyId),
                         new JsonSerializerSettings() { ContractResolver = new MetadataBasedContractResolver() }))
                     .Build();
 
