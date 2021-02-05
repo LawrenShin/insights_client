@@ -87,28 +87,15 @@ namespace DigitalInsights.API.SilverDashboard.UnitTests
         [Test]
         public void TemporaryIntegrationTest()
         {
-            var json = @"{legalName: ""lets test it out"",
-boardStatistics: {},
-diMetrics: {diPolicyEstablished: true, diPublicAvailable: true},
-diPolicyEstablished: true,
-diPublicAvailable: true,
-executiveStatistics: {},
-genderMetrics: {genderRatioBoard: 44,
-genderRatioBoard: 44},
-healthMetrics: {fatalities: 53531, healthTRI: 3,
-fatalities: 53531,
-healthTRI: 3},
-jobMetrics: {employTurnoverTotal: 38,
-employTurnoverTotal: 38},
-keyFinancialsMetrics: {},
-raceMetrics: { }}";
+            return;
+            var json = @"{""id"":269304,""lei"":""254900YPEDT61W86A905"",""legalName"":""บริษัท ปตท. จำหน่ายก๊าซธรรมชาติ จำกัด"",""keyFinancialsMetrics"":{""employees"":null},""countries"":[],""industries"":[],""executiveStatistics"":{""femaleRatio"":null},""boardStatistics"":{""femaleRatio"":null},""diMetrics"":{""socialProgram"":true,""retaliation"":true,""supplySpend"":null,""valueDISupplySpend"":null,""diSupplySpendRevenueRatio"":null,""mentorProgram"":null,""socialEvents"":null,""employEngagement"":null,""employSatisfactionSurvey"":null,""employSurveyResponseRate"":22,""diPolicyEstablished"":null,""diPublicAvailable"":true,""diWebsite"":true,""diPosition"":true,""diFTEPosition"":true,""diPositionExecutive"":true},""jobMetrics"":{""totalHours"":null,""employTurnoverTotal"":99,""employTurnoverVoluntary"":22,""employTurnoverFired"":21,""employTraining"":true},""raceMetrics"":{""raceRatioExececutive"":1,""raceRatioBoard"":12,""raceRatioSenior"":44,""raceRatioMiddle"":44,""raceRatioAll"":100},""genderMetrics"":{""genderRatioSenior"":22,""genderRatioMiddle"":21,""genderRatioAll"":40,""genderPayGap"":44,""genderRatioBoard"":40},""healthMetrics"":{""fatalities"":42,""sickAbsence"":44,""healthTRI"":38,""healthTRIR"":31},""names"":[],""addresses"":[]}";
 
             new SilverDashboardAPI().SaveCompany(new Amazon.Lambda.APIGatewayEvents.APIGatewayProxyRequest()
             {
                 Headers = new Dictionary<string, string>()
                 {
                     {"Content-Type", "application/json" },
-                    {"x-api-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxMjMiLCJuYmYiOjE2MTEzMzE2ODIsImV4cCI6MTYxMjYyNzY4MiwiaWF0IjoxNjExMzMxNjgyLCJpc3MiOiJodHRwczovL2RpZ2l0YWwtaW5zaWdodHMuY29tIiwiYXVkIjoiaHR0cHM6Ly9kaWdpdGFsLWluc2lnaHRzLmNvbSJ9.J3-LPboKm2PIptnH-xJSAEtxSwFtpo-eN5_TPsx9byo" }
+                    {"x-api-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJ0ZXN0VXNlciIsIm5iZiI6MTYxMjUwNjEzNywiZXhwIjoxNjEyNTkyNTM3LCJpYXQiOjE2MTI1MDYxMzd9.LNm9239bzsYv7pCgbvXm2J0dNMiVGKKl4cLI8Y4CUuk" }
                 },
                 Body = json,
             }, null);

@@ -22,7 +22,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         {
             Nationalities = source.PersonNationalities.OrderBy(x => x.CountryId).Select(x=>new PersonNationalityDTO(x)).ToArray();
             Roles = source.Roles.OrderBy(x => x.Id).Select(x => new RoleDTO(x)).ToArray();
-            Age = source.Age;
+            YearOfBirth = source.YearOfBirth;
             EducationInstitute = source.EducationInstitute;
             EducationSubject = source.EducationSubject.HasValue ? (int)source.EducationSubject : null;
             Gender = source.Gender.HasValue ? (int)source.Gender : null;
@@ -42,7 +42,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         public PersonNationalityDTO[] Nationalities { get; set; }
 
         public RoleDTO[] Roles { get; set; }
-        public short? Age { get; set; }
+        public short? YearOfBirth { get; set; }
         public string EducationInstitute { get; set; }
         public int? EducationSubject { get; set; }
         public int? Gender { get; set; }

@@ -86,8 +86,8 @@ namespace DigitalInsights.API.SilverDashboard.Services
             {
                 switch(property.PropertyName.ToLowerInvariant())
                 {
-                    case "age":
-                        ValidationHelper.ValidateAndSetProperty<int?>(property, () => source.Age, x => targetPerson.Age = (short?)x);
+                    case "yearOfBirth":
+                        ValidationHelper.ValidateAndSetProperty<int?>(property, () => source.YearOfBirth, x => targetPerson.YearOfBirth = (short?)x);
                         break;
                     case "educationinstitute":
                         ValidationHelper.ValidateAndSetProperty(property, () => source.EducationInstitute, x => targetPerson.EducationInstitute = x);

@@ -22,6 +22,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         }
 
         public int? Industry { get; set; }
+        public int? IndustryCodeType { get; set; }
         public int? IndustryCode { get; set; }
         public bool? IsPrimary { get; set; }
         public string TradeDescription { get; set; }

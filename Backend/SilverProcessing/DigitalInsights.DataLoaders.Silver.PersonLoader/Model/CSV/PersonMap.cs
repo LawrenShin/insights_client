@@ -12,7 +12,7 @@ namespace DigitalInsights.DataLoaders.Silver.PersonLoader.Model.CSV
         public PersonMap()
         {
             Map(m => m.Name).Name("Name");
-            Map(m => m.Age).Name("Age");
+            Map(m => m.YearOfBirth).Name("BirthYear");
             Map(m => m.Gender).Name("Gender").ConvertUsing(x =>
             {
                 string gender = x.GetField("Gender").Trim().ToLower();

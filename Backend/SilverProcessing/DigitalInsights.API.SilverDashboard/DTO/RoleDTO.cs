@@ -21,6 +21,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             JobTenure = source.JobTenure;
             OtherIncentives = source.OtherIncentives;
             CompanyId = source.CompanyId;
+            PersonId = source.PersonId;
             RoleType = (int)source.RoleType;
             Title = source.Title;
         }
@@ -28,6 +29,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         public string Title { get; set; }
         public double? OtherIncentives { get; set; }
         public int? CompanyId { get; set; }
+        public int? PersonId { get; set; }
         public int? RoleType { get; set; }
         public double? BaseSalary { get; set; }
         public int? JobTenure { get; set; }

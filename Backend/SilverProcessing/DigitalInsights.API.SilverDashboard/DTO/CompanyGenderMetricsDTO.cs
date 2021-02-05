@@ -20,6 +20,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             GenderPayGap = source.GenderPayGap;
             GenderRatioAll = source.GenderRatioAll;
             GenderRatioBoard = source.GenderRatioBoard;
+            GenderRatioExecutive = source.GenderRatioExecutive;
             GenderRatioMiddle = source.GenderRatioMiddle;
             GenderRatioSenior = source.GenderRatioSenior;
         }
@@ -29,6 +30,7 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         public double? GenderPayGap { get; set; }
         public double? GenderRatioAll { get; set; }
         public double? GenderRatioBoard { get; set; }
+        public double? GenderRatioExecutive { get; set; }
         public double? GenderRatioMiddle { get; set; }
         public double? GenderRatioSenior { get; set; }
     }

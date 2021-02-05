@@ -15,7 +15,6 @@ namespace DigitalInsights.API.SilverDashboard.DTO
             AverageEducationLength = source.AverageEducationLength;
             BlackPercentage = source.BlackPercentage;
             CaucasianPercentage = source.CaucasianPercentage;
-            FemaleRatio = source.FemaleRatio;
             Height = source.Height;
             HispanicPercentage = source.HispanicPercentage;
             IndigenousPercentage = source.IndigenousPercentage;
@@ -31,7 +30,6 @@ namespace DigitalInsights.API.SilverDashboard.DTO
         public double? AverageEducationLength { get; set; }
         public double? BlackPercentage { get; set; }
         public double? CaucasianPercentage { get; set; }
-        public double? FemaleRatio { get; set; }
         public double? Height { get; set; }
         public double? HispanicPercentage { get; set; }
         public double? IndigenousPercentage { get; set; }
