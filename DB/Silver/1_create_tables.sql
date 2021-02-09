@@ -496,11 +496,11 @@ INSERT INTO PropertyMetadata(
 	('Company','people',NULL,NULL,7,True,False,NULL,'Person',NULL,NULL,100),
 	('CompanyName','name','Name',NULL,0,False,True,NULL,NULL,NULL,NULL,12),
 	('CompanyName','nameType','NameType',NULL,0,False,True,NULL,NULL,NULL,NULL,13),
-	('CompanyCountry','country','Country',NULL,6,False,True,'countries',NULL,NULL,NULL,14),
+	('CompanyCountry','country','Country',NULL,6,True,True,'countries',NULL,NULL,NULL,14),
 	('CompanyCountry','isoCode',NULL,NULL,0,True,False,NULL,NULL,NULL,NULL,15),
 	('CompanyCountry','ticker','Ticker',NULL,0,True,True,NULL,NULL,NULL,NULL,16),
 	('Address','addressType','Address type',NULL,6,False,True,'addressTypes',NULL,NULL,NULL,17),
-	('Address','isEditable','Is address editable',NULL,1,False,False,NULL,NULL,NULL,NULL,18),
+	('Address','isEditable',NULL,NULL,1,False,False,NULL,NULL,NULL,NULL,18),
 	('Address','streetOne','Street Address 1',NULL,0,True,True,NULL,NULL,NULL,NULL,19),
 	('Address','streetTwo','Street Address 2',NULL,0,True,True,NULL,NULL,NULL,NULL,20),
 	('Address','postCode','PostCode',NULL,0,True,True,NULL,NULL,NULL,NULL,21),
@@ -1524,7 +1524,7 @@ CREATE TABLE IF NOT EXISTS CompanyCountries
 (
 	Id SERIAL PRIMARY KEY,
 	CompanyId INT NOT NULL REFERENCES Companies(Id) ON DELETE CASCADE,
-	CountryId INT NOT NULL REFERENCES Countries(Id),
+	CountryId INT DEFAULT NULL REFERENCES Countries(Id),
 	Ticker VARCHAR(10) DEFAULT NULL,
 	EffectiveFrom TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
