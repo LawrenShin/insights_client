@@ -236,8 +236,6 @@ namespace DigitalInsights.DB.Gold
                     .HasColumnName("effectivefrom")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.FemaleRatio).HasColumnName("femaleratio");
-
                 entity.Property(e => e.Height).HasColumnName("height");
 
                 entity.Property(e => e.HispanicPercentage).HasColumnName("hispanicpercentage");
@@ -444,8 +442,6 @@ namespace DigitalInsights.DB.Gold
                     .HasColumnName("effectivefrom")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.FemaleRatio).HasColumnName("femaleratio");
-
                 entity.Property(e => e.Height).HasColumnName("height");
 
                 entity.Property(e => e.HispanicPercentage).HasColumnName("hispanicpercentage");
@@ -511,6 +507,8 @@ namespace DigitalInsights.DB.Gold
                 entity.Property(e => e.GenderRatioAll).HasColumnName("genderratioall");
 
                 entity.Property(e => e.GenderRatioBoard).HasColumnName("genderratioboard");
+
+                entity.Property(e => e.GenderRatioExecutive).HasColumnName("genderratioexecutive");
 
                 entity.Property(e => e.GenderRatioMiddle).HasColumnName("genderratiomiddle");
 
@@ -622,9 +620,12 @@ namespace DigitalInsights.DB.Gold
                     v => v != null ? (Common.Enums.IndustryCode)v : null
                     );
 
-                entity.Property(e => e.IndustryCode)
-                    .HasColumnName("industrycode")
+                entity.Property(e => e.IndustryCodeType)
+                    .HasColumnName("industrycodetype")
                     .HasConversion(industryCodeConverter);
+
+                entity.Property(e => e.IndustryCode)
+                    .HasColumnName("industrycode");
 
                 var industryConverter = new ValueConverter<Common.Enums.Industry?, int?>(
                     v => v != null ? (int)v : null,
@@ -1740,7 +1741,7 @@ namespace DigitalInsights.DB.Gold
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Age).HasColumnName("age");
+                entity.Property(e => e.YearOfBirth).HasColumnName("yearofbirth");
 
                 entity.Property(e => e.EducationInstitute)
                     .HasMaxLength(100)

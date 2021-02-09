@@ -16,6 +16,7 @@ namespace DigitalInsights.DB.Gold.Entities.CompanyData
         public double? GenderRatioAll { get; set; }
         public double? GenderPayGap { get; set; }
         public double? GenderRatioBoard { get; set; }
+        public double? GenderRatioExecutive { get; set; }
         public DateTime? EffectiveFrom { get; set; }
 
         public virtual Company Company { get; set; }

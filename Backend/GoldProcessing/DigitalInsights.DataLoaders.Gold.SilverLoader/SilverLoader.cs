@@ -22,7 +22,7 @@ namespace DigitalInsights.DataLoaders.Gold.SilverLoader
     {
         const string UPDATER_NAME = "SilverLoader";
 
-        const int PAGE_SIZE = 10000;
+        const int PAGE_SIZE = 1000;
 
         const int THREAD_COUNT = 24;
 
@@ -205,7 +205,6 @@ namespace DigitalInsights.DataLoaders.Gold.SilverLoader
                         {
                             var newPerson = new Person()
                             {
-                                Age = person.Age,
                                 EducationInstitute = person.EducationInstitute,
                                 EducationSubject = person.EducationSubject,
                                 Gender = person.Gender,
@@ -219,6 +218,7 @@ namespace DigitalInsights.DataLoaders.Gold.SilverLoader
                                 Sexuality = person.Sexuality,
                                 Urban = person.Urban,
                                 VisibleDisability = person.VisibleDisability,
+                                YearOfBirth = person.YearOfBirth,
                             };
 
                             peopleMap[person] = newPerson;
@@ -266,7 +266,6 @@ namespace DigitalInsights.DataLoaders.Gold.SilverLoader
                                 AverageEducationLength = companyBoardStatistics.AverageEducationLength,
                                 BlackPercentage = companyBoardStatistics.BlackPercentage,
                                 CaucasianPercentage = companyBoardStatistics.CaucasianPercentage,
-                                FemaleRatio = companyBoardStatistics.FemaleRatio,
                                 Height = companyBoardStatistics.Height,
                                 HispanicPercentage = companyBoardStatistics.HispanicPercentage,
                                 IndigenousPercentage = companyBoardStatistics.IndigenousPercentage,
@@ -290,7 +289,6 @@ namespace DigitalInsights.DataLoaders.Gold.SilverLoader
                                 AverageEducationLength = companyExecutiveStatistics.AverageEducationLength,
                                 BlackPercentage = companyExecutiveStatistics.BlackPercentage,
                                 CaucasianPercentage = companyExecutiveStatistics.CaucasianPercentage,
-                                FemaleRatio = companyExecutiveStatistics.FemaleRatio,
                                 Height = companyExecutiveStatistics.Height,
                                 HispanicPercentage = companyExecutiveStatistics.HispanicPercentage,
                                 IndigenousPercentage = companyExecutiveStatistics.IndigenousPercentage,

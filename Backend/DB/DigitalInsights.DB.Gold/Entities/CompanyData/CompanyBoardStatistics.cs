@@ -11,7 +11,6 @@ namespace DigitalInsights.DB.Gold.Entities.CompanyData
         public int MembersNumber { get; set; }
         public double? SalaryAverage { get; set; }
         public double? SalaryMean { get; set; }
-        public double? FemaleRatio { get; set; }
         public double? ArabPercentage { get; set; }
         public double? HispanicPercentage { get; set; }
         public double? BlackPercentage { get; set; }

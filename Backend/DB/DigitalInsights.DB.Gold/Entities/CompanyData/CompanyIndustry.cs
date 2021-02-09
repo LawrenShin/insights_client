@@ -9,7 +9,8 @@ namespace DigitalInsights.DB.Gold.Entities.CompanyData
         public int Id { get; set; }
         public int CompanyId { get; set; }
         public Common.Enums.Industry Industry { get; set; }
-        public Common.Enums.IndustryCode IndustryCode { get; set; }
+        public Common.Enums.IndustryCode IndustryCodeType { get; set; }
+        public int? IndustryCode { get; set; }
         public string TradeDescription { get; set; }
         public bool? IsPrimary { get; set; }
         public DateTime EffectiveFrom { get; set; }

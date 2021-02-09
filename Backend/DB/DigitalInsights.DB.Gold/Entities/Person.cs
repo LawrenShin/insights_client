@@ -16,7 +16,7 @@ namespace DigitalInsights.DB.Gold.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string RandomName { get; set; }
-        public short? Age { get; set; }
+        public short? YearOfBirth { get; set; }
         public Common.Enums.Gender? Gender { get; set; }
         public Common.Enums.Race? Race { get; set; }
         public Common.Enums.Religion? Religion { get; set; }
