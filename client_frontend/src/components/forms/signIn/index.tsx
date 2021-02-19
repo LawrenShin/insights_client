@@ -15,7 +15,10 @@ interface FormState {
 // TODO: types
 export default (props: any) => {
   const styles = useStyles();
-
+  const initials = {
+    login: '',
+    password: '',
+  }
 
   const _handleSubmit = (values: FormState) => {
     console.log(values);
@@ -23,10 +26,8 @@ export default (props: any) => {
 
   return (<>
     <Formik
-      initialValues={{
-        login: '',
-        password: '',
-      }}
+      initialErrors={initials}
+      initialValues={initials}
       validationSchema={Yup.object().shape({
         login: Yup.string().required(),
         password: Yup.string().min(8, 'At least 8 characters long').required(),

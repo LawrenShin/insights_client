@@ -8,18 +8,15 @@ export default (props: any) => {
 
   function _renderHelperText() {
     const {touched, error} = meta;
-    console.log(touched, error);
-
     if (touched && error) {
       return error;
     }
   }
-  console.log(meta)
 
   return (
     <TextField
       type="text"
-      error={meta.touched && meta.error}
+      error={!!(meta.touched && meta.error)}
       helperText={_renderHelperText()}
       {...field}
       {...rest}

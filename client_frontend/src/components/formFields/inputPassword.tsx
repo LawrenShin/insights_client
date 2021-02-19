@@ -19,10 +19,14 @@ export default ({
   const { errorText, ...rest } = props;
   const [field, meta] = useField(props);
   const [touched, error] = at(meta, 'touched', 'error');
+  // use as boolean otherwise u get warning
+  const showError = !!(touched && error?.password);
 
   function _renderHelperText() {
-    if (touched && error?.password) {
-      return <FormHelperText error={touched && error?.password}>{error?.password}</FormHelperText>
+    if (showError) {
+      return <FormHelperText
+        error={showError}
+      >{error?.password}</FormHelperText>
     }
     return<></>
   }
@@ -32,11 +36,16 @@ export default ({
       variant={variant}
       size={size}
     >
-      <InputLabel htmlFor="password">Password</InputLabel>
+      <InputLabel
+        error={showError}
+        htmlFor="password"
+      >
+        Password
+      </InputLabel>
       <OutlinedInput
         {...field}
         {...rest}
-        error={touched && error?.password}
+        error={showError}
         name={'password'}
         type={showPassword ? 'text' : 'password'}
         endAdornment={
