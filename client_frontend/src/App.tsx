@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 import 'fontsource-roboto';
-import SignIn from "./pages/SignIn";
+import Greeting from './pages/Greeting';
 
-const App = () => <SignIn />
+const App = () => <Greeting />
 
 export default App;

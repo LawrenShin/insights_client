@@ -10,10 +10,12 @@ const ColorButton = withStyles((theme: Theme) => ({
   },
 }))(Button);
 
-export default (props: any) => <ColorButton
-  className={props.style}
+export default ({onClick, style, children, ...rest}: any) => <ColorButton
+  onClick={onClick}
+  className={style}
   variant="contained"
   color="inherit"
+  {...rest}
 >
-  {props.children}
+  {children}
 </ColorButton>
