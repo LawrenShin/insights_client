@@ -10,7 +10,7 @@ export enum Tabs {
   forgot,
 }
 
-export default () => {
+const Greeting = () => {
   const [tab, setTab] = useState<Tabs>(Tabs.signin);
   const styles = useStyles();
 
@@ -29,3 +29,5 @@ export default () => {
     </>
   )
 }
+
+export default Greeting;

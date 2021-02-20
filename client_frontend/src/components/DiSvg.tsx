@@ -5,6 +5,8 @@ interface Props {
   styles?: string;
 }
 
-export default ({styles}: Props) => <Box className={styles}>
-  <img src={'./dilogo.png'} />
+const DiSvg = ({styles}: Props) => <Box className={styles}>
+  <img src={'./dilogo.png'} alt={'DI logo'} />
 </Box>
+
+export default DiSvg;

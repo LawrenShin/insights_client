@@ -4,7 +4,7 @@ import useStyles from "./useStyles";
 import SignIn from "../../components/forms/signIn";
 
 
-export default (props: any) => {
+const SignInPage = (props: any) => {
   const styles = useStyles();
 
   return (<>
@@ -12,3 +12,5 @@ export default (props: any) => {
         <SignIn {...props} />
       </>);
 }
+
+export default SignInPage;

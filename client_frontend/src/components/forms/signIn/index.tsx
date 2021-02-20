@@ -13,7 +13,7 @@ interface FormState {
 }
 
 // TODO: types
-export default (props: any) => {
+const SignIn = (props: any) => {
   const styles = useStyles();
   const initials = {
     login: '',
@@ -55,3 +55,5 @@ export default (props: any) => {
     </Formik>
   </>)
 }
+
+export default SignIn;
