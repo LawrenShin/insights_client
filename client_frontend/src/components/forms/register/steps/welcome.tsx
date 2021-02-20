@@ -1,3 +1,9 @@
 import React from 'react';
 
-export default () => <></>
+const Welcome = () => {
+  return (<>
+
+  </>)
+}
+
+export default Welcome;

@@ -1,3 +1,9 @@
 import React from 'react';
 
-export default () => <></>
+const CreateAccount = () => {
+  return (<>
+
+  </>)
+}
+
+export default CreateAccount;

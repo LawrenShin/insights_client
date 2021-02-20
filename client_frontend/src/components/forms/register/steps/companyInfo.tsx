@@ -1,3 +1,9 @@
 import React from 'react';
 
-export default () => <></>
+const CompanyInfo = () => {
+  return (<>
+
+  </>)
+}
+
+export default CompanyInfo;

@@ -17,7 +17,7 @@ const PasswordInput = ({
   };
 
   const { errorText, ...rest } = props;
-  const [field, meta] = useField({...props, name: 'password'});
+  const [field, meta] = useField(props);
   const [touched, error] = at(meta, 'touched', 'error');
   // use as boolean otherwise u get warning
   const showError = !!(touched && error?.password);
