@@ -9,6 +9,7 @@ import DiSvg from "../../DiSvg";
 import Button from '../../button';
 import useStyles from "./useStyles";
 import CreateAccount from "./steps/createAccount";
+import {postRequest} from "../../../api";
 
 const steps = ['personalInfo', 'companyInfo', 'createAccount'];
 const {formId, formField} = FormModel;
@@ -34,6 +35,7 @@ const Register = ({toSignIn}: Props) => {
 
   const submitForm = (values: any, actions: any) => {
     console.log(values, 'SUBMIT');
+    postRequest('register', values);
     actions.setSubmitting(false);
   }
 
@@ -56,6 +58,7 @@ const Register = ({toSignIn}: Props) => {
       <DiSvg />
     </div>
     { step === 3 ?
+      // TODO: welcome here
       ('finale')
         :
       (<Formik

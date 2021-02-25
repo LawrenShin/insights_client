@@ -1,14 +1,19 @@
 import React from 'react'
+import {connect} from 'react-redux';
 import Button from "../../button";
 import useStyles from "./useStyles";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import Input from '../../formFields/input';
 import InputPassword from '../../formFields/inputPassword';
+import {RootState} from "../../../store/rootReducer";
+import {Dispatch} from "redux";
+import {CreateAction} from "../../../store/actionType";
+import {SignInType} from "../../../pages/SignIn/duck";
 
 
 interface FormState {
-  login: string;
+  username: string;
   password: string;
 }
 
@@ -16,12 +21,12 @@ interface FormState {
 const SignIn = (props: any) => {
   const styles = useStyles();
   const initials = {
-    login: '',
+    username: '',
     password: '',
   }
 
   const _handleSubmit = (values: FormState) => {
-    console.log(values);
+    props.loginUser(values);
   }
 
   return (<>
@@ -29,19 +34,19 @@ const SignIn = (props: any) => {
       initialErrors={initials}
       initialValues={initials}
       validationSchema={Yup.object().shape({
-        login: Yup.string().required(),
-        password: Yup.string().min(8, 'At least 8 characters long').required(),
+        username: Yup.string().required(),
+        password: Yup.string().min(6, 'At least 6 characters long').required(),
       })}
       onSubmit={_handleSubmit}
     >
       {({values, setSubmitting}) => <Form id={'signIn'}
         className={`${styles.inputs} ${styles.fullWidth} ${styles.textAlignRight}`}>
         <Input
-          name={'login'}
-          label={'Login'}
+          name={'username'}
+          label={'Username'}
           variant="outlined"
           size={'small'}
-          value={values.login}
+          value={values.username}
         />
         <InputPassword
           variant="outlined"
@@ -56,4 +61,11 @@ const SignIn = (props: any) => {
   </>)
 }
 
-export default SignIn;
+export default connect(
+  (state: RootState) => ({
+    login: state.SignIn,
+  }),
+  (dispatch: Dispatch) => ({
+    loginUser: (values: any) => dispatch(CreateAction(SignInType.SIGN_IN, values)),
+  })
+)(SignIn);
