@@ -9,6 +9,9 @@ const useStyles = makeStyles({
   fullWidth: {
     width: '100%',
   },
+  colorPurp: {
+    color: '#5926EB',
+  }
 });
 
 export default useStyles;

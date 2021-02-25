@@ -42,7 +42,7 @@ const FormModel: FormModelType = {
     },
     terms: {
       name: 'terms',
-      label: 'I acknowledge that I agree to the <a href="#">Terms of Use</a> and have read <a href="#">Privacy Police.</a>'
+      label: ``
     }
   }
 }

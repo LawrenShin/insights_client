@@ -6,17 +6,19 @@ import FormModel from './formModel';
 import PersonalInfo from "./steps/personalInfo";
 import CompanyInfo from "./steps/companyInfo";
 import DiSvg from "../../DiSvg";
-import {Grid} from "@material-ui/core";
-import {inspect} from "util";
+import Button from '../../button';
 import useStyles from "./useStyles";
+import CreateAccount from "./steps/createAccount";
 
 const steps = ['personalInfo', 'companyInfo', 'createAccount', 'welcome'];
 const {formId, formField} = FormModel;
 
 const renderStepContent = (step: number) => {
   if (step === 0) return <PersonalInfo formField={formField} />
-  // if (step === 2) return <CompanyInfo formField={formField} />
+  if (step === 1) return <CompanyInfo formField={formField} />
+  if (step === 2) return <CreateAccount formField={formField} />
 
+  // TODO: if step -1 push to history go back to login. It will be two independent pages
   return 'dough';
 }
 
@@ -49,7 +51,7 @@ const Register = () => {
     <div className={styles.DiSvgContainer}>
       <DiSvg />
     </div>
-    { step === steps.length ?
+    { step === 3 ?
       ('finale')
         :
       (<Formik
@@ -57,9 +59,21 @@ const Register = () => {
         initialValues={initialValues}
         validationSchema={currentValidationSchema}
       >
-        {({values}) => (<Form id={formId}>
-          {renderStepContent(step)}
-        </Form>)}
+        {({values}) => (
+          <Form id={formId} style={{width: '100%'}}>
+            {renderStepContent(step)}
+            <div className={styles.buttonContainer}>
+              <span
+                className={styles.backButton}
+                onClick={() => setStep(step - 1)}
+              >← Back</span>
+              <Button
+                type="submit"
+                className={styles.nextButton}
+              >{step === 2 ? 'Create account' : 'Next step'}</Button>
+            </div>
+          </Form>
+        )}
       </Formik>)
     }
   </>);

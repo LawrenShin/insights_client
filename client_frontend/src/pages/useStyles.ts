@@ -7,8 +7,8 @@ export default makeStyles({
   signInContainer: {
     position: 'absolute',
     width: '30%',
-    height: '45%',
-    minHeight: '300px',
+    height: 'auto',
+    minHeight: '50%',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
