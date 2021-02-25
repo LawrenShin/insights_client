@@ -10,7 +10,7 @@ import NotFound from "../pages/NotFound";
 const AppRouter = () => (
   <Router>
     <Switch>
-      <PrivateRoute exact path='/' component={Greeting} />
+      <Route exact path='/' component={Greeting} />
       <Route component={NotFound} />
     </Switch>
   </Router>

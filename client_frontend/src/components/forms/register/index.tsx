@@ -13,6 +13,10 @@ import CreateAccount from "./steps/createAccount";
 const steps = ['personalInfo', 'companyInfo', 'createAccount'];
 const {formId, formField} = FormModel;
 
+interface Props {
+  toSignIn: () => void;
+}
+
 const renderStepContent = (step: number) => {
   if (step === 0) return <PersonalInfo formField={formField} />
   if (step === 1) return <CompanyInfo formField={formField} />
@@ -22,7 +26,7 @@ const renderStepContent = (step: number) => {
   return 'dough';
 }
 
-const Register = () => {
+const Register = ({toSignIn}: Props) => {
   const [step, setStep] = useState<number>(0);
   const currentValidationSchema = validationSchema[step];
   const isLastStep = step === steps.length - 1;
@@ -65,7 +69,7 @@ const Register = () => {
             <div className={styles.buttonContainer}>
               <span
                 className={styles.backButton}
-                onClick={() => setStep(step - 1)}
+                onClick={() => step === 0 ? toSignIn() : setStep(step - 1)}
               >← Back</span>
               <Button
                 type="submit"

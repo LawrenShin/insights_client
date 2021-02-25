@@ -39,7 +39,7 @@ export const PrivateRoute = (
 
   useEffect(() => {
     // if (isAuthenticated) history.push('/companies');
-    // if (!isAuthenticated) history.push('/sign_in');
+    // if (!isAuthenticated) history.push('/');
   }, [isAuthenticated]);
 
   return(

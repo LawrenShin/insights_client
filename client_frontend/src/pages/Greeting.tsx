@@ -26,7 +26,9 @@ const Greeting = () => {
                 onClick={() => setTab(Tabs.register)}
                 >Register</Button>}
             />}
-          {tab === Tabs.register && <Register />}
+          {tab === Tabs.register && <Register
+            toSignIn={() => setTab(Tabs.signin)}
+          />}
         </Box>
       </Box>
     </>
