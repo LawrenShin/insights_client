@@ -10,7 +10,7 @@ import Button from '../../button';
 import useStyles from "./useStyles";
 import CreateAccount from "./steps/createAccount";
 
-const steps = ['personalInfo', 'companyInfo', 'createAccount', 'welcome'];
+const steps = ['personalInfo', 'companyInfo', 'createAccount'];
 const {formId, formField} = FormModel;
 
 const renderStepContent = (step: number) => {
