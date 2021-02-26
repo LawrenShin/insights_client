@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Formik, Form } from 'formik';
+import {Form, Formik} from 'formik';
 import initialValues from "./initialValues";
 import validationSchema from "./validationSchema";
 import FormModel from './formModel';
@@ -9,12 +9,29 @@ import DiSvg from "../../DiSvg";
 import Button from '../../button';
 import useStyles from "./useStyles";
 import CreateAccount from "./steps/createAccount";
-import {postRequest} from "../../../api";
+import {connect} from "react-redux";
+import {RootState} from "../../../store/rootReducer";
+import {Dispatch} from "redux";
+import {CreateAction} from "../../../store/actionType";
+import {RegisterTypes} from "./duck";
+import {RequestStatuses} from "../../../api/requestTypes";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import {usePrevious} from "../../../helpers";
+
 
 const steps = ['personalInfo', 'companyInfo', 'createAccount'];
 const {formId, formField} = FormModel;
 
-interface Props {
+
+interface StateProps {
+  status: RequestStatuses;
+  error: null;
+}
+interface DispatchProps {
+  regUser: (values: any) => void;
+}
+
+interface Props extends StateProps, DispatchProps {
   toSignIn: () => void;
 }
 
@@ -26,16 +43,21 @@ const renderStepContent = (step: number) => {
   // TODO: if step -1 push to history go back to login. It will be two independent pages
   return 'dough';
 }
-
-const Register = ({toSignIn}: Props) => {
+// COMPONENT
+const Register = ({
+    toSignIn,
+    regUser,
+    status,
+    error,
+  }: Props) => {
   const [step, setStep] = useState<number>(0);
   const currentValidationSchema = validationSchema[step];
   const isLastStep = step === steps.length - 1;
   const styles = useStyles();
+  const prevStatus = usePrevious(status);
 
   const submitForm = (values: any, actions: any) => {
-    console.log(values, 'SUBMIT');
-    postRequest('register', values);
+    regUser(values);
     actions.setSubmitting(false);
   }
 
@@ -53,11 +75,22 @@ const Register = ({toSignIn}: Props) => {
     setStep(step - 1);
   }
 
+  const renderButtons = () => <div className={styles.buttonContainer}>
+    <span
+      className={styles.backButton}
+      onClick={() => step === 0 ? toSignIn() : handleBack()}
+    >← Back</span>
+    <Button
+      type="submit"
+      className={styles.nextButton}
+    >{step === 2 ? 'Create account' : 'Next step'}</Button>
+  </div>
+
   return (<>
     <div className={styles.DiSvgContainer}>
       <DiSvg />
     </div>
-    { step === 3 ?
+    { (step === 2 && prevStatus === RequestStatuses.loading && status === RequestStatuses.still) ?
       // TODO: welcome here
       ('finale')
         :
@@ -69,16 +102,8 @@ const Register = ({toSignIn}: Props) => {
         {({values}) => (
           <Form id={formId} style={{width: '100%'}}>
             {renderStepContent(step)}
-            <div className={styles.buttonContainer}>
-              <span
-                className={styles.backButton}
-                onClick={() => step === 0 ? toSignIn() : setStep(step - 1)}
-              >← Back</span>
-              <Button
-                type="submit"
-                className={styles.nextButton}
-              >{step === 2 ? 'Create account' : 'Next step'}</Button>
-            </div>
+            {status !== RequestStatuses.loading ?
+              renderButtons() : <div className={styles.loaderContainer}><CircularProgress /></div>}
           </Form>
         )}
       </Formik>)
@@ -86,4 +111,12 @@ const Register = ({toSignIn}: Props) => {
   </>);
 }
 
-export default Register;
+export default connect(
+  ({Register: {status, error}}: RootState): StateProps => ({
+    status,
+    error
+  }),
+  (dispatch: Dispatch): DispatchProps => ({
+    regUser: (values: any) => dispatch(CreateAction(RegisterTypes.REGISTER, values)),
+  })
+)(Register);

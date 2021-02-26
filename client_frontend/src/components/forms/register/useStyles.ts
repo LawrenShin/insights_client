@@ -27,6 +27,11 @@ const useStyles = makeStyles({
       cursor: 'pointer',
     }
   },
+  loaderContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '20px',
+  }
 });
 
 export default useStyles;

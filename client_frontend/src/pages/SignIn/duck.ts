@@ -2,7 +2,7 @@ import {RequestStatuses} from '../../api/requestTypes';
 import {takeLatest, call, put} from "redux-saga/effects";
 import {postRequest} from "../../api";
 import {CreateAction} from "../../store/actionType";
-// TODO: types
+// TODO: types and token save
 
 export enum SignInType {
   SIGN_IN = 'SIGN_IN',
