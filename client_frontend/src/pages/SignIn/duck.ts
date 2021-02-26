@@ -25,6 +25,15 @@ export function* watcher () {
 }
 
 // REDUCER
+interface UserData {
+  token: string;
+  accessRights: string[];
+}
+interface InitialState {
+  data: UserData | null;
+  status: RequestStatuses;
+  error: string | null;
+}
 
 const initState = {
   data: null,
@@ -32,7 +41,7 @@ const initState = {
   error: null,
 }
 
-export function reducer (state: any = initState, action: any) {
+export function reducer (state: InitialState = initState, action: any) {
   const {type, payload} = action;
 
   if (type === SignInType.SIGN_IN) return {
