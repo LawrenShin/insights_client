@@ -17,6 +17,7 @@ import {RegisterTypes} from "./duck";
 import {RequestStatuses} from "../../../api/requestTypes";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {usePrevious} from "../../../helpers";
+import Welcome from "./steps/welcome";
 
 
 const steps = ['personalInfo', 'companyInfo', 'createAccount'];
@@ -48,6 +49,7 @@ const Register = ({
     toSignIn,
     regUser,
     status,
+    // TODO: add error response
     error,
   }: Props) => {
   const [step, setStep] = useState<number>(0);
@@ -86,13 +88,13 @@ const Register = ({
     >{step === 2 ? 'Create account' : 'Next step'}</Button>
   </div>
 
+
   return (<>
     <div className={styles.DiSvgContainer}>
       <DiSvg />
     </div>
     { (step === 2 && prevStatus === RequestStatuses.loading && status === RequestStatuses.still) ?
-      // TODO: welcome here
-      ('finale')
+      <Welcome toSignIn={toSignIn} />
         :
       (<Formik
         onSubmit={handleSubmit}
