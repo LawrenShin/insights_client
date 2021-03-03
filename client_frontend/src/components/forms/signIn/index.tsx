@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {connect} from 'react-redux';
 import Button from "../../button";
 import useStyles from "./useStyles";
@@ -10,25 +10,58 @@ import {RootState} from "../../../store/rootReducer";
 import {Dispatch} from "redux";
 import {CreateAction} from "../../../store/actionType";
 import {SignInType} from "../../../pages/SignIn/duck";
+import {RequestStatuses} from "../../../api/requestTypes";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import {useHistory} from "react-router-dom";
 
 
 interface FormState {
   username: string;
   password: string;
 }
+interface UserData {
+  token: string;
+  accessRights: string[];
+}
 
-// TODO: types
-const SignIn = (props: any) => {
+interface OwnProps {
+  renderRegister: (styles: string) => JSX.Element;
+}
+interface StateProps {
+  data: UserData;
+  status: RequestStatuses;
+  error: string | null;
+}
+interface DispatchProps {
+  loginUser: (values: FormState) => void,
+}
+interface Props extends StateProps, DispatchProps, OwnProps {}
+
+
+const SignIn = (props: Props) => {
+  const {
+    renderRegister,
+    loginUser,
+    data,
+    status,
+    error,
+  } = props;
+  const history = useHistory();
   const styles = useStyles();
   const initials = {
     username: '',
     password: '',
   }
 
+  useEffect(() => {
+    if (data) history.push('/searchCompanies');
+  }, [data]);
+
   const _handleSubmit = (values: FormState) => {
-    props.loginUser(values);
+    loginUser(values);
   }
 
+  if (data) return null;
   return (<>
     <Formik
       initialErrors={initials}
@@ -54,17 +87,18 @@ const SignIn = (props: any) => {
           value={values.password}
         />
         <a href={'#'}>forgot password?</a>
-        <Button style={styles.button} type={'submit'}>Sign in</Button>
-        {props.renderRegister(`${styles.button} ${styles.whiteBack}`)}
+        {
+          status === RequestStatuses.loading ?
+          <CircularProgress /> : <Button style={styles.button} type={'submit'}>Sign in</Button>
+        }
+        {renderRegister(`${styles.button} ${styles.whiteBack}`)}
       </Form>}
     </Formik>
   </>)
 }
 
 export default connect(
-  (state: RootState) => ({
-    login: state.SignIn,
-  }),
+  (state: RootState) => ({...state.SignIn}),
   (dispatch: Dispatch) => ({
     loginUser: (values: any) => dispatch(CreateAction(SignInType.SIGN_IN, values)),
   })

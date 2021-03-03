@@ -1,5 +1,6 @@
 import {RequestStatuses} from '../../api/requestTypes';
-import {takeLatest, call, put} from "redux-saga/effects";
+import {takeLatest, put} from "redux-saga/effects";
+import {call} from "typed-redux-saga";
 import {postRequest} from "../../api";
 import {CreateAction} from "../../store/actionType";
 // TODO: types and token save
@@ -34,9 +35,9 @@ interface InitialState {
   status: RequestStatuses;
   error: string | null;
 }
-
+const fromStorage = localStorage.getItem('user');
 const initState = {
-  data: null,
+  data: fromStorage ? JSON.parse(fromStorage) : null,
   status: RequestStatuses.still,
   error: null,
 }
@@ -48,12 +49,16 @@ export function reducer (state: InitialState = initState, action: any) {
     ...state,
     status: RequestStatuses.loading,
   }
-  if (type === SignInType.SIGN_IN_SUCCESS) return {
-    ...state,
-    data: payload,
-    status: RequestStatuses.still,
-    error: null,
+  if (type === SignInType.SIGN_IN_SUCCESS) {
+    localStorage.setItem('user', JSON.stringify(payload))
+    return {
+      ...state,
+      data: payload,
+      status: RequestStatuses.still,
+      error: null,
+    }
   }
+
   if (type === SignInType.SIGN_IN_FAIL) return {
     ...state,
     status: RequestStatuses.fail,

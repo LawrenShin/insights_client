@@ -38,8 +38,8 @@ export const PrivateRoute = (
   const history = useHistory();
 
   useEffect(() => {
-    // if (isAuthenticated) history.push('/companies');
-    // if (!isAuthenticated) history.push('/');
+    if (isAuthenticated) history.push('/searchCompanies');
+    if (!isAuthenticated) history.push('/');
   }, [isAuthenticated]);
 
   return(
@@ -57,8 +57,7 @@ export const PrivateRoute = (
 }
 
 const mapStateToProps = (state: any) => ({
-  // isAuthenticated: !!state.SignInReducer.token,
-  isAuthenticated: false,
+  isAuthenticated: !!state.SignIn?.data?.token,
 });
 
 export default connect(mapStateToProps)(PrivateRoute);
