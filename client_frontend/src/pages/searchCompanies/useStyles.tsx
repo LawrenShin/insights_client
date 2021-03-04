@@ -20,6 +20,7 @@ export default makeStyles({
   },
   searchSettingsContainer: {
     background: '#fff',
+    minHeight: '70%',
   },
 });
 

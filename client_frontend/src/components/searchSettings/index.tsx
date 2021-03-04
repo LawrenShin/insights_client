@@ -1,19 +1,20 @@
 import React from 'react';
-import useStyles from "../search/useStyles";
+import useStyles from "./useStyles";
 import {Typography} from "@material-ui/core";
+import {Search} from "@material-ui/icons";
 
 const SearchSettings  = () => {
   const styles = useStyles();
 
   return (
-    <div>
-      <div>
+    <div className={styles.container}>
+      <div className={styles.titlesContainer}>
         <Typography variant={'h4'}>Welcome to DI insights!</Typography>
         <span>Are you ready to explore?</span>
       </div>
-      <div>
-        <div>
-
+      <div className={styles.searchExplanation}>
+        <div className={styles.iconContainer}>
+          <Search />
         </div>
         <div>
           <Typography variant={'h6'}>Search bar</Typography>
