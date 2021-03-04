@@ -17,15 +17,17 @@ const Search = () => {
           type={'text'}
           size={'small'}
           name={'search'}
-          label={'Search'}
+          label={'Search...'}
           variant="outlined"
           // error={}
           // helperText={}
           // value={values.username}
         />
         <Button
-          // className={`${styles.button} ${styles.resend}`}
-          type={'button'}>Resend contact email
+          className={`${styles.button}`}
+          type={'button'}
+        >
+          Show all results
         </Button>
       </div>
     </div>

@@ -13,6 +13,7 @@ export default makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
+    padding: '30px'
   },
   searchContainer: {
     background: '#E0E9FF',
