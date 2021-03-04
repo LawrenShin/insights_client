@@ -37,6 +37,7 @@ const useStyles = makeStyles({
       },
       '&.Mui-focused fieldset': {
         borderColor: '#5926EB',
+        borderWidth: '1px',
       },
     },
   },
@@ -46,6 +47,9 @@ const useStyles = makeStyles({
     fontWeight: 600,
     fontFamily: 'Poppins, sans-serif',
     fontSize: '14px',
+    '&:disabled': {
+      background: '#BCB2D9',
+    }
   },
 });
 

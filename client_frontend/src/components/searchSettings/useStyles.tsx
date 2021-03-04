@@ -4,7 +4,7 @@ import {makeStyles} from "@material-ui/core";
 const useStyles = makeStyles({
   container: {
     width: '40%',
-    transform: 'translate(70%, 40%)',
+    transform: 'translate(75%, 40%)',
     fontFamily: 'Poppins, sans-serif',
     '& h6': {
       fontFamily: 'Poppins, sans-serif',
@@ -25,6 +25,7 @@ const useStyles = makeStyles({
     },
   },
   searchExplanation: {
+    gap: '10px',
     display: 'flex',
     background: 'rgba(35%, 15%, 92%, 5%)',
     borderRadius: '5px',

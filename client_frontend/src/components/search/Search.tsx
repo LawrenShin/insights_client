@@ -1,11 +1,21 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import useStyles from "./useStyles";
 import {TextField} from "@material-ui/core";
 import Button from "../button";
 
 
 const Search = () => {
+  const [search, setSearch] = useState<string>('');
+  const [timer, setTimer] = useState<any>(null);
   const styles = useStyles();
+
+  useEffect(() => {
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
+    }
+    setTimer(setTimeout(() => console.log('request'), 500));
+  }, [search]);
 
   return (
     <div className={styles.container}>
@@ -21,10 +31,12 @@ const Search = () => {
           variant="outlined"
           // error={}
           // helperText={}
-          // value={values.username}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <Button
           className={`${styles.button}`}
+          disabled={!search}
           type={'button'}
         >
           Show all results
