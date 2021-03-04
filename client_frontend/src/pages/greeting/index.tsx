@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import SignIn from "./SignIn";
-import Button from "../components/button";
+import SignIn from "../SignIn";
+import Button from "../../components/button";
 import {Box} from "@material-ui/core";
 import useStyles from "./useStyles";
-import Register from '../components/forms/register';
+import Register from '../../components/forms/register';
 
 export enum Tabs {
   signin,
@@ -11,7 +11,7 @@ export enum Tabs {
   forgot,
 }
 
-const Greeting = () => {
+const Index = () => {
   const [tab, setTab] = useState<Tabs>(Tabs.signin);
   const styles = useStyles();
 
@@ -35,4 +35,4 @@ const Greeting = () => {
   )
 }
 
-export default Greeting;
+export default Index;

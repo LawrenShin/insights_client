@@ -1,8 +1,7 @@
 import {makeStyles} from "@material-ui/core";
 
 
-
-export default makeStyles({
+const useStyles = makeStyles({
   root: {},
   signInContainer: {
     position: 'absolute',
@@ -22,3 +21,5 @@ export default makeStyles({
     gap: '20px',
   },
 });
+
+export default useStyles;

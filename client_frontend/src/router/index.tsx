@@ -4,9 +4,9 @@ import {
   Switch,
 } from "react-router-dom";
 import PrivateRoute from './private';
-import Greeting from '../pages/Greeting';
+import Greeting from '../pages/greeting';
 import NotFound from "../pages/NotFound";
-import SearchCompanies from "../pages/SearchCompanies";
+import SearchCompanies from "../pages/searchCompanies";
 
 const AppRouter = () => (
   <Router>
