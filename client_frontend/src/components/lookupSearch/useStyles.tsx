@@ -1,5 +1,6 @@
 import {makeStyles} from "@material-ui/core";
 
+const purp = '#5926EB';
 
 const useStyles = makeStyles({
   container: {
@@ -7,7 +8,7 @@ const useStyles = makeStyles({
   },
   tabs: {
     '& div': {
-      background: '#5926EB',
+      background: purp,
       color: '#fff',
       fontFamily: 'Poppins, sans-serif',
       borderRadius: '5px',
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
       '&:hover': {
         cursor: 'pointer',
         background: '#fff',
-        color: '#5926EB',
+        color: purp,
       }
     },
   },
@@ -33,10 +34,10 @@ const useStyles = makeStyles({
     },
     '& .MuiOutlinedInput-root': {
       '&:hover fieldset': {
-        borderColor: '#5926EB',
+        borderColor: purp,
       },
       '&.Mui-focused fieldset': {
-        borderColor: '#5926EB',
+        borderColor: purp,
         borderWidth: '1px',
       },
     },
@@ -51,6 +52,45 @@ const useStyles = makeStyles({
       background: '#BCB2D9',
     }
   },
+
+  lookupResults: {
+    maxHeight: '150px',
+    background: '#fff',
+    position: 'relative',
+    zIndex: 9000,
+    boxShadow: '0px 2px 20px rgba(0, 0, 0, 0.05)',
+    paddingBottom: '20px',
+  },
+  lookupResultsList: {
+    marginBottom: '10px',
+    maxHeight: '150px',
+  },
+  listElement: {
+    fontFamily: 'Poppins',
+    height: 'fit-content',
+    '&:hover': {
+      color: purp,
+      cursor: 'pointer',
+      background: 'rgba(188, 178, 217, 0.3)'
+    }
+  },
+  bold: {fontWeight: 'bold'},
+  showMore: {
+    fontFamily: 'open sans',
+    fontWeight: 400,
+    color: purp,
+    background: '#fff',
+    border: `1px solid ${purp}`,
+    borderRadius: '50px',
+    margin: '0px 15px',
+    height: '35px',
+    padding: '0 25px',
+    '&:hover': {
+      cursor: 'pointer',
+      color: '#fff',
+      background: purp
+    },
+  }
 });
 
 export default useStyles;

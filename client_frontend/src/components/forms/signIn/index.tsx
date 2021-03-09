@@ -89,7 +89,13 @@ const SignIn = (props: Props) => {
         <a href={'#'}>forgot password?</a>
         {
           status === RequestStatuses.loading ?
-          <CircularProgress /> : <Button style={styles.button} type={'submit'}>Sign in</Button>
+            <div className={styles.loaderContainer}>
+              <CircularProgress />
+            </div>
+            :
+            <Button style={styles.button} type={'submit'}>
+              Sign in
+            </Button>
         }
         {renderRegister(`${styles.button} ${styles.whiteBack}`)}
       </Form>}

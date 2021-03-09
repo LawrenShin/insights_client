@@ -17,8 +17,13 @@ export default makeStyles({
   },
   searchContainer: {
     background: '#E0E9FF',
+    minHeight: '25%',
+    maxHeight: '25%',
   },
   searchSettingsContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     background: '#fff',
     minHeight: '70%',
   },

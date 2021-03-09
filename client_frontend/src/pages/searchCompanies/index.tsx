@@ -1,6 +1,6 @@
 import React from 'react';
-import Search from "../../components/search/Search";
-import SearchSettings from "../../components/searchSettings";
+import LookupSearch from "../../components/lookupSearch";
+import CustomSearch from "../../components/customSearch";
 import Header from "../../components/Header";
 import useStyles from "./useStyles";
 
@@ -13,10 +13,10 @@ const SearchCompanies = () => {
       <Header />
       <div className={styles.searchWrapper}>
         <div className={styles.searchContainer}>
-          <Search />
+          <LookupSearch />
         </div>
         <div className={styles.searchSettingsContainer}>
-          <SearchSettings />
+          <CustomSearch />
         </div>
       </div>
     </div>

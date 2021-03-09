@@ -24,4 +24,8 @@ export default makeStyles({
       color: 'white',
     }
   },
+  loaderContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  }
 });

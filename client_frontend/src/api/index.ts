@@ -2,11 +2,14 @@
 const host = 'https://ph96u94icf.execute-api.us-east-2.amazonaws.com/Prod';
 // const host = process.env.REACT_APP_HOST || process.env.HOST;
 
+const user = localStorage.getItem('user');
+const token = user ? JSON.parse(user).token : '';
+
 const getHeaders = () => ({
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Request-Headers': '*',
-  'x-api-token': localStorage.getItem('token') || '',
+  'x-api-token': token,
 });
 
 
@@ -38,5 +41,13 @@ export async function postRequest(
   data: any,
 ) {
   const response = await post(url, data);
+  return await response.json();
+}
+
+export async function getRequest(
+  url: string,
+  params: string
+) {
+  const response = await get(url, params);
   return await response.json();
 }
