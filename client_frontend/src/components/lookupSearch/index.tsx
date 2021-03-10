@@ -61,13 +61,17 @@ const LookupSearch = ({
       clearTimeout(timer);
       setTimer(null);
     }
+    const searchChange = search !== prevSearch;
+    const pageIndexChange = pageIndex !== prevPageIndex;
+
     const searchPrefix = `search_prefix=${search}`;
     const pageCountParam = `page_count=${pageCount}`;
     const pageIndexParam = `page_index=${pageIndex}`;
     const pageSizeParam = `page_size=${pageSize}`;
     const params = `${searchPrefix}&${pageCountParam}&${pageIndexParam}&${pageSizeParam}`;
 
-    if ((search !== prevSearch || pageIndex !== prevPageIndex) && search) {
+    if ((searchChange || pageIndexChange) && search) {
+      if (searchChange) clearSearch();
       return setTimer(setTimeout(() => {
         lookupRequest(
           'companiesLookup',
@@ -88,7 +92,7 @@ const LookupSearch = ({
           type={'text'}
           size={'small'}
           name={'search'}
-          label={'Search...'}
+          placeholder={'Search...'}
           variant="outlined"
           // error={}
           // helperText={}
@@ -111,7 +115,7 @@ const LookupSearch = ({
         <FixedSizeList
           className={styles.lookupResultsList}
           itemData={companies}
-          height={100}
+          height={300}
           width={'100%'}
           itemSize={30}
           itemCount={companies.length}

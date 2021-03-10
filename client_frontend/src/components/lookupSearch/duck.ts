@@ -3,6 +3,7 @@ import {takeLatest} from "redux-saga/effects";
 import {call, put} from "typed-redux-saga";
 import {getRequest} from "../../api";
 import {CreateAction} from "../../store/actionType";
+import {SignInType} from "../../pages/SignIn/duck";
 
 export enum PaginationActionTypes {
   INCREMENT = 'INCREMENT',
@@ -28,7 +29,8 @@ export function* worker(action: any) {
     const res = yield call(getRequest, url, params);
     yield put(CreateAction(LookupSearchActionType.LOOKUP_LOAD_SUCCESS, res));
   } catch(error) {
-    yield put(CreateAction(LookupSearchActionType.LOOKUP_LOAD_FAIL, error));
+    if (error.message === '403') return yield put(CreateAction(SignInType.LOGOUT));
+    yield put(CreateAction(LookupSearchActionType.LOOKUP_LOAD_FAIL, error.message));
   }
 }
 
@@ -64,7 +66,7 @@ export const initialState = {
   data: {
     companies: [],
     pagination: {
-      pageSize: 4,
+      pageSize: 10,
       pageIndex: 1,
       pageCount: 0,
     },

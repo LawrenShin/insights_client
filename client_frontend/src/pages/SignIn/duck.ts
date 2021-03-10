@@ -9,6 +9,7 @@ export enum SignInType {
   SIGN_IN = 'SIGN_IN',
   SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS',
   SIGN_IN_FAIL = 'SIGN_IN_FAIL',
+  LOGOUT = 'LOGOUT',
 }
 
 // SAGAS
@@ -16,8 +17,9 @@ export function* worker (action: any) {
   try {
     const res = yield call(postRequest, 'login', action.payload);
     yield put(CreateAction(SignInType.SIGN_IN_SUCCESS, res));
-  } catch(e: any) {
-    yield put(CreateAction(SignInType.SIGN_IN_FAIL, e));
+  } catch(error: any) {
+    if (error.message === '403') return yield put(CreateAction(SignInType.LOGOUT));
+    yield put(CreateAction(SignInType.SIGN_IN_FAIL, error.message));
   }
 }
 
@@ -63,6 +65,11 @@ export function reducer (state: InitialState = initState, action: any) {
     ...state,
     status: RequestStatuses.fail,
     error: payload,
+  }
+
+  if (type === SignInType.LOGOUT) {
+    localStorage.clear();
+    return initState;
   }
 
   return state

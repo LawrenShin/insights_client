@@ -2,6 +2,7 @@ import {RequestStatuses} from '../../../api/requestTypes';
 import {takeLatest, call, put} from "redux-saga/effects";
 import {postRequest} from "../../../api";
 import {CreateAction} from "../../../store/actionType";
+import {SignInType} from "../../../pages/SignIn/duck";
 // TODO: types
 
 export enum RegisterTypes {
@@ -15,8 +16,9 @@ export function* worker (action: any) {
   try {
     const res = yield call(postRequest, 'register', action.payload);
     yield put(CreateAction(RegisterTypes.REGISTER_SUCCESS, res));
-  } catch(e: any) {
-    yield put(CreateAction(RegisterTypes.REGISTER_FAIL, e));
+  } catch(error: any) {
+    if (error.message === '403') return yield put(CreateAction(SignInType.LOGOUT));
+    yield put(CreateAction(RegisterTypes.REGISTER_FAIL, error.message));
   }
 }
 

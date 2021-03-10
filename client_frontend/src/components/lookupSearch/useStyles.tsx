@@ -5,6 +5,7 @@ const purp = '#5926EB';
 const useStyles = makeStyles({
   container: {
     padding: '3% 5%',
+    maxHeight: '200px',
   },
   tabs: {
     '& div': {
@@ -55,7 +56,7 @@ const useStyles = makeStyles({
   },
 
   lookupResults: {
-    maxHeight: '150px',
+    height: 'fit-content',
     background: '#fff',
     position: 'relative',
     zIndex: 9000,
@@ -64,7 +65,6 @@ const useStyles = makeStyles({
   },
   lookupResultsList: {
     marginBottom: '10px',
-    maxHeight: '150px',
   },
   listElement: {
     fontFamily: 'Poppins',
