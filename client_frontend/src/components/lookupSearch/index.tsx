@@ -1,22 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import useStyles from "./useStyles";
-import {ListItem, ListItemText, TextField} from "@material-ui/core";
+import {CircularProgress, ListItem, ListItemText, TextField} from "@material-ui/core";
 import Button from "../button";
 import {connect} from "react-redux";
 import {RootState} from "../../store/rootReducer";
 import {Dispatch} from "redux";
 import {CreateAction} from "../../store/actionType";
-import {LookupSearchActionType, State as StateProps} from "./duck";
+import {LookupSearchActionType, PaginationActionTypes, State as StateProps} from "./duck";
 import {FixedSizeList, ListChildComponentProps} from 'react-window';
+import {usePrevious} from "../../helpers";
+import {RequestStatuses} from "../../api/requestTypes";
 
 
 interface DispatchProps {
   lookupRequest: (url: string, params: string) => void;
+  incrementPageIndex: () => void;
   clearSearch: () => void;
 }
 interface Props extends StateProps, DispatchProps {}
 
-const Index = ({
+const LookupSearch = ({
+    incrementPageIndex,
     lookupRequest,
     clearSearch,
     data,
@@ -34,10 +38,12 @@ const Index = ({
       pageSize,
     },
   } = data;
+  const prevSearch = usePrevious(search);
+  const prevPageIndex = usePrevious(pageIndex);
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
-    const forText = <div>
+    const forText = <div className={styles.result}>
       <span className={styles.bold}>{companies[index].name}</span>,
       <span> {companies[index].country}</span>,
       <span> {companies[index].city}</span>
@@ -61,7 +67,7 @@ const Index = ({
     const pageSizeParam = `page_size=${pageSize}`;
     const params = `${searchPrefix}&${pageCountParam}&${pageIndexParam}&${pageSizeParam}`;
 
-    if (search) {
+    if ((search !== prevSearch || pageIndex !== prevPageIndex) && search) {
       return setTimer(setTimeout(() => {
         lookupRequest(
           'companiesLookup',
@@ -69,8 +75,8 @@ const Index = ({
         )
       }, 500));
     }
-    return clearSearch();
-  }, [search]);
+    if (!search) return clearSearch();
+  }, [search, pageIndex, companies]);
 
   return (<>
     <div className={styles.container}>
@@ -91,24 +97,36 @@ const Index = ({
         />
         <Button
           className={`${styles.button}`}
-          disabled={!search}
+          disabled={!companies.length}
           type={'button'}
         >
-          Show all results
+          {
+            (status === RequestStatuses.loading && !companies.length) ?
+            <CircularProgress size={20}/>
+            : 'Show all results'
+          }
         </Button>
       </div>
-      {!!companies.length && <div className={styles.lookupResults}>
+      {companies.length > 0 ? <div key={companies.length} className={styles.lookupResults}>
         <FixedSizeList
           className={styles.lookupResultsList}
+          itemData={companies}
           height={100}
           width={'100%'}
           itemSize={30}
-          itemCount={4}
+          itemCount={companies.length}
         >
           {renderRow}
         </FixedSizeList>
-        <button className={styles.showMore}>SHOW MORE</button>
-      </div>}
+          {status !== RequestStatuses.loading ? <button
+            className={styles.showMore}
+            onClick={incrementPageIndex}
+          >SHOW MORE</button>
+            :
+            <CircularProgress style={{ marginLeft: '40px' }} size={30} />
+          }
+      </div>
+      : null}
     </div>
   </>)
 }
@@ -120,5 +138,6 @@ export default connect(
     lookupRequest: (url: string, params: string) =>
       dispatch(CreateAction(LookupSearchActionType.LOOKUP_LOAD, {url, params})),
     clearSearch: () => dispatch(CreateAction(LookupSearchActionType.LOOKUP_LOAD_CLEAR)),
+    incrementPageIndex: () => dispatch(CreateAction(PaginationActionTypes.INCREMENT)),
   })
-)(Index);
+)(LookupSearch);

@@ -43,6 +43,7 @@ const useStyles = makeStyles({
     },
   },
   button: {
+    minWidth: '170px',
     width: 'auto',
     marginLeft: '-10px',
     fontWeight: 600,
@@ -90,7 +91,10 @@ const useStyles = makeStyles({
       color: '#fff',
       background: purp
     },
-  }
+  },
+  result: {
+    fontSize: '.9em',
+  },
 });
 
 export default useStyles;

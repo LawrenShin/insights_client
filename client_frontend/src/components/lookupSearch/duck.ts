@@ -4,7 +4,10 @@ import {call, put} from "typed-redux-saga";
 import {getRequest} from "../../api";
 import {CreateAction} from "../../store/actionType";
 
-export default () => null
+export enum PaginationActionTypes {
+  INCREMENT = 'INCREMENT',
+  DEREMENT = 'DECREMENT',
+}
 
 export enum LookupSearchActionType {
   LOOKUP_LOAD = 'LOOKUP_LOAD',
@@ -14,7 +17,7 @@ export enum LookupSearchActionType {
 }
 
 export interface Action {
-  type: LookupSearchActionType;
+  type: LookupSearchActionType | PaginationActionTypes;
   payload?: any;
 }
 
@@ -78,13 +81,27 @@ export function reducer(state: State = initialState, action: Action) {
     ...state,
     data: {
       ...state.data,
-      companies: payload.companies,
+      companies: [...state.data.companies, ...payload.companies],
       pagination: payload.pagination,
     },
     status: RequestStatuses.still,
   }
 
   if (type === LookupSearchActionType.LOOKUP_LOAD_CLEAR) return initialState;
+
+  if (type === PaginationActionTypes.INCREMENT) {
+    const {pageIndex} = state.data.pagination;
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        pagination: {
+          ...state.data.pagination,
+          pageIndex: pageIndex + pageIndex,
+        }
+      }
+    }
+  }
 
   return state;
 }
