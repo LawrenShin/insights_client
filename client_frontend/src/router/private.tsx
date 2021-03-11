@@ -38,7 +38,7 @@ export const PrivateRoute = (
   const history = useHistory();
 
   useEffect(() => {
-    if (isAuthenticated) history.push('/searchCompanies');
+    if (isAuthenticated && history.location.pathname === '/') history.push('/searchCompanies');
     if (!isAuthenticated) history.push('/');
   }, [isAuthenticated]);
 
