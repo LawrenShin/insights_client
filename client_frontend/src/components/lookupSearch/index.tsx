@@ -10,6 +10,7 @@ import {LookupSearchActionType, PaginationActionTypes, State as StateProps} from
 import {FixedSizeList, ListChildComponentProps} from 'react-window';
 import {usePrevious} from "../../helpers";
 import {RequestStatuses} from "../../api/requestTypes";
+import {useHistory} from 'react-router-dom';
 
 
 interface DispatchProps {
@@ -40,6 +41,7 @@ const LookupSearch = ({
   } = data;
   const prevSearch = usePrevious(search);
   const prevPageIndex = usePrevious(pageIndex);
+  const history = useHistory();
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
@@ -69,7 +71,7 @@ const LookupSearch = ({
     const pageIndexParam = `page_index=${pageIndex}`;
     const pageSizeParam = `page_size=${pageSize}`;
     const params = `${searchPrefix}&${pageCountParam}&${pageIndexParam}&${pageSizeParam}`;
-
+    // TODO: for some reason lookupRequest works 1 of 2 times on search change
     if ((searchChange || pageIndexChange) && search) {
       if (searchChange) clearSearch();
       return setTimer(setTimeout(() => {
@@ -103,10 +105,11 @@ const LookupSearch = ({
           className={`${styles.button}`}
           disabled={!companies.length}
           type={'button'}
+          onClick={() => history.push('/results')}
         >
           {
             (status === RequestStatuses.loading && !companies.length) ?
-            <CircularProgress size={20}/>
+            <CircularProgress size={20} />
             : 'Show all results'
           }
         </Button>
