@@ -2,11 +2,12 @@ import React from 'react';
 import Header from "../../components/Header";
 import useStyles from "./useStyles";
 import {Typography} from "@material-ui/core";
-import { DataGrid } from '@material-ui/data-grid';
+import {DataGrid} from '@material-ui/data-grid';
 import { useDemoData } from '@material-ui/x-grid-data-generator';
 import {RootState} from "../../store/rootReducer";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
+import CustomPagination from "./customPagination";
 
 
 const Results = () => {
@@ -17,7 +18,7 @@ const Results = () => {
     maxColumns: 6,
   });
   const [page, setPage] = React.useState(0);
-
+  console.log(data)
   return (
     <div className={styles.root}>
       <Header />
@@ -30,13 +31,12 @@ const Results = () => {
 
         <div className={styles.content}>
           <DataGrid
+            className={styles.dataGrid}
             page={page}
-            onPageChange={(params) => {
-              setPage(params.page);
-            }}
             pageSize={5}
             autoHeight
             pagination
+            components={{ Pagination: CustomPagination }}
             {...data}
           />
         </div>

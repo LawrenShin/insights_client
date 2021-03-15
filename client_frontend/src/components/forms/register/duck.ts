@@ -1,8 +1,9 @@
 import {RequestStatuses} from '../../../api/requestTypes';
-import {takeLatest, call, put} from "redux-saga/effects";
+import {takeLatest, put} from "redux-saga/effects";
 import {postRequest} from "../../../api";
 import {CreateAction} from "../../../store/actionType";
 import {SignInType} from "../../../pages/SignIn/duck";
+import {call} from "typed-redux-saga";
 // TODO: types
 
 export enum RegisterTypes {

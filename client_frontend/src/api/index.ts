@@ -45,7 +45,7 @@ export async function postRequest(
 ) {
   const response = await post(url, data);
   const parsed = await response.json();
-  // if (parsed.status === 403) throw new Error(parsed.status);
+  if (parsed.status === 403) throw new Error(parsed.status);
   return parsed;
 }
 
@@ -55,6 +55,6 @@ export async function getRequest(
 ) {
   const response = await get(url, params);
   const parsed = await response.json();
-  // if (parsed.status === 403) throw new Error(parsed.status);
+  if (parsed.status === 403) throw new Error(parsed.status);
   return parsed;
 }
