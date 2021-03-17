@@ -25,7 +25,6 @@ export default makeStyles({
     width: '50px',
     '& > div': {height: '100%'}
   },
-
   rowsPerPageSelect: {
     '& > div': {
       paddingTop: '7px',
@@ -35,15 +34,41 @@ export default makeStyles({
   menuItem: {},
 
   dataGrid: {
-    flexDirection: 'column-reverse!important' as 'column-reverse',
+    // flexDirection: 'column-reverse!important' as 'column-reverse',
     '&.MuiDataGrid-root': {
       border: 'none',
       boxShadow: '0px 2px 20px rgba(0, 0, 0, 0.05)',
+    },
+    '&.MuiDataGrid-root > div:nth-child(1)': {
+      order: 1,
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+    '&.MuiDataGrid-root > div:nth-child(2)': {
+      order: 2,
     },
     '& .MuiDataGrid-footer': {
       padding: '20px 50px',
       boxShadow: '0px 2px 20px rgba(0, 0, 0, 0.05)',
     },
+    '& .MuiDataGrid-main': {
+      margin: '0px 50px 50px 50px',
+    },
+    '& .MuiDataGrid-iconSeparator': {
+      display: 'none',
+    },
+    '& .MuiDataGrid-columnsContainer': {
+      color: 'rgba(8, 0, 55, .4)',
+      font: '400 13px Poppins',
+    },
+    '& .MuiDataGrid-row': {
+      color: 'rgba(8, 0, 55, .7)',
+      font: '400 14px Poppins',
+      '& div:nth-child(1)': {
+        fontWeight: 'bold',
+      }
+    }
+
   },
 
   searchWrapper: {

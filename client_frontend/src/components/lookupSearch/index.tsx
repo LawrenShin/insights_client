@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import useStyles from "./useStyles";
 import {CircularProgress, ListItem, ListItemText, TextField} from "@material-ui/core";
-import Button from "../button";
+import {Squared} from "../button";
 import {connect} from "react-redux";
 import {RootState} from "../../store/rootReducer";
 import {Dispatch} from "redux";
@@ -11,10 +11,12 @@ import {FixedSizeList, ListChildComponentProps} from 'react-window';
 import {usePrevious} from "../../helpers";
 import {RequestStatuses} from "../../api/requestTypes";
 import {useHistory} from 'react-router-dom';
+import {ResultsActionType} from '../../pages/results/duck';
 
 
 interface DispatchProps {
   lookupRequest: (url: string, params: string) => void;
+  resultsRequest: (url: string, params: string) => void;
   incrementPageIndex: () => void;
   clearSearch: () => void;
 }
@@ -22,6 +24,7 @@ interface Props extends StateProps, DispatchProps {}
 
 const LookupSearch = ({
     incrementPageIndex,
+    resultsRequest,
     lookupRequest,
     clearSearch,
     data,
@@ -82,6 +85,10 @@ const LookupSearch = ({
       }, 500));
     }
     if (!search) return clearSearch();
+
+    return () => {
+      resultsRequest('companies', params);
+    }
   }, [search, pageIndex, companies]);
 
   return (<>
@@ -101,18 +108,18 @@ const LookupSearch = ({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button
+        <Squared
           className={`${styles.button}`}
           disabled={!companies.length}
           type={'button'}
-          onClick={() => history.push('/results')}
+          onClick={() => history.push('/results', {pageIndex, pageSize, pageCount})}
         >
           {
             (status === RequestStatuses.loading && !companies.length) ?
             <CircularProgress size={20} />
             : 'Show all results'
           }
-        </Button>
+        </Squared>
       </div>
       {companies.length > 0 ? <div key={companies.length} className={styles.lookupResults}>
         <FixedSizeList
@@ -144,6 +151,8 @@ export default connect(
   (dispatch: Dispatch) => ({
     lookupRequest: (url: string, params: string) =>
       dispatch(CreateAction(LookupSearchActionType.LOOKUP_LOAD, {url, params})),
+    resultsRequest: (url: string, params: string) =>
+      dispatch(CreateAction(ResultsActionType.RESULTS_LOAD, {url, params})),
     clearSearch: () => dispatch(CreateAction(LookupSearchActionType.LOOKUP_LOAD_CLEAR)),
     incrementPageIndex: () => dispatch(CreateAction(PaginationActionTypes.INCREMENT)),
   })

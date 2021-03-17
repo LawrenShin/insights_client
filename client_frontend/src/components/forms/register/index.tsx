@@ -6,7 +6,7 @@ import FormModel from './formModel';
 import PersonalInfo from "./steps/personalInfo";
 import CompanyInfo from "./steps/companyInfo";
 import DiSvg from "../../DiSvg";
-import Button from '../../button';
+import {Squared} from '../../button';
 import useStyles from "./useStyles";
 import CreateAccount from "./steps/createAccount";
 import {connect} from "react-redux";
@@ -82,10 +82,10 @@ const Register = ({
       className={styles.backButton}
       onClick={() => step === 0 ? toSignIn() : handleBack()}
     >← Back</span>
-    <Button
+    <Squared
       type="submit"
       className={styles.nextButton}
-    >{step === 2 ? 'Create account' : 'Next step'}</Button>
+    >{step === 2 ? 'Create account' : 'Next step'}</Squared>
   </div>
 
 

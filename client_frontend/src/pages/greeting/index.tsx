@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import SignIn from "../SignIn";
-import Button from "../../components/button";
+import {Rounded} from "../../components/button";
 import {Box} from "@material-ui/core";
 import useStyles from "./useStyles";
 import Register from '../../components/forms/register';
@@ -21,10 +21,10 @@ const Index = () => {
         <Box className={styles.signInContainer}>
           {tab === Tabs.signin &&
             <SignIn
-              renderRegister={(styles: string) => <Button
+              renderRegister={(styles: string) => <Rounded
                 style={styles}
                 onClick={() => setTab(Tabs.register)}
-                >Register</Button>}
+                >Register</Rounded>}
             />}
           {tab === Tabs.register && <Register
             toSignIn={() => setTab(Tabs.signin)}

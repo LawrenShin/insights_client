@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, Typography} from "@material-ui/core";
 import useStyles from "./useStyles";
-import Button from "../../../button";
+import {Rounded} from "../../../button";
 
 interface Props {
   toSignIn: () => void;
@@ -23,9 +23,9 @@ const Welcome = ({toSignIn}: Props) => {
       </Grid>
       <Grid item sm={12} className={styles.buttonsContainer}>
         {/*TODO: give it request*/}
-        <Button
+        <Rounded
           className={`${styles.button} ${styles.resend}`}
-          type={'button'}>Resend contact email</Button>
+          type={'button'}>Resend contact email</Rounded>
         <span
           className={`${styles.button} ${styles.backToSignIn}`}
           onClick={toSignIn}

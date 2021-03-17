@@ -67,7 +67,7 @@ export const initialState = {
     companies: [],
     pagination: {
       pageSize: 10,
-      pageIndex: 1,
+      pageIndex: 0,
       pageCount: 0,
     },
   },

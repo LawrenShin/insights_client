@@ -4,13 +4,22 @@ import {FormControl, MenuItem, Select, TextField} from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import PaginationItem from "@material-ui/lab/PaginationItem";
 import useStyles from "./useStyles";
+import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 
 
-function CustomPagination(props: GridBaseComponentProps) {
+interface Props {
+  setPagination: (value: PaginationType) => void;
+  pagination: PaginationType;
+}
+
+function CustomPagination(props: GridBaseComponentProps & Props) {
   const styles = useStyles();
-  const { state, api } = props;
-  const [rows, setRows] = React.useState<any>(10);
-  const [page, setPage] = React.useState<string>('');
+  const {
+    state,
+    api,
+    pagination,
+    setPagination,
+  } = props;
 
   return (<div className={styles.rootPagination}>
     <label htmlFor={'rowsPerPage'}>Show:&nbsp;</label>
@@ -20,8 +29,16 @@ function CustomPagination(props: GridBaseComponentProps) {
       <Select
         className={styles.rowsPerPageSelect}
         name="rowsPerPage"
-        value={rows}
-        onChange={(e) => setRows(e.target.value)}
+        value={pagination.pageSize}
+        onChange={(e) => {
+          const value = e.target.value as number;
+          setPagination({
+            ...pagination,
+            pageSize: value,
+            // TODO: pageCount will work proper after actual request and valid data
+            pageCount: Math.ceil(pagination.pageCount / value),
+          })
+        }}
         variant="outlined"
       >
         <MenuItem className={styles.menuItem} value={10}>10</MenuItem>
@@ -36,8 +53,7 @@ function CustomPagination(props: GridBaseComponentProps) {
       shape="rounded"
       page={state.pagination.page}
       count={state.pagination.pageCount}
-      // @ts-expect-error
-      renderItem={(props2) => <PaginationItem {...props2} disableRipple />}
+      // renderItem={(props2) => <PaginationItem {...props2} disableRipple />}
       onChange={(event, value) => api.current.setPage(value)}
     />
 
@@ -50,8 +66,11 @@ function CustomPagination(props: GridBaseComponentProps) {
       variant="outlined"
       // error={}
       // helperText={}
-      value={page}
-      onChange={(e) => setPage(e.target.value)}
+      value={pagination.pageIndex}
+      onChange={(e) => {
+        // const value: number = +e.target.value > pagination.pageCount ? pagination.pageCount : +e.target.value;
+        setPagination({...pagination, pageIndex: +e.target.value});
+      }}
     />
   </div>);
 }

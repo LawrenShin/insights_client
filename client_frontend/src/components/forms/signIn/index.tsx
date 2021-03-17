@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {connect} from 'react-redux';
-import Button from "../../button";
+import {Rounded} from "../../button";
 import useStyles from "./useStyles";
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -93,9 +93,9 @@ const SignIn = (props: Props) => {
               <CircularProgress />
             </div>
             :
-            <Button style={styles.button} type={'submit'}>
+            <Rounded style={styles.button} type={'submit'}>
               Sign in
-            </Button>
+            </Rounded>
         }
         {renderRegister(`${styles.button} ${styles.whiteBack}`)}
       </Form>}

@@ -2,23 +2,32 @@ import React from 'react';
 import Header from "../../components/Header";
 import useStyles from "./useStyles";
 import {Typography} from "@material-ui/core";
-import {DataGrid} from '@material-ui/data-grid';
+import {DataGrid, GridToolbarExport} from '@material-ui/data-grid';
 import { useDemoData } from '@material-ui/x-grid-data-generator';
 import {RootState} from "../../store/rootReducer";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import CustomPagination from "./customPagination";
+// import {Rounded} from '../../components/button';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {useLocation} from "react-router-dom";
+import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
+
+
+
+// const styledButton = () => <Rounded>EXPORT<ExpandMoreIcon /></Rounded>
 
 
 const Results = () => {
+  const location = useLocation();
+  const [pagination, setPagination] = React.useState<PaginationType>(location.state as PaginationType);
   const styles = useStyles();
   const { data } = useDemoData({
     dataSet: 'Commodity',
     rowLength: 100,
     maxColumns: 6,
   });
-  const [page, setPage] = React.useState(0);
-  console.log(data)
+
   return (
     <div className={styles.root}>
       <Header />
@@ -32,11 +41,20 @@ const Results = () => {
         <div className={styles.content}>
           <DataGrid
             className={styles.dataGrid}
-            page={page}
-            pageSize={5}
+            page={pagination.pageIndex}
+            pageSize={pagination.pageSize}
             autoHeight
             pagination
-            components={{ Pagination: CustomPagination }}
+            components={{
+              Pagination: (props) =>
+                <CustomPagination
+                  {...props}
+                  pagination={pagination}
+                  setPagination={setPagination}
+                />,
+              // Toolbar: styledButton,
+            }}
+            hideFooterSelectedRowCount={true}
             {...data}
           />
         </div>

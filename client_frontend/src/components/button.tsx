@@ -2,7 +2,9 @@ import React from 'react';
 import {Button, Theme, withStyles} from "@material-ui/core";
 
 
-const ColorButton = withStyles((theme: Theme) => ({
+const purp = '#5926EB';
+
+const ColorButtonSquared = withStyles((theme: Theme) => ({
   root: {
     color: theme.palette.getContrastText('#5926EB'),
     backgroundColor: '#5926EB',
@@ -10,7 +12,26 @@ const ColorButton = withStyles((theme: Theme) => ({
   },
 }))(Button);
 
-export default ({onClick, style, children, ...rest}: any) => <ColorButton
+const ColorButtonRounded = withStyles((theme: Theme) => ({
+  root: {
+    fontFamily: 'open sans',
+    fontWeight: 400,
+    color: purp,
+    background: '#fff',
+    border: `1px solid ${purp}`,
+    borderRadius: '50px',
+    margin: '0px 15px',
+    height: '35px',
+    padding: '0 25px',
+    '&:hover': {
+      cursor: 'pointer',
+      color: '#fff',
+      background: purp
+    },
+  },
+}))(Button);
+
+export const Squared = ({onClick, style, children, ...rest}: any) => <ColorButtonSquared
   onClick={onClick}
   className={style}
   variant="contained"
@@ -18,4 +39,14 @@ export default ({onClick, style, children, ...rest}: any) => <ColorButton
   {...rest}
 >
   {children}
-</ColorButton>
+</ColorButtonSquared>
+
+export const Rounded = ({onClick, style, children, ...rest}: any) => <ColorButtonRounded
+  onClick={onClick}
+  className={style}
+  variant="contained"
+  color="inherit"
+  {...rest}
+>
+  {children}
+</ColorButtonRounded>
