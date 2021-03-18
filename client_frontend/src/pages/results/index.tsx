@@ -10,7 +10,7 @@ import {Dispatch} from "redux";
 import CustomPagination from "./customPagination";
 // import {Rounded} from '../../components/button';
 // import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 
 
@@ -19,8 +19,8 @@ import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 
 
 const Results = () => {
-  const location = useLocation();
-  const [pagination, setPagination] = React.useState<PaginationType>(location.state as PaginationType);
+  const history = useHistory();
+  const [pagination, setPagination] = React.useState<PaginationType>(history.location.state as PaginationType);
   const styles = useStyles();
   const { data } = useDemoData({
     dataSet: 'Commodity',
@@ -41,7 +41,7 @@ const Results = () => {
         <div className={styles.content}>
           {/* TODO: 1) change render of row 2) redirect on row click */}
           <DataGrid
-            onRowClick={(params) => console.log(params)}
+            onRowClick={(params) => history.push('/details', params.row)}
             className={styles.dataGrid}
             page={pagination.pageIndex}
             pageSize={pagination.pageSize}

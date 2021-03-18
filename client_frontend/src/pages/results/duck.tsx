@@ -1,5 +1,5 @@
 import {call, put, takeLatest} from "typed-redux-saga";
-import {postRequest} from "../../api";
+import {getRequest} from "../../api";
 import {CreateAction} from "../../store/actionType";
 import {SignInType} from "../SignIn/duck";
 import {RequestStatuses} from "../../api/requestTypes";
@@ -12,8 +12,9 @@ export enum ResultsActionType {
 
 // SAGAS
 export function* worker (action: any) {
+  const {url, params} = action.payload;
   try {
-    const res = yield call(postRequest, 'companies', action.payload);
+    const res = yield call(getRequest, url, params);
     yield put(CreateAction(ResultsActionType.RESULTS_SUCCESS, res));
   } catch(error: any) {
     if (error.message === '403') return yield put(CreateAction(SignInType.LOGOUT));
