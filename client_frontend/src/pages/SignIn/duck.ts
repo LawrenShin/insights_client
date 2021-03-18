@@ -69,7 +69,10 @@ export function reducer (state: InitialState = initState, action: any) {
 
   if (type === SignInType.LOGOUT) {
     localStorage.clear();
-    return initState;
+    return {
+      ...state,
+      data: null,
+    }
   }
 
   return state

@@ -68,7 +68,6 @@ export default makeStyles({
         fontWeight: 'bold',
       }
     }
-
   },
 
   searchWrapper: {
@@ -88,6 +87,7 @@ export default makeStyles({
     }
   },
   content: {
+    height: '70vh',
     display: 'flex',
     flexDirection: 'column',
     background: '#fff',

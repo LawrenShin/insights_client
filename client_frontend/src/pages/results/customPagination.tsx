@@ -58,6 +58,7 @@ function CustomPagination(props: GridBaseComponentProps & Props) {
     />
 
     <label htmlFor={'moveToPage'}>Move to:&nbsp;</label>
+    {/* TODO: make go to page smoothier */}
     <TextField
       className={styles.jumpToInput}
       type={'text'}

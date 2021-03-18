@@ -39,11 +39,14 @@ const Results = () => {
         </Typography>
 
         <div className={styles.content}>
+          {/* TODO: 1) change render of row 2) redirect on row click */}
           <DataGrid
+            onRowClick={(params) => console.log(params)}
             className={styles.dataGrid}
             page={pagination.pageIndex}
             pageSize={pagination.pageSize}
-            autoHeight
+            onPageChange={(params) =>
+              setPagination({...pagination, pageIndex: params.page})}
             pagination
             components={{
               Pagination: (props) =>
