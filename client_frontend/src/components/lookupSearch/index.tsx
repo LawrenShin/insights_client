@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {RootState} from "../../store/rootReducer";
 import {Dispatch} from "redux";
 import {CreateAction} from "../../store/actionType";
-import {LookupSearchActionType, PaginationActionTypes, State as StateProps} from "./duck";
+import {LookupSearchActionType, Pagination as PaginationType, PaginationActionTypes, State as StateProps} from "./duck";
 import {FixedSizeList, ListChildComponentProps} from 'react-window';
 import {usePrevious} from "../../helpers";
 import {RequestStatuses} from "../../api/requestTypes";
@@ -74,6 +74,7 @@ const LookupSearch = ({
     const pageIndexParam = `page_index=${pageIndex}`;
     const pageSizeParam = `page_size=${pageSize}`;
     const params = `${searchPrefix}&${pageCountParam}&${pageIndexParam}&${pageSizeParam}`;
+
     // TODO: for some reason lookupRequest works 1 of 2 times on search change
     if ((searchChange || pageIndexChange) && search) {
       if (searchChange) clearSearch();
@@ -112,7 +113,10 @@ const LookupSearch = ({
           className={`${styles.button}`}
           disabled={!companies.length}
           type={'button'}
-          onClick={() => history.push('/results', {pageIndex, pageSize, pageCount})}
+          onClick={() => history.push('/results', {
+            pagination: {pageIndex, pageSize, pageCount},
+            search,
+          })}
         >
           {
             (status === RequestStatuses.loading && !companies.length) ?

@@ -34,9 +34,10 @@ function CustomPagination(props: GridBaseComponentProps & Props) {
           const value = e.target.value as number;
           setPagination({
             ...pagination,
+            pageIndex: 0,
             pageSize: value,
             // TODO: pageCount will work proper after actual request and valid data
-            pageCount: Math.ceil(pagination.pageCount / value),
+            // pageCount: Math.ceil(),
           })
         }}
         variant="outlined"
