@@ -99,7 +99,7 @@ export function reducer(state: State = initialState, action: Action) {
         ...state.data,
         pagination: {
           ...state.data.pagination,
-          pageIndex: pageIndex + pageIndex,
+          pageIndex: pageIndex + 1,
         }
       }
     }
