@@ -7,6 +7,44 @@
   pointer-events: none;
 }
 
+.dot {
+  height: 7px;
+  width: 7px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 10px;
+}
+.ratingAAA {
+  background-color: rgba(163, 229, 178, 1);
+}
+.ratingAA {
+  background-color: rgba(163, 229, 178, .8);
+}
+.ratingA {
+  background-color: rgba(163, 229, 178, .6);
+}
+
+.ratingBBB {
+  background-color: rgba(255, 234, 160, 1);
+}
+.ratingBB {
+  background-color: rgba(255, 234, 160, .8);
+}
+.ratingB {
+  background-color: rgba(255, 234, 160, .6);
+}
+
+.ratingCCC {
+  background-color: rgba(255, 210, 210, 1);
+}
+.ratingCC {
+  background-color: rgba(255, 210, 210, .8);
+}
+.ratingC {
+  background-color: rgba(255, 210, 210, .6);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

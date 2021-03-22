@@ -12,21 +12,24 @@ import CustomPagination from "./customPagination";
 // import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {useHistory} from "react-router-dom";
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
-
+import prepareForGrid from "./prepareForGrid";
+import {RequestStatuses} from "../../api/requestTypes";
 
 
 // const styledButton = () => <Rounded>EXPORT<ExpandMoreIcon /></Rounded>
 
-
-const Results = () => {
+// TODO: types
+const Results = (props: any) => {
+  const {data, status, error} = props;
   const history = useHistory();
-  const [pagination, setPagination] = React.useState<PaginationType>(history.location.state as PaginationType);
+  // TODO: Set it to 3d page go here and see if companies pagi r the same.
+  const [pagination, setPagination] = React.useState<PaginationType>(
+    data?.pagination || history.location.state as PaginationType
+  );
   const styles = useStyles();
-  const { data } = useDemoData({
-    dataSet: 'Commodity',
-    rowLength: 100,
-    maxColumns: 6,
-  });
+
+
+  const readyForGrid = data ? prepareForGrid(data): {columns: [], rows: []};
 
   return (
     <div className={styles.root}>
@@ -40,13 +43,19 @@ const Results = () => {
 
         <div className={styles.content}>
           {/* TODO: 1) change render of row 2) redirect on row click */}
+          {/* @ts-ignore*/}
           <DataGrid
-            onRowClick={(params) => history.push('/details', params.row)}
+            onRowDoubleClick={(params) => history.push('/details', params.row)}
             className={styles.dataGrid}
-            page={pagination.pageIndex}
-            pageSize={pagination.pageSize}
-            onPageChange={(params) =>
-              setPagination({...pagination, pageIndex: params.page})}
+            page={pagination?.pageIndex}
+            pageSize={pagination?.pageSize}
+            onPageChange={(params) => {
+              console.log(pagination)
+              setPagination({...pagination, pageIndex: params.page});
+
+            }}
+            onCellHover={(params) => console.log(params.value)}
+            columnBuffer={4}
             pagination
             components={{
               Pagination: (props) =>
@@ -58,7 +67,8 @@ const Results = () => {
               // Toolbar: styledButton,
             }}
             hideFooterSelectedRowCount={true}
-            {...data}
+            loading={!data}
+            {...readyForGrid}
           />
         </div>
       </div>
@@ -68,7 +78,7 @@ const Results = () => {
 
 const connecter = () => connect(
   (state: RootState) => ({
-
+    ...state.Results
   }),
   (dispatch: Dispatch) => ({
 

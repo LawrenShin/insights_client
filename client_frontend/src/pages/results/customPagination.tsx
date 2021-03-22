@@ -51,8 +51,8 @@ function CustomPagination(props: GridBaseComponentProps & Props) {
       // className={styles.paginationField}
       variant="outlined"
       shape="rounded"
-      page={state.pagination.page}
-      count={state.pagination.pageCount}
+      page={pagination.pageIndex}
+      count={pagination.pageCount}
       // renderItem={(props2) => <PaginationItem {...props2} disableRipple />}
       onChange={(event, value) => api.current.setPage(value)}
     />

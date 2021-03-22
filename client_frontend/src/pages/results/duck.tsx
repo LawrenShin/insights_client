@@ -27,15 +27,21 @@ export function* watcher () {
 }
 
 // REDUCER
+export interface ResultsState {
+  // TODO: replace any
+  data: null | any[];
+  status: RequestStatuses;
+  error: null | string;
+}
+
 const initState = {
+  data: null,
   status: RequestStatuses.still,
   error: null,
 }
 
-export function reducer (state: {
-  status: RequestStatuses;
-  error: null | string;
-} = initState, action: any) {
+// TODO: replace any
+export function reducer (state: ResultsState = initState, action: any) {
   const {type, payload} = action;
 
   if (type === ResultsActionType.RESULTS_LOAD) return {

@@ -88,6 +88,7 @@ export default makeStyles({
   },
   content: {
     height: '70vh',
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     background: '#fff',
