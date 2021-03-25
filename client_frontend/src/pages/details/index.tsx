@@ -1,14 +1,14 @@
 import React from 'react';
-import {useLocation} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import useStyles from "./useStyles";
 import Header from "../../components/Header";
 import {Typography} from "@material-ui/core";
 
 
 const Details = (props: any) => {
-  const location = useLocation();
+  const params = useParams();
   const styles = useStyles();
-  console.log(location.state, 'state in deets');
+  console.log(params, 'params in deets');
 
   return (
     <div className={styles.root}>

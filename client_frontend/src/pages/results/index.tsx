@@ -34,12 +34,11 @@ const Results = (props: any) => {
   const history = useHistory();
   const locState = history.location.state as LocStateType;
   // TODO: Set it to 3d page go here and see if companies pagi r the same.
-  const [pagination, setPagination] =
-    React.useState<PaginationType>(data?.pagination || locState.pagination);
+  const [pagination, setPagination] = React.useState<PaginationType>(data?.pagination);
 
   const styles = useStyles();
 
-  const readyForGrid = (data && data.companies.length) ? prepareForGrid(data): {columns: [], rows: []};
+  const readyForGrid = (data && data.companies.length) ? prepareForGrid(data, history): {columns: [], rows: []};
 
   useEffect(() => {
     if (pagination) {

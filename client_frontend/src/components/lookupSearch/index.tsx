@@ -113,10 +113,7 @@ const LookupSearch = ({
           className={`${styles.button}`}
           disabled={!companies.length}
           type={'button'}
-          onClick={() => history.push('/results', {
-            pagination: {pageIndex, pageSize, pageCount},
-            search,
-          })}
+          onClick={() => history.push('/results', {search})}
         >
           {
             (status === RequestStatuses.loading && !companies.length) ?
