@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import Header from "../../components/Header";
 import useStyles from "./useStyles";
 import {Typography} from "@material-ui/core";
-import {GridOverlay, DataGrid, GridToolbarExport} from '@material-ui/data-grid';
+import {DataGrid} from '@material-ui/data-grid';
 import {RootState} from "../../store/rootReducer";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
@@ -15,20 +15,10 @@ import prepareForGrid from "./prepareForGrid";
 import {CreateAction} from "../../store/actionType";
 import {ResultsActionType} from "./duck";
 import {RequestStatuses} from "../../api/requestTypes";
-import LinearProgress from '@material-ui/core/LinearProgress';
+import CustomLoadingOverlay from "../../components/LinearCustomOverlay";
 
 
-function CustomLoadingOverlay() {
-  return (
-    <GridOverlay>
-      <div style={{ position: 'absolute', top: 0, width: '100%' }}>
-        <LinearProgress />
-      </div>
-    </GridOverlay>
-  );
-}
-
-interface LocStateType {
+export interface LocStateType {
   pagination: PaginationType;
   search: string;
 }
