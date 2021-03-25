@@ -6,7 +6,7 @@ interface Props {
 }
 
 const DiSvg = ({styles}: Props) => <Box className={styles}>
-  <img src={'./dilogo.png'} alt={'DI logo'} />
+  <img src={'/dilogo.png'} alt={'DI logo'} />
 </Box>
 
 export default DiSvg;

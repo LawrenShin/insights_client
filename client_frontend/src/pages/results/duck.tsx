@@ -3,11 +3,15 @@ import {getRequest} from "../../api";
 import {CreateAction} from "../../store/actionType";
 import {SignInType} from "../SignIn/duck";
 import {RequestStatuses} from "../../api/requestTypes";
+import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
+import {AnyAction} from "redux";
 
 export enum ResultsActionType {
   RESULTS_LOAD = 'RESULTS_LOAD',
   RESULTS_SUCCESS = 'RESULTS_SUCCESS',
   RESULTS_FAIL = 'RESULTS_FAIL',
+  RESULTS_PAGINATION = 'RESULTS_PAGINATION',
+  RESULTS_CLEAR = 'RESULTS_CLEAR',
 }
 
 // SAGAS
@@ -29,19 +33,29 @@ export function* watcher () {
 // REDUCER
 export interface ResultsState {
   // TODO: replace any
-  data: null | any[];
+  data: {
+    companies: any[] | null,
+    pagination: PaginationType
+  };
   status: RequestStatuses;
   error: null | string;
 }
 
 const initState = {
-  data: null,
+  data: {
+    companies: null,
+    pagination: {
+      pageIndex: 0,
+      pageSize: 10,
+      pageCount: 0,
+    }
+  },
   status: RequestStatuses.still,
   error: null,
 }
 
 // TODO: replace any
-export function reducer (state: ResultsState = initState, action: any) {
+export function reducer (state: ResultsState = initState, action: AnyAction) {
   const {type, payload} = action;
 
   if (type === ResultsActionType.RESULTS_LOAD) return {
@@ -50,7 +64,11 @@ export function reducer (state: ResultsState = initState, action: any) {
   }
   if (type === ResultsActionType.RESULTS_SUCCESS) return {
     ...state,
-    data: payload,
+    data: {
+      companies: payload.companies,
+      pagination: state.data.pagination.pageCount !== payload.pagination.pageCount ?
+        payload.pagination : state.data.pagination,
+    },
     status: RequestStatuses.still,
     error: null,
   }
@@ -59,6 +77,16 @@ export function reducer (state: ResultsState = initState, action: any) {
     status: RequestStatuses.fail,
     error: payload,
   }
+  if (type === ResultsActionType.RESULTS_PAGINATION) return {
+    ...state,
+    data: {
+      ...state.data,
+      pagination: {
+        ...payload
+      }
+    }
+  }
+  if (type === ResultsActionType.RESULTS_CLEAR) return initState;
 
   return state
 }

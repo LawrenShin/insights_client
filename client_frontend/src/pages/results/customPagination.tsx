@@ -21,6 +21,8 @@ function CustomPagination(props: GridBaseComponentProps & Props) {
     setPagination,
   } = props;
 
+  if (!pagination) return null;
+
   return (<div className={styles.rootPagination}>
     <label htmlFor={'rowsPerPage'}>Show:&nbsp;</label>
     <FormControl

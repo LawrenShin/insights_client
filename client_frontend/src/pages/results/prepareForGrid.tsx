@@ -11,7 +11,7 @@ const WidthMatch: {[key: string]: number} = {
   'essentialRating': 103,
   'essentialRatingDiversityScore': 103,
   'essentialRatingEquityAndInclusionScore': 103,
-  'lei': 250,
+  'lei': 230,
   'id': 90,
 }
 export const setWidth = (key: string): number => WidthMatch[key] || 200;

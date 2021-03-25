@@ -3,6 +3,11 @@ import {useParams} from "react-router-dom";
 import useStyles from "./useStyles";
 import Header from "../../components/Header";
 import {Typography} from "@material-ui/core";
+import {connect} from "react-redux";
+import {RootState} from "../../store/rootReducer";
+import {Dispatch} from "redux";
+import {CreateAction} from "../../store/actionType";
+import {DetailsActionType} from "./duck";
 
 
 const Details = (props: any) => {
@@ -16,13 +21,14 @@ const Details = (props: any) => {
       <div className={styles.content}>
         <div className={styles.list}>
           <ul>
+            {/* TODO: later provide selection */}
             <li className={styles.listSelected}>Key information</li>
-            <li>Key information</li>
           </ul>
         </div>
+
         <div className={styles.graphs}>
           <div>
-            <span >Main search</span>
+            <span>Main search</span>
             <Typography variant={'h5'}>
               Company details
             </Typography>
@@ -33,4 +39,16 @@ const Details = (props: any) => {
   )
 }
 
-export default Details;
+const connector = () => connect(
+  (state: RootState) => ({
+    // ...state.details,
+  }),
+  (dispatch: Dispatch) => ({
+    loadDetails: (id: string) => dispatch(CreateAction(
+      DetailsActionType.DETAILS_LOAD,
+      {url: 'company', id})
+    ),
+  })
+)
+
+export default connector()(Details);

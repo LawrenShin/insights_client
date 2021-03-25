@@ -30,23 +30,28 @@ const Results = (props: any) => {
   const {
     data, status, error,
     resultsRequest,
+    setPagination,
+    clearStore,
   } = props;
   const history = useHistory();
   const locState = history.location.state as LocStateType;
-  // TODO: Set it to 3d page go here and see if companies pagi r the same.
-  const [pagination, setPagination] = React.useState<PaginationType>(data?.pagination);
+  const {pagination, companies} = data;
 
   const styles = useStyles();
+  const makeParams = (pagination: PaginationType, search: string): string => {
+    const {pageIndex, pageSize} = pagination;
+    const paginationParams = `page_index=${pageIndex}&page_size=${pageSize}`;
+    return `search_prefix=${search}&${paginationParams}`;
+  }
 
-  const readyForGrid = (data && data.companies.length) ? prepareForGrid(data, history): {columns: [], rows: []};
-
+  const readyForGrid = (companies && companies.length) ? prepareForGrid(data, history): {columns: [], rows: []};
+  // initial request
   useEffect(() => {
-    if (pagination) {
-      const {pageIndex, pageCount, pageSize} = pagination;
-      const params = `search_prefix=${locState.search}&page_index=${pageIndex}&page_count=${pageCount}&page_size=${pageSize}`;
-      resultsRequest('companies', params);
-    }
-  }, [pagination]);
+    resultsRequest('companies', makeParams(pagination, locState.search));
+    return clearStore()
+  }, []);
+  // pagination update
+  useEffect(() => resultsRequest('companies', makeParams(pagination, locState.search)), [pagination]);
 
   return (
     <div className={styles.root}>
@@ -60,11 +65,11 @@ const Results = (props: any) => {
 
         <div className={styles.content}>
           {/* TODO: 1) change render of row 2) redirect on row click */}
-          {pagination && <DataGrid
+          {<DataGrid
             onRowDoubleClick={(params) => history.push('/details', params.row)}
             className={styles.dataGrid}
-            page={pagination.pageIndex}
-            pageSize={pagination.pageSize}
+            page={pagination.pageIndex || 0}
+            pageSize={pagination.pageSize || 0}
             onPageChange={(params) => {
               setPagination({...pagination, pageIndex: params.page});
             }}
@@ -85,7 +90,7 @@ const Results = (props: any) => {
               LoadingOverlay: CustomLoadingOverlay,
             }}
             hideFooterSelectedRowCount={true}
-            loading={!data || status === RequestStatuses.loading}
+            loading={!companies || status === RequestStatuses.loading}
             {...readyForGrid}
           />}
         </div>
@@ -94,14 +99,17 @@ const Results = (props: any) => {
   )
 }
 
-const connecter = () => connect(
+const connector = () => connect(
   (state: RootState) => ({
     ...state.Results
   }),
   (dispatch: Dispatch) => ({
     resultsRequest: (url: string, params: string) =>
       dispatch(CreateAction(ResultsActionType.RESULTS_LOAD, {url, params})),
+    setPagination: (pagination: PaginationType) =>
+      dispatch(CreateAction(ResultsActionType.RESULTS_PAGINATION, pagination)),
+    clearStore: () => dispatch(CreateAction(ResultsActionType.RESULTS_CLEAR)),
   })
 )
 
-export default connecter()(Results);
+export default connector()(Results);
