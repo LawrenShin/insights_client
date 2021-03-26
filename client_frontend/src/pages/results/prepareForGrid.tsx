@@ -29,13 +29,13 @@ const ratingRenderProvider = (gridValid: any) => ({
 });
 const nameRenderProvider = (gridValid: any, history: any) => ({
   ...gridValid,
-  renderCell: ({value}: any) => {
+  renderCell: ({value, row: {id}}: any) => {
     return <>
       <a
         href={'details'}
         onClick={(e) => {
           e.preventDefault();
-          history.push(`/details/${value}`);
+          history.push(`/details/${id}`);
         }}
       >{value}</a>
     </>
