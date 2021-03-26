@@ -9,11 +9,12 @@ const WidthMatch: {[key: string]: number} = {
   'city': 200,
   'publicOrPrivate': 110,
   'status': 100,
-  'essentialRating': 103,
-  'essentialRatingDiversityScore': 103,
-  'essentialRatingEquityAndInclusionScore': 103,
+  'essentialRating': 170,
+  'essentialRatingDiversityScore': 170,
+  'essentialRatingEquityAndInclusionScore': 170,
   'lei': 230,
-  'id': 90,
+  'id': 100,
+  'postcode': 115,
 }
 export const setWidth = (key: string): number => WidthMatch[key] || 200;
 
@@ -26,7 +27,7 @@ const ratingRenderProvider = (gridValid: any) => ({
     </>
   }
 });
-const idRenderProvider = (gridValid: any, history: any) => ({
+const nameRenderProvider = (gridValid: any, history: any) => ({
   ...gridValid,
   renderCell: ({value}: any) => {
     return <>
@@ -41,44 +42,34 @@ const idRenderProvider = (gridValid: any, history: any) => ({
   }
 });
 
-const prepareForGrid = (
+
+
+const prepareForGrid = <S extends {[key: string]: string}>(
   data: {
     companies: any[],
     pagination: PaginationType
   },
-  history?: any
+  styles: S,
+  history?: any,
 ) => {
 
   const {companies} = data;
 
   const columns = Object.keys(companies[0]).map((key: string) => {
 
-    // handle special behaviour
-    if (key === 'id') return idRenderProvider({
-      field: key,
-      width: setWidth(key),
-      headerName: 'DEI ID',
-    }, history);
-    if (key === 'lei') return {
-      field: key,
-      width: setWidth(key),
-      headerName: key.toUpperCase(),
-    }
-
     // sentence out of key
-    const headerName = keyTitle(key);
+    const headerName = key === 'id' ? 'DEI ID' :
+      key === 'lei' ? key.toUpperCase() : keyTitle(key);
 
     // ready object for grid cell
     const gridValid = {
       field: key,
       headerName,
       width: setWidth(key),
-      // todo: provide later if needed
-      // type:
-    }
+    };
 
-    //
     if (key.match(/rating/gi)) return ratingRenderProvider(gridValid);
+    if (key === 'name') return nameRenderProvider(gridValid, history);
 
     return gridValid;
   });

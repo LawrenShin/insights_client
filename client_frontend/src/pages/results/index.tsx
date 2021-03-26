@@ -44,7 +44,7 @@ const Results = (props: any) => {
     return `search_prefix=${search}&${paginationParams}`;
   }
 
-  const readyForGrid = (companies && companies.length) ? prepareForGrid(data, history): {columns: [], rows: []};
+  const readyForGrid = (companies && companies.length) ? prepareForGrid(data, styles, history): {columns: [], rows: []};
   // initial request
   useEffect(() => {
     resultsRequest('companies', makeParams(pagination, locState.search));

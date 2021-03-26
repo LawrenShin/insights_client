@@ -64,9 +64,15 @@ export default makeStyles({
     '& .MuiDataGrid-row': {
       color: 'rgba(8, 0, 55, .7)',
       font: '400 14px Poppins',
-      '& div:nth-child(1)': {
+      '& div:nth-child(2)': {
         fontWeight: 'bold',
+        '& a': {textDecoration: 'none'},
       }
+    },
+    '& .MuiDataGrid-colCellTitle': {
+      textDecoration: 'underline',
+      fontWeight: 'bold',
+      fontFamily: 'Poppins, sans-serif',
     }
   },
 

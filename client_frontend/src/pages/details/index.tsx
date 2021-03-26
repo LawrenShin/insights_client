@@ -24,7 +24,7 @@ const Details = (props: any) => {
   const params = useParams() as {id: string};
   const styles = useStyles();
 
-  const renderHeaderInfo = (key: string, value: string) => <Grid item>
+  const renderHeaderInfo = (key: string, value: string) => <Grid item key={`${value}${key}`}>
     <Grid direction={'column'} container>
       <span>{keyTitle(key)}</span>
       <span>
