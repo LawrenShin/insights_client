@@ -50,8 +50,10 @@ const Results = (props: any) => {
     resultsRequest('companies', makeParams(pagination, locState.search));
     return clearStore()
   }, []);
-  // pagination update
-  useEffect(() => resultsRequest('companies', makeParams(pagination, locState.search)), [pagination]);
+  // TODO: resultsRequest needs optimization
+  useEffect(() => {
+    resultsRequest('companies', makeParams(pagination, locState.search));
+  }, [pagination]);
 
   return (
     <div className={styles.root}>
@@ -64,9 +66,7 @@ const Results = (props: any) => {
         </Typography>
 
         <div className={styles.content}>
-          {/* TODO: 1) change render of row 2) redirect on row click */}
           {<DataGrid
-            onRowDoubleClick={(params) => history.push('/details', params.row)}
             className={styles.dataGrid}
             page={pagination.pageIndex || 0}
             pageSize={pagination.pageSize || 0}

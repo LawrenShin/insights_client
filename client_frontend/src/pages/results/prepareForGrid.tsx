@@ -1,4 +1,5 @@
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
+import {keyTitle} from "../../helpers";
 
 const paintRating = (value: string): string => `dot rating${value}`;
 
@@ -48,7 +49,7 @@ const prepareForGrid = (
   history?: any
 ) => {
 
-  const {companies, pagination} = data;
+  const {companies} = data;
 
   const columns = Object.keys(companies[0]).map((key: string) => {
 
@@ -65,10 +66,7 @@ const prepareForGrid = (
     }
 
     // sentence out of key
-    const lowerCasedKey = key.match(/[a-z]+|[A-Z][a-z]+/g)
-      ?.join(' ')
-      ?.toLowerCase();
-    const headerName = lowerCasedKey?.replace(lowerCasedKey[0], lowerCasedKey[0].toUpperCase());
+    const headerName = keyTitle(key);
 
     // ready object for grid cell
     const gridValid = {

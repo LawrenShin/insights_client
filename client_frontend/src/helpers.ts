@@ -14,3 +14,12 @@ export function usePrevious<T>(
   }, [value]);
   return ref.current;
 }
+
+export function keyTitle (key: string, regex?: RegExp) {
+  const regexToUse = regex || /[a-z]+|[A-Z][a-z]+/g;
+  const lowerCasedKey = key.match(regexToUse)
+    ?.join(' ')
+    ?.toLowerCase();
+  const headerName = lowerCasedKey?.replace(lowerCasedKey[0], lowerCasedKey[0].toUpperCase());
+  return headerName;
+}
