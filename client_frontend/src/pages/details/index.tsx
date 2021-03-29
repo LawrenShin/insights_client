@@ -12,6 +12,7 @@ import {keyTitle} from "../../helpers";
 import {RequestStatuses} from "../../api/requestTypes";
 import {Rounded} from "../../components/button";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import EssentialRating from "../../components/ratings/EssentialRating";
 
 
 const Details = (props: any) => {
@@ -37,6 +38,7 @@ const Details = (props: any) => {
     </Grid>
   </Grid>;
 
+
   useEffect(() => {
     loadDetails(`id=${params.id}`);
   }, []);
@@ -61,7 +63,7 @@ const Details = (props: any) => {
             </Typography>
           </div>
           {/* TODO: refactor these in separate components */}
-          <Grid container spacing={3}>
+          <Grid container spacing={5} style={{gap :'5px'}}>
             {/* header container */}
             <Grid item sm={12} className={styles.paintContainer}>
               <Grid direction={'row'} container >
@@ -79,6 +81,48 @@ const Details = (props: any) => {
               </Grid>
             </Grid>
 
+            <Grid item sm={4} className={`${styles.paintContainer}`} style={{maxWidth: '307px'}}>
+              <span className={`${styles.titleFont} ${styles.titleSubFontSize}`}>General</span>
+              <Grid item>
+                <Grid container >
+                  <Grid item>
+                    <Grid wrap={'nowrap'} container direction={'row'} className={styles.gap20}>
+                      <span className={styles.paleFont}>Address:</span>
+                      <span>{data.companyGeneral.address}</span>
+                    </Grid>
+                    <Grid wrap={'nowrap'} container direction={'row'} className={styles.gap20}>
+                      <span className={styles.paleFont}>ID:</span>
+                      <ul style={{listStyle: 'none'}}>
+                        <li><span>ID: {data.companyGeneral.id}</span></li>
+                        <li><span>LEI: {data.companyGeneral.lei}</span></li>
+                      </ul>
+                    </Grid>
+                    <Grid wrap={'nowrap'} container direction={'row'} className={styles.gap20}>
+                      <span className={styles.paleFont}>Industries:</span>
+                      <ul style={{listStyle: 'none'}}>
+                        {/*<li><span>TODO:assumed empty for now</span></li>*/}
+                      </ul>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+            {data.essentialRating && <Grid sm={4} item className={styles.paintContainer}>
+              <EssentialRating
+                title={'Essential rating'}
+                styles={styles}
+                data={data.essentialRating}
+                renderHeaderInfo={renderHeaderInfo}
+              />
+            </Grid>}
+            {data.essentialRatingDiversityScore && <Grid sm={4} item className={styles.paintContainer}>
+              <EssentialRating
+                title={'Essential rating diversity score'}
+                styles={styles}
+                data={data.essentialRatingDiversityScore}
+                renderHeaderInfo={renderHeaderInfo}
+              />
+            </Grid>}
           </Grid>
         </div>
       </div> : <CircularProgress />}

@@ -5,7 +5,9 @@ const paleGrey = 'rgba(8, 0, 55, .4)';
 const purpBack = 'rgba(89, 38, 235, .2)';
 
 export default makeStyles({
-  root: {},
+  root: {
+    fontFamily: 'Poppins',
+  },
   content: {
     display: 'flex',
     margin: '10vh',
@@ -45,6 +47,8 @@ export default makeStyles({
   },
 //  basics
   width100: { width: '100%'},
+  gap5: {gap: '5px'},
+  gap20: {gap: '20px'},
   paintContainer: {
     background: 'white',
     boxShadow: '0px 2px 20px rgba(0, 0, 0, 0.05)',
@@ -53,5 +57,17 @@ export default makeStyles({
     fontFamily: 'Poppins, sans-serif',
     fontWeight: 'bold',
     fontSize: '1.3em',
+  },
+  paleFont: {
+    fontSize: '.9em',
+    color: paleGrey,
+  },
+  titleSubFontSize: {
+    fontSize: '1em',
+  },
+  centerChart: {
+    justifyContent: 'center',
+    display: 'flex',
+    marginTop: '15px',
   }
 });
