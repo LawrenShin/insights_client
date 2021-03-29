@@ -1,7 +1,7 @@
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 import {keyTitle} from "../../helpers";
 
-const paintRating = (value: string): string => `dot rating${value}`;
+export const paintRating = (value: string): string => `dot rating${value}`;
 
 const WidthMatch: {[key: string]: number} = {
   'country': 150,

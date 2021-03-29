@@ -13,6 +13,7 @@ import {RequestStatuses} from "../../api/requestTypes";
 import {Rounded} from "../../components/button";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EssentialRating from "../../components/ratings/EssentialRating";
+import {paintRating} from "../results/prepareForGrid";
 
 
 const Details = (props: any) => {
@@ -25,16 +26,23 @@ const Details = (props: any) => {
   const params = useParams() as {id: string};
   const styles = useStyles();
 
+  const renderValue = (value: string | number | boolean) => <span>
+    {typeof value === "boolean" ?
+        value ? 'Yes' : 'No'
+        : value}
+  </span>
+
   const renderHeaderInfo = (key: string, value: string) => <Grid item key={`${value}${key}`}>
     <Grid direction={'column'} container>
       <span>{keyTitle(key)}</span>
-      <span>
-        {
-          typeof value === "boolean" ?
-            value ? 'Yes' : 'No'
-            : value
-        }
-      </span>
+      {
+        key === 'Rating' ? <Grid container direction={'row'} alignItems={'center'}>
+          <div className={paintRating(value)}></div>
+          {renderValue(value)}
+        </Grid>
+          :
+        <>{renderValue(value)}</>
+      }
     </Grid>
   </Grid>;
 
