@@ -15,6 +15,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EssentialRating from "../../components/ratings/EssentialRating";
 import {paintRating} from "../results/prepareForGrid";
 import AdvancedRatingWrapper from "../../components/ratings/AdvancedRatingWrapper";
+import Radar from "../../components/charts/radarChart";
+import List from "../../components/charts/list";
 
 
 const Details = (props: any) => {
@@ -136,12 +138,25 @@ const Details = (props: any) => {
               </Grid>
             </Grid>
           {/* advanced */}
-            {data.ratingsWindRose && <AdvancedRatingWrapper
-              title={'Advanced rating'}
-              data={data.ratingsWindRose}
-            >
-
-            </AdvancedRatingWrapper>}
+            {data.ratingsWindRose && <Grid item sm={12} style={{padding: '0'}}>
+              <Grid direction={'row'} container style={{gap: '5px'}} wrap={'nowrap'}>
+                <AdvancedRatingWrapper
+                  title={'Advanced rating'}
+                  data={data.ratingsWindRose}
+                  sm={8}
+                >
+                  <Radar data={data.ratingsWindRose} />
+                </AdvancedRatingWrapper>
+                <AdvancedRatingWrapper
+                  title={'Advanced Sub scores'}
+                  data={data.ratingsWindRose}
+                  justify={'space-between'}
+                  sm={4}
+                >
+                  <List data={data.ratingWindRose} />
+                </AdvancedRatingWrapper>
+              </Grid>
+            </Grid>}
           </Grid>
         </div>
       </div> : <CircularProgress />}
