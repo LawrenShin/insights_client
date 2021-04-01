@@ -31,4 +31,16 @@ export default makeStyles({
   alignItemsCenter: {
     alignItems: 'center',
   },
+  researchContainer: {
+    flexGrow: 1,
+    background: 'rgba(204, 204, 204, .5)',
+    padding: '20px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noDataText: {
+    fontSize: '.9em',
+    color: paleGrey,
+  },
 });

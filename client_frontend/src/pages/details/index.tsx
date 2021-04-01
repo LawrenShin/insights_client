@@ -12,11 +12,33 @@ import {keyTitle} from "../../helpers";
 import {RequestStatuses} from "../../api/requestTypes";
 import {Rounded} from "../../components/button";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import EssentialRating from "../../components/ratings/EssentialRating";
+import EssentialRadialRating from "../../components/ratings/EssentialRating";
 import {paintRating} from "../results/prepareForGrid";
 import AdvancedRatingWrapper from "../../components/ratings/AdvancedRatingWrapper";
 import Radar from "../../components/charts/radarChart";
 import List from "../../components/charts/list";
+import Research from "../../components/charts/Research";
+
+
+const renderValue = (value: string | number | boolean) => <span>
+    {typeof value === "boolean" ?
+      value ? 'Yes' : 'No'
+      : value}
+  </span>
+
+const renderHeaderInfo = (key: string, value: string) => <Grid item key={`${value}${key}`}>
+  <Grid direction={'column'} container>
+    <span>{keyTitle(key)}</span>
+    {
+      key === 'Rating' ? <Grid container direction={'row'} alignItems={'center'}>
+          <div className={paintRating(value)}></div>
+          {renderValue(value)}
+        </Grid>
+        :
+        <>{renderValue(value)}</>
+    }
+  </Grid>
+</Grid>;
 
 
 const Details = (props: any) => {
@@ -28,38 +50,21 @@ const Details = (props: any) => {
 
   const params = useParams() as {id: string};
   const styles = useStyles();
-
-  const renderValue = (value: string | number | boolean) => <span>
-    {typeof value === "boolean" ?
-        value ? 'Yes' : 'No'
-        : value}
-  </span>
-
-  const renderHeaderInfo = (key: string, value: string) => <Grid item key={`${value}${key}`}>
-    <Grid direction={'column'} container>
-      <span>{keyTitle(key)}</span>
-      {
-        key === 'Rating' ? <Grid container direction={'row'} alignItems={'center'}>
-          <div className={paintRating(value)}></div>
-          {renderValue(value)}
-        </Grid>
-          :
-        <>{renderValue(value)}</>
-      }
-    </Grid>
-  </Grid>;
+  const isAdvanced = data?.mode === 'advanced';
 
 
   useEffect(() => {
     loadDetails(`id=${params.id}`);
   }, []);
 
+  // TODO: refactor layout
   return (
     <div className={styles.root}>
       <Header />
       {(status === RequestStatuses.still && data) ? <div className={styles.content}>
         <div className={`${styles.list} ${styles.paintContainer}`}>
           <ul>
+            <li>{data.mode} - {Object.keys(data.ratingBars).length}</li>
             {/* TODO: later provide selection */}
             <li className={styles.listSelected}>Key information</li>
           </ul>
@@ -120,23 +125,73 @@ const Details = (props: any) => {
                   </Grid>
                 </Grid>
                 {data.essentialRating && <Grid sm={4} item className={styles.paintContainer} style={{maxWidth: '33%'}}>
-                  <EssentialRating
+                  <EssentialRadialRating
                     title={'Essential rating'}
                     styles={styles}
                     data={data.essentialRating}
                     renderHeaderInfo={renderHeaderInfo}
                   />
                 </Grid>}
-                {data.essentialRatingDiversityScore && <Grid sm={4} item className={styles.paintContainer} style={{maxWidth: '33%'}}>
-                  <EssentialRating
-                    title={'Essential rating diversity score'}
+                {/*advancedForecast advanced*/}
+                {/*ratingBars essential*/}
+                {data && (isAdvanced ? <Grid sm={4} item
+                    className={styles.paintContainer}
+                    style={{maxWidth: '33%'}}
+                  >
+                    <EssentialRadialRating
+                      title={keyTitle('advancedForecast')}
+                      styles={styles}
+                      data={data.advancedForecastRating}
+                      renderHeaderInfo={renderHeaderInfo}
+                    />
+                  </Grid>
+                    :
+                  <AdvancedRatingWrapper
+                    title={'Essential Sub scores'}
+                    data={data.ratingsWindRose}
+                    justify={'space-between'}
+                    sm={4}
+                  >
+                    <List data={data.ratingBars} />
+                  </AdvancedRatingWrapper>
+                )}
+              </Grid>
+            </Grid>
+          {/* essential 2d line */}
+          {!isAdvanced && <Grid item sm={12} style={{padding: '0'}}>
+              <Grid direction={'row'} container style={{gap: '5px'}} wrap={'nowrap'}>
+                <AdvancedRatingWrapper
+                  justify={'space-between'}
+                  sm={4}
+                >
+                  <EssentialRadialRating
+                    title={"Essential diversity rating"}
                     styles={styles}
                     data={data.essentialRatingDiversityScore}
                     renderHeaderInfo={renderHeaderInfo}
                   />
-                </Grid>}
+                </AdvancedRatingWrapper>
+                <AdvancedRatingWrapper
+                  justify={'space-between'}
+                  sm={4}
+                >
+                  <EssentialRadialRating
+                    title={'Essential equity & inclusion rating '}
+                    styles={styles}
+                    data={data.essentialRatingEquityAndInclusionScore}
+                    renderHeaderInfo={renderHeaderInfo}
+                  />
+                </AdvancedRatingWrapper>
+                <AdvancedRatingWrapper
+                  title={'Research'}
+                  sm={4}
+                  style={{display: 'flex', flexDirection: 'column'}}
+                >
+                  <Research />
+                </AdvancedRatingWrapper>
               </Grid>
-            </Grid>
+            </Grid>}
+
           {/* advanced */}
             {data.ratingsWindRose && <Grid item sm={12} style={{padding: '0'}}>
               <Grid direction={'row'} container style={{gap: '5px'}} wrap={'nowrap'}>
@@ -147,14 +202,15 @@ const Details = (props: any) => {
                 >
                   <Radar data={data.ratingsWindRose} />
                 </AdvancedRatingWrapper>
-                <AdvancedRatingWrapper
+                {isAdvanced && <AdvancedRatingWrapper
                   title={'Advanced Sub scores'}
                   data={data.ratingsWindRose}
                   justify={'space-between'}
                   sm={4}
                 >
-                  <List data={data.ratingsWindRose} />
-                </AdvancedRatingWrapper>
+                  {/*TODO: ask what data should be displayed rose or bars*/}
+                  <List data={data.ratingsWindRose}/>
+                </AdvancedRatingWrapper>}
               </Grid>
             </Grid>}
           </Grid>

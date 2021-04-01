@@ -19,7 +19,7 @@ const renderEssentialRatings = (data: any, styles: any) => {
   </div>
 }
 // NOTE: header info is a container which provides styles for spans from renderHeaderInfo. Needs refactor
-const EssentialRating = ({title, styles, data, renderHeaderInfo}: any) => {
+const EssentialRadialRating = ({title, styles, data, renderHeaderInfo}: any) => {
   return (
     // TODO: refactor container div into component to wrap any content
     <>
@@ -33,4 +33,4 @@ const EssentialRating = ({title, styles, data, renderHeaderInfo}: any) => {
   );
 }
 
-export default EssentialRating;
+export default EssentialRadialRating;
