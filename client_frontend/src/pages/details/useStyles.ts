@@ -8,6 +8,12 @@ export default makeStyles({
   root: {
     fontFamily: 'Poppins',
   },
+  centerLoader: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    margin: '-20px 0 0 -20px',
+  },
   content: {
     display: 'flex',
     margin: '10vh',
@@ -44,6 +50,11 @@ export default makeStyles({
       '& > span': {lineHeight: '1.8em'},
       '& > div span:nth-child(1)': {color: paleGrey},
     }
+  },
+  overflowBarList: {
+    maxHeight: '250px',
+    overflow: 'scroll',
+    flexWrap: 'nowrap',
   },
 //  basics
   width100: { width: '100%'},

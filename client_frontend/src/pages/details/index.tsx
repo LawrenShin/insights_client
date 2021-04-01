@@ -64,7 +64,6 @@ const Details = (props: any) => {
       {(status === RequestStatuses.still && data) ? <div className={styles.content}>
         <div className={`${styles.list} ${styles.paintContainer}`}>
           <ul>
-            <li>{data.mode} - {Object.keys(data.ratingBars).length}</li>
             {/* TODO: later provide selection */}
             <li className={styles.listSelected}>Key information</li>
           </ul>
@@ -152,7 +151,10 @@ const Details = (props: any) => {
                     justify={'space-between'}
                     sm={4}
                   >
-                    <List data={data.ratingBars} />
+                    <List
+                      classes={styles.overflowBarList}
+                      data={data.ratingBars}
+                    />
                   </AdvancedRatingWrapper>
                 )}
               </Grid>
@@ -215,7 +217,7 @@ const Details = (props: any) => {
             </Grid>}
           </Grid>
         </div>
-      </div> : <CircularProgress />}
+      </div> : <CircularProgress className={styles.centerLoader} />}
     </div>
   )
 }
