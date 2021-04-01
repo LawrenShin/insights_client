@@ -153,7 +153,7 @@ const Details = (props: any) => {
                   justify={'space-between'}
                   sm={4}
                 >
-                  <List data={data.ratingWindRose} />
+                  <List data={data.ratingsWindRose} />
                 </AdvancedRatingWrapper>
               </Grid>
             </Grid>}
