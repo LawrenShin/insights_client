@@ -5,7 +5,7 @@ const Research = () => {
   const styles = useStyles();
 
   return <div className={styles.researchContainer}>
-      <span className={styles.noDataText}>No relevant D&I news detected</span>
+      <span className={styles.noDataText}>No relevant Diversity, Equity & Inclusion news detected</span>
   </div>
 }
 

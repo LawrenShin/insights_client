@@ -54,7 +54,7 @@ const SignIn = (props: Props) => {
   }
 
   useEffect(() => {
-    if (data) history.push('/searchCompanies');
+    if (data) history.push('/mainSearch');
   }, [data]);
 
   const _handleSubmit = (values: FormState) => {

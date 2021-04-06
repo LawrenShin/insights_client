@@ -32,6 +32,7 @@ export default makeStyles({
     alignItems: 'center',
   },
   researchContainer: {
+    textAlign: 'center',
     flexGrow: 1,
     background: 'rgba(204, 204, 204, .5)',
     padding: '20px',

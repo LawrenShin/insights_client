@@ -8,6 +8,15 @@ export default makeStyles({
   root: {
     fontFamily: 'Poppins',
   },
+  generalContainer: {
+
+  },
+  link: {
+    '&:hover': {
+      cursor: 'pointer',
+      fontWeight: 'bold',
+    },
+  },
   centerLoader: {
     position: 'absolute',
     top: '50%',
@@ -57,6 +66,7 @@ export default makeStyles({
     flexWrap: 'nowrap',
   },
 //  basics
+  listStyleNone: {listStyle: 'none'},
   width100: { width: '100%'},
   gap5: {gap: '5px'},
   gap20: {gap: '20px'},
@@ -73,12 +83,15 @@ export default makeStyles({
     fontSize: '.9em',
     color: paleGrey,
   },
-  titleSubFontSize: {
-    fontSize: '1em',
-  },
+  titleSubFontSize: {fontSize: '1em'},
+  littleFont: {fontSize: '.8em'},
   centerChart: {
     justifyContent: 'center',
     display: 'flex',
     marginTop: '15px',
+  },
+  flexCol: {
+    display: 'flex',
+    flexDirection: 'column',
   }
 });

@@ -9,7 +9,7 @@ const radarDataPreparer = (data: {[key: string]: any}) => {
       key: keyTitle(key.replace(/advanced|essential/gi, '')),
       rating: data[key].score,
     }
-  });
+  }).filter((data) => data.rating);
 }
 
 const Radar = (props: any) => {
@@ -44,6 +44,9 @@ const Radar = (props: any) => {
           blendMode="multiply"
           animate={true}
           isInteractive={true}
+          theme={{
+
+          }}
         />
       </div>
     </div>

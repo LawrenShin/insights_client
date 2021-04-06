@@ -10,17 +10,18 @@ interface Props {
     score: number;
   },
   title?: string;
-  children?: any;
+  classes?: string;
   sm?:  boolean | "auto" | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   justify?: "center" | "flex-start" | "flex-end" | "space-between" | "space-around" | "space-evenly";
   style?: any;
+  children?: any;
 }
 
-const AdvancedRatingWrapper = ({data, title, children, sm, justify, style}: Props) => {
+const AdvancedRatingWrapper = ({data, title, children, sm, justify, style, classes}: Props) => {
   const styles = useStyles();
 
   return (
-    <Grid item sm={sm} className={styles.paintContainer} style={style}>
+    <Grid item sm={sm} className={`${styles.paintContainer} ${classes}`} style={style}>
       <span className={`${styles.titleFont}`}>{title}</span>
       {(data?.rating && data?.strength) && <Grid justify={justify} container direction={'row'} className={styles.ratingStrength}>
         <Grid item>
