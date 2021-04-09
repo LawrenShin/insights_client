@@ -16,6 +16,7 @@ import {CreateAction} from "../../store/actionType";
 import {ResultsActionType} from "./duck";
 import {RequestStatuses} from "../../api/requestTypes";
 import CustomLoadingOverlay from "../../components/LinearCustomOverlay";
+import BreadCrumbs from "../../components/breadCrumbs/breadCrumbs";
 
 
 export interface LocStateType {
@@ -60,8 +61,8 @@ const Results = (props: any) => {
       <Header />
       <div className={styles.searchWrapper}>
 
-        <span>Main search</span>
-        <Typography variant={'h5'}>
+        <BreadCrumbs crumbs={['mainSearch']} />
+        <Typography variant={'h5'} style={{marginTop : '10px'}}>
           List of companies
         </Typography>
 

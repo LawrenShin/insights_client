@@ -1,6 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-
-export const paleGrey = 'rgba(8, 0, 55, .4)';
+import {paleGrey} from "../colorConstants";
 
 export default makeStyles({
   root: {

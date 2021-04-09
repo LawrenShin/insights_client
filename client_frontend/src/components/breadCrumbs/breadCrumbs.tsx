@@ -1,8 +1,9 @@
 import React from 'react';
 import {useHistory} from "react-router-dom";
-import {keyTitle} from "../helpers";
+import {keyTitle} from "../../helpers";
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import {Grid} from "@material-ui/core";
+import useStyles from "./useStyles";
 
 
 const renderCrumbs = (
@@ -10,8 +11,10 @@ const renderCrumbs = (
   crumbComponent: (crumb: string, isEven: number) => JSX.Element
 ) => crumbs.map((crumb: string, index) => crumbComponent(crumb, index));
 
-const BreadCrumbs = ({styles, crumbs}: any) => {
+const BreadCrumbs = ({crumbs}: any) => {
   const history = useHistory();
+  const styles = useStyles();
+
   const crumbComponent = (crumb: string, index: number) => <React.Fragment key={`/${crumb}`}>{
      // TODO: solutions for styles
     crumb && <>
@@ -32,7 +35,7 @@ const BreadCrumbs = ({styles, crumbs}: any) => {
 
   if (!crumbs.length) return <span>Where crumbs?</span>;
 
-  return <Grid container justify={'flex-start'} alignItems={'center'} style={{gap: '10px'}}>
+  return <Grid container justify={'flex-start'} alignItems={'center'} style={{gap: '5px'}}>
     {renderCrumbs(crumbs, crumbComponent)}
   </Grid>;
 

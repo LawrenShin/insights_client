@@ -13,12 +13,13 @@ import {RequestStatuses} from "../../api/requestTypes";
 import {Rounded} from "../../components/button";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EssentialRadialRating from "../../components/ratings/EssentialRating";
-import {paintRating} from "../results/prepareForGrid";
+import {paintRatingClass} from "../results/prepareForGrid";
+import {paintRating} from '../../components/charts/useStyles';
 import AdvancedRatingWrapper from "../../components/ratings/AdvancedRatingWrapper";
 import Radar from "../../components/charts/radarChart";
 import List from "../../components/charts/list";
 import Research from "../../components/charts/Research";
-import BreadCrumbs from "../../components/breadCrumbs";
+import BreadCrumbs from "../../components/breadCrumbs/breadCrumbs";
 
 
 const renderValue = (value: string | number | boolean) => <span>
@@ -32,7 +33,7 @@ const renderHeaderInfo = (key: string, value: string) => <Grid item key={`${valu
     <span>{keyTitle(key)}</span>
     {
       key === 'Rating' ? <Grid container direction={'row'} alignItems={'center'}>
-          <div className={paintRating(value)}></div>
+          <div className={paintRatingClass(value)}></div>
           {renderValue(value)}
         </Grid>
         :
@@ -73,10 +74,7 @@ const Details = (props: any) => {
         <div className={styles.width100}>
           <div className={styles.contentTitle}>
             {/* CRUMBS */}
-            <BreadCrumbs
-              crumbs={['mainSearch', 'results']}
-              styles={styles}
-            />
+            <BreadCrumbs crumbs={['mainSearch', 'results']} />
             <Typography variant={'h5'}>
               Company report
             </Typography>
@@ -180,7 +178,10 @@ const Details = (props: any) => {
                   data={data.ratingsWindRose}
                   sm={8}
                 >
-                  <Radar data={data.ratingsWindRose} />
+                  <Radar
+                    paintRating={paintRating}
+                    data={data.ratingsWindRose}
+                  />
                 </AdvancedRatingWrapper>
                 {(data.ratingBars || data.ratingsWindRose) && <AdvancedRatingWrapper
                   title={`${isAdvanced ? 'Advanced' : 'Essential'} Sub Scores`}

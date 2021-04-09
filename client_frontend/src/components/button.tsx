@@ -1,8 +1,7 @@
 import React from 'react';
 import {Button, Theme, withStyles} from "@material-ui/core";
+import {purp} from "./colorConstants";
 
-
-const purp = '#5926EB';
 
 const ColorButtonSquared = withStyles((theme: Theme) => ({
   root: {

@@ -1,6 +1,6 @@
 import {makeStyles} from "@material-ui/core";
+import {paleGrey} from "../colorConstants";
 
-export const paleGrey = 'rgba(8, 0, 55, .4)';
 export const fontColorSegment = 'rgba(8, 0, 55, .4)';
 export const good = 'rgb(163,229,178)';
 export const average = 'rgb(255,234,160)';

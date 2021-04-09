@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid} from "@material-ui/core";
 import useStyles from "./useStyles";
-import {paintRating} from "../../pages/results/prepareForGrid";
+import {paintRatingClass} from "../../pages/results/prepareForGrid";
 // TODO: can rafactor in unicontainer
 interface Props {
   data?: {
@@ -28,7 +28,7 @@ const AdvancedRatingWrapper = ({data, title, children, sm, justify, style, class
           <Grid container direction={"column"}>
             <span className={styles.paleFont}>Rating:</span>
             <Grid container direction={'row'} alignItems={'center'}>
-              <div className={paintRating(data.rating)}></div>
+              <div className={paintRatingClass(data.rating)}></div>
               <span>{data.rating}</span>
             </Grid>
           </Grid>

@@ -48,7 +48,10 @@ const LookupSearch = ({
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
-    const forText = <div className={styles.result}>
+    const forText = <div
+      className={styles.result}
+      onClick={() => history.push(`/details/${companies[index].id}`)}
+    >
       <span className={styles.bold}>{companies[index].name}</span>,
       <span> {companies[index].country}</span>,
       <span> {companies[index].city}</span>

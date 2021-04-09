@@ -1,8 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-
-const purp = '#5926EB';
-const paleGrey = 'rgba(8, 0, 55, .4)';
-const purpBack = 'rgba(89, 38, 235, .2)';
+import {paleGrey, purp, purpBack} from "../../components/colorConstants";
 
 export default makeStyles({
   root: {

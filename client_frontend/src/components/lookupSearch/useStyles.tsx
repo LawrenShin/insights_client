@@ -1,6 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-
-const purp = '#5926EB';
+import {purp} from "../colorConstants";
 
 const useStyles = makeStyles({
   container: {

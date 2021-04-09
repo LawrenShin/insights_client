@@ -1,7 +1,7 @@
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 import {keyTitle} from "../../helpers";
 
-export const paintRating = (value: string): string => `dot rating${value}`;
+export const paintRatingClass = (value: string): string => `dot rating${value}`;
 
 const WidthMatch: {[key: string]: number} = {
   'country': 150,
@@ -22,7 +22,7 @@ const ratingRenderProvider = (gridValid: any) => ({
 ...gridValid,
     renderCell: ({value}: any) => {
     return <>
-      <div className={paintRating(value)}></div>
+      <div className={paintRatingClass(value)}></div>
       <span>{value}</span>
     </>
   }
