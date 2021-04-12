@@ -29,7 +29,7 @@ export interface LocStateType {
 // TODO: types
 const Results = (props: any) => {
   const {
-    data, status, error,
+    data, status, error, search,
     resultsRequest,
     setPagination,
     clearStore,
@@ -37,6 +37,7 @@ const Results = (props: any) => {
   const history = useHistory();
   const locState = history.location.state as LocStateType;
   const {pagination, companies} = data;
+  const defineSearch = locState?.search || search;
 
   const styles = useStyles();
   const makeParams = (pagination: PaginationType, search: string): string => {
@@ -48,12 +49,12 @@ const Results = (props: any) => {
   const readyForGrid = (companies && companies.length) ? prepareForGrid(data, styles, history): {columns: [], rows: []};
   // initial request
   useEffect(() => {
-    resultsRequest('companies', makeParams(pagination, locState.search));
+    resultsRequest('companies', makeParams(pagination, defineSearch));
     return clearStore()
   }, []);
   // TODO: resultsRequest needs optimization
   useEffect(() => {
-    resultsRequest('companies', makeParams(pagination, locState.search));
+    resultsRequest('companies', makeParams(pagination, defineSearch));
   }, [pagination]);
 
   return (
@@ -102,7 +103,8 @@ const Results = (props: any) => {
 
 const connector = () => connect(
   (state: RootState) => ({
-    ...state.Results
+    ...state.Results,
+    search: state.LookupSearch.data.search,
   }),
   (dispatch: Dispatch) => ({
     resultsRequest: (url: string, params: string) =>

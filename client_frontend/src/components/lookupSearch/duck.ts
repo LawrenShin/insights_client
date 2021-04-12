@@ -12,6 +12,7 @@ export enum PaginationActionTypes {
 
 export enum LookupSearchActionType {
   LOOKUP_LOAD = 'LOOKUP_LOAD',
+  SAVE_SEARCH = 'SAVE_SEARCH',
   LOOKUP_LOAD_SUCCESS = 'LOOKUP_LOAD_SUCCESS',
   LOOKUP_LOAD_FAIL = 'LOOKUP_LOAD_FAIL',
   LOOKUP_LOAD_CLEAR = 'LOOKUP_LOAD_CLEAR',
@@ -57,6 +58,7 @@ export interface State {
   data: {
     companies: Company[] | [],
     pagination: Pagination,
+    search: string,
   }
   status: RequestStatuses;
   error: string | null;
@@ -64,6 +66,7 @@ export interface State {
 
 export const initialState = {
   data: {
+    search: '',
     companies: [],
     pagination: {
       pageSize: 10,
@@ -78,6 +81,14 @@ export const initialState = {
 export function reducer(state: State = initialState, action: Action) {
   const {type, payload} = action;
   if (type === LookupSearchActionType.LOOKUP_LOAD) return {...state, status: RequestStatuses.loading};
+
+  if (type === LookupSearchActionType.SAVE_SEARCH) return {
+    ...state,
+    data: {
+      ...state.data,
+      search: payload,
+    },
+  };
 
   if (type === LookupSearchActionType.LOOKUP_LOAD_SUCCESS) return {
     ...state,

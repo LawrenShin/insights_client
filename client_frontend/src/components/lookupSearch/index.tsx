@@ -19,6 +19,7 @@ interface DispatchProps {
   resultsRequest: (url: string, params: string) => void;
   incrementPageIndex: () => void;
   clearSearch: () => void;
+  saveSearch: (search: string) => void;
 }
 interface Props extends StateProps, DispatchProps {}
 
@@ -27,6 +28,7 @@ const LookupSearch = ({
     resultsRequest,
     lookupRequest,
     clearSearch,
+    saveSearch,
     data,
     status,
     error,
@@ -85,7 +87,8 @@ const LookupSearch = ({
         lookupRequest(
           'companiesLookup',
           params
-        )
+        );
+        saveSearch(search);
       }, 500));
     }
     if (!search) return clearSearch();
@@ -153,6 +156,7 @@ export default connect(
   ({ LookupSearch }: RootState) => ({ ...LookupSearch }),
 
   (dispatch: Dispatch) => ({
+    saveSearch: (search: string) => dispatch(CreateAction(LookupSearchActionType.SAVE_SEARCH, search)),
     lookupRequest: (url: string, params: string) =>
       dispatch(CreateAction(LookupSearchActionType.LOOKUP_LOAD, {url, params})),
     resultsRequest: (url: string, params: string) =>

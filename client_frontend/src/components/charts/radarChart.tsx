@@ -51,9 +51,7 @@ const Radar = ({data, paintRating}: any) => {
           blendMode="multiply"
           animate={true}
           isInteractive={true}
-          theme={{
-
-          }}
+          theme={{}}
         />
       </div>
     </div>

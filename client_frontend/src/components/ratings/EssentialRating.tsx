@@ -9,7 +9,7 @@ const renderEssentialRatings = (data: any, styles: any) => {
     height: 150,
     ringWidth: 30,
     needleHeightRatio: .4,
-    currentValueText: 'A - healthy',
+    currentValueText: data?.quality || 'N/A',
     valueTextFontSize: '13',
     data: data,
   };
