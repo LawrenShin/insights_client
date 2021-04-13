@@ -101,7 +101,7 @@ const LookupSearch = ({
   return (<>
     <div className={styles.container}>
       <div className={styles.tabs}>
-        <div><span>Companies database</span></div>
+        <div><span>Company Database</span></div>
       </div>
       <div className={styles.inputContainer}>
         <TextField
