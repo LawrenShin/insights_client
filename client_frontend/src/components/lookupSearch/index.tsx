@@ -17,14 +17,14 @@ import {ResultsActionType} from '../../pages/results/duck';
 interface DispatchProps {
   lookupRequest: (url: string, params: string) => void;
   resultsRequest: (url: string, params: string) => void;
-  incrementPageIndex: () => void;
+  incrementPageNumber: () => void;
   clearSearch: () => void;
   saveSearch: (search: string) => void;
 }
 interface Props extends StateProps, DispatchProps {}
 
 const LookupSearch = ({
-    incrementPageIndex,
+    incrementPageNumber,
     resultsRequest,
     lookupRequest,
     clearSearch,
@@ -40,12 +40,12 @@ const LookupSearch = ({
     companies,
     pagination: {
       pageCount,
-      pageIndex,
+      pageNumber,
       pageSize,
     },
   } = data;
   const prevSearch = usePrevious(search);
-  const prevPageIndex = usePrevious(pageIndex);
+  const prevPageNumber = usePrevious(pageNumber);
   const history = useHistory();
 
   function renderRow(props: ListChildComponentProps) {
@@ -72,16 +72,16 @@ const LookupSearch = ({
       setTimer(null);
     }
     const searchChange = search !== prevSearch;
-    const pageIndexChange = pageIndex !== prevPageIndex;
+    const pageNumberChange = pageNumber !== prevPageNumber;
 
     const searchPrefix = `search_prefix=${search}`;
     const pageCountParam = `page_count=${pageCount}`;
-    const pageIndexParam = `page_index=${pageIndex}`;
+    const pageNumberParam = `page_number=${pageNumber}`;
     const pageSizeParam = `page_size=${pageSize}`;
-    const params = `${searchPrefix}&${pageCountParam}&${pageIndexParam}&${pageSizeParam}`;
+    const params = `${searchPrefix}&${pageCountParam}&${pageNumberParam}&${pageSizeParam}`;
 
     // TODO: for some reason lookupRequest works 1 of 2 times on search change
-    if ((searchChange || pageIndexChange) && search) {
+    if ((searchChange || pageNumberChange) && search) {
       if (searchChange) clearSearch();
       return setTimer(setTimeout(() => {
         lookupRequest(
@@ -96,7 +96,7 @@ const LookupSearch = ({
     return () => {
       resultsRequest('companies', params);
     }
-  }, [search, pageIndex, companies]);
+  }, [search, pageNumber, companies]);
 
   return (<>
     <div className={styles.container}>
@@ -141,7 +141,7 @@ const LookupSearch = ({
         </FixedSizeList>
           {status !== RequestStatuses.loading ? <button
             className={styles.showMore}
-            onClick={incrementPageIndex}
+            onClick={incrementPageNumber}
           >SHOW MORE</button>
             :
             <CircularProgress style={{ marginLeft: '40px' }} size={30} />
@@ -162,6 +162,6 @@ export default connect(
     resultsRequest: (url: string, params: string) =>
       dispatch(CreateAction(ResultsActionType.RESULTS_LOAD, {url, params})),
     clearSearch: () => dispatch(CreateAction(LookupSearchActionType.LOOKUP_LOAD_CLEAR)),
-    incrementPageIndex: () => dispatch(CreateAction(PaginationActionTypes.INCREMENT)),
+    incrementPageNumber: () => dispatch(CreateAction(PaginationActionTypes.INCREMENT)),
   })
 )(LookupSearch);

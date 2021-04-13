@@ -45,7 +45,7 @@ const initState = {
   data: {
     companies: null,
     pagination: {
-      pageIndex: 0,
+      pageNumber: 1,
       pageSize: 10,
       pageCount: 0,
     }

@@ -50,7 +50,7 @@ export interface Company {
 
 export interface Pagination {
   pageSize: number,
-  pageIndex: number,
+  pageNumber: number,
   pageCount: number,
 }
 
@@ -70,7 +70,7 @@ export const initialState = {
     companies: [],
     pagination: {
       pageSize: 10,
-      pageIndex: 0,
+      pageNumber: 1,
       pageCount: 0,
     },
   },
@@ -103,14 +103,14 @@ export function reducer(state: State = initialState, action: Action) {
   if (type === LookupSearchActionType.LOOKUP_LOAD_CLEAR) return initialState;
 
   if (type === PaginationActionTypes.INCREMENT) {
-    const {pageIndex} = state.data.pagination;
+    const {pageNumber} = state.data.pagination;
     return {
       ...state,
       data: {
         ...state.data,
         pagination: {
           ...state.data.pagination,
-          pageIndex: pageIndex + 1,
+          pageNumber: pageNumber + 1,
         }
       }
     }

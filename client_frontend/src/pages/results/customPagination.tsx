@@ -36,7 +36,7 @@ function CustomPagination(props: GridBaseComponentProps & Props) {
           const value = e.target.value as number;
           setPagination({
             ...pagination,
-            pageIndex: 0,
+            pageNumber: 1,
             pageSize: value,
             // TODO: pageCount will work proper after actual request and valid data
             // pageCount: Math.ceil(),
@@ -54,7 +54,7 @@ function CustomPagination(props: GridBaseComponentProps & Props) {
       // className={styles.paginationField}
       variant="outlined"
       shape="rounded"
-      page={pagination.pageIndex}
+      page={pagination.pageNumber}
       count={pagination.pageCount}
       // renderItem={(props2) => <PaginationItem {...props2} disableRipple />}
       onChange={(event, value) => api.current.setPage(value)}
@@ -70,10 +70,13 @@ function CustomPagination(props: GridBaseComponentProps & Props) {
       variant="outlined"
       // error={}
       // helperText={}
-      value={pagination.pageIndex}
+      value={pagination.pageNumber}
       onChange={(e) => {
         // const value: number = +e.target.value > pagination.pageCount ? pagination.pageCount : +e.target.value;
-        setPagination({...pagination, pageIndex: +e.target.value});
+        setPagination({
+          ...pagination,
+          pageNumber: +e.target.value || 1,
+        });
       }}
     />
   </div>);

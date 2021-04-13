@@ -41,8 +41,8 @@ const Results = (props: any) => {
 
   const styles = useStyles();
   const makeParams = (pagination: PaginationType, search: string): string => {
-    const {pageIndex, pageSize} = pagination;
-    const paginationParams = `page_index=${pageIndex}&page_size=${pageSize}`;
+    const {pageNumber, pageSize} = pagination;
+    const paginationParams = `page_number=${pageNumber}&page_size=${pageSize}`;
     return `search_prefix=${search}&${paginationParams}`;
   }
 
@@ -70,10 +70,10 @@ const Results = (props: any) => {
         <div className={styles.content}>
           {<DataGrid
             className={styles.dataGrid}
-            page={pagination.pageIndex || 0}
+            page={pagination.pageNumber || 0}
             pageSize={pagination.pageSize || 0}
             onPageChange={(params) => {
-              setPagination({...pagination, pageIndex: params.page});
+              setPagination({...pagination, pageNumber: params.page});
             }}
             // onCellHover={(params) => console.log(params.value)}
             columnBuffer={4}
