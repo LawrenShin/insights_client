@@ -68,7 +68,7 @@ const prepareForGrid = <S extends {[key: string]: string}>(
       width: setWidth(key),
     };
 
-    if (key.match(/rating/gi)) return ratingRenderProvider(gridValid);
+    if (key.match(/essential/gi)) return ratingRenderProvider(gridValid);
     if (key === 'name') return nameRenderProvider(gridValid, history);
 
     return gridValid;
