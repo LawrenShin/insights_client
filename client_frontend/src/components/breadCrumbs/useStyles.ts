@@ -5,10 +5,6 @@ export default makeStyles({
   purpColor: {
     color: purp,
   },
-  paleFont: {
-    fontSize: '.9em',
-    color: paleGrey,
-  },
   link: {
     '&:hover': {
       cursor: 'pointer',

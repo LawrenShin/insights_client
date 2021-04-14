@@ -1,7 +1,8 @@
 import {makeStyles} from "@material-ui/core";
-import {paleGrey} from "../colorConstants";
+import {paleFont} from "../colorConstants";
 
 export default makeStyles({
+  ...paleFont,
   root: {
   },
   titleFont: {
@@ -13,10 +14,6 @@ export default makeStyles({
     padding: '10px',
     background: 'white',
     boxShadow: '0px 2px 20px rgba(0, 0, 0, 0.05)',
-  },
-  paleFont: {
-    fontSize: '.9em',
-    color: paleGrey,
   },
   separator: {
     width: '1px',

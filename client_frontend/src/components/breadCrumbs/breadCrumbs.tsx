@@ -1,9 +1,9 @@
 import React from 'react';
 import {useHistory} from "react-router-dom";
 import {keyTitle} from "../../helpers";
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import {Grid} from "@material-ui/core";
 import useStyles from "./useStyles";
+import Arrow from "../Arrow";
 
 
 const renderCrumbs = (
@@ -26,10 +26,7 @@ const BreadCrumbs = ({crumbs}: any) => {
       >
         {keyTitle(crumb)}
       </span>
-      {((index+1) < crumbs.length) && <ArrowForwardIosIcon
-        className={styles.paleFont}
-        style={{fontSize: '0.8em'}}
-      />}
+      {((index+1) < crumbs.length) && <Arrow direction={'right'} />}
     </>
   }</React.Fragment>
 
