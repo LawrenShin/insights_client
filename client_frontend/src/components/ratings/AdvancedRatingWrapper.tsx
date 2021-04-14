@@ -3,27 +3,26 @@ import {Grid} from "@material-ui/core";
 import useStyles from "./useStyles";
 import {paintRatingClass} from "../../pages/results/prepareForGrid";
 // TODO: can rafactor in unicontainer
-interface Props {
+export interface Props {
   data?: {
     rating: string;
     strength: number;
     score: number;
   },
-  title?: string;
-  classes?: string;
-  sm?:  boolean | "auto" | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   justify?: "center" | "flex-start" | "flex-end" | "space-between" | "space-around" | "space-evenly";
-  style?: any;
   children?: any;
 }
 
-const AdvancedRatingWrapper = ({data, title, children, sm, justify, style, classes}: Props) => {
+const AdvancedRatingWrapper = ({data, children, justify}: Props) => {
   const styles = useStyles();
 
   return (
-    <Grid item sm={sm} className={`${styles.paintContainer} ${classes}`} style={style}>
-      <span className={`${styles.titleFont}`}>{title}</span>
-      {(data?.rating && data?.strength) && <Grid justify={justify} container direction={'row'} className={styles.ratingStrength}>
+    <>{(data?.rating && data?.strength) && <Grid
+        container
+        justify={justify}
+        direction={'row'}
+        className={styles.ratingStrength}
+      >
         <Grid item>
           <Grid container direction={"column"}>
             <span className={styles.paleFont}>Rating:</span>
@@ -42,7 +41,8 @@ const AdvancedRatingWrapper = ({data, title, children, sm, justify, style, class
         </Grid>
       </Grid>}
       {children}
-    </Grid>)
+    </>
+  )
 }
 
 export default AdvancedRatingWrapper;

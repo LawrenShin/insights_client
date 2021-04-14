@@ -15,11 +15,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EssentialRadialRating from "../../components/ratings/EssentialRating";
 import {paintRatingClass} from "../results/prepareForGrid";
 import {paintRating} from '../../components/charts/useStyles';
-import AdvancedRatingWrapper from "../../components/ratings/AdvancedRatingWrapper";
 import Radar from "../../components/charts/radarChart";
 import List from "../../components/charts/list";
 import Research from "../../components/charts/Research";
 import BreadCrumbs from "../../components/breadCrumbs/breadCrumbs";
+import RatingWrapper, {WrapperModes} from "../../components/ratings/RatingWrapper";
 
 
 const renderValue = (value: string | number | boolean) => <span>
@@ -173,7 +173,8 @@ const Details = (props: any) => {
 
             {data.ratingsWindRose && <Grid item sm={12} style={{padding: '0'}}>
               <Grid direction={'row'} container style={{gap: '5px'}} wrap={'nowrap'}>
-                <AdvancedRatingWrapper
+                <RatingWrapper
+                  mode={WrapperModes.advanced}
                   title={`${isAdvanced ? 'Advanced' : 'Essential'} Rating`}
                   data={data.ratingsWindRose}
                   sm={8}
@@ -182,8 +183,9 @@ const Details = (props: any) => {
                     paintRating={paintRating}
                     data={data.ratingsWindRose}
                   />
-                </AdvancedRatingWrapper>
-                {(data.ratingBars || data.ratingsWindRose) && <AdvancedRatingWrapper
+                </RatingWrapper>
+                {(data.ratingBars || data.ratingsWindRose) && <RatingWrapper
+                  mode={WrapperModes.advanced}
                   title={`${isAdvanced ? 'Advanced' : 'Essential'} Sub Scores`}
                   data={isAdvanced ? data.ratingsWindRose : data.ratingBars}
                   justify={'space-between'}
@@ -193,19 +195,20 @@ const Details = (props: any) => {
                     classes={styles.littleFont}
                     data={isAdvanced ? data.ratingsWindRose : data.ratingBars}
                   />
-                </AdvancedRatingWrapper>}
+                </RatingWrapper>}
               </Grid>
             </Grid>}
 
             {!isAdvanced && <Grid item sm={12} style={{padding: '0'}}>
               <Grid direction={'row'} container style={{gap: '5px'}} wrap={'nowrap'}>
-                <AdvancedRatingWrapper
+                <RatingWrapper
+                  mode={WrapperModes.advanced}
                   title={'Research'}
                   sm={8}
                   style={{display: 'flex', flexDirection: 'column'}}
                 >
                   <Research />
-                </AdvancedRatingWrapper>
+                </RatingWrapper>
               </Grid>
             </Grid>}
 
