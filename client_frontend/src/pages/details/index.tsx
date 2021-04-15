@@ -8,39 +8,16 @@ import {RootState} from "../../store/rootReducer";
 import {Dispatch} from "redux";
 import {CreateAction} from "../../store/actionType";
 import {DetailsActionType} from "./duck";
-import {keyTitle} from "../../helpers";
 import {RequestStatuses} from "../../api/requestTypes";
-import {Rounded} from "../../components/button";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import EssentialRadialRating from "../../components/ratings/EssentialRating";
-import {paintRatingClass} from "../results/prepareForGrid";
 import {paintRating} from '../../components/charts/useStyles';
 import Radar from "../../components/charts/radarChart";
 import List from "../../components/charts/list";
 import Research from "../../components/charts/Research";
 import BreadCrumbs from "../../components/breadCrumbs/breadCrumbs";
 import RatingWrapper, {WrapperModes} from "../../components/ratings/RatingWrapper";
-
-
-const renderValue = (value: string | number | boolean) => <span>
-    {typeof value === "boolean" ?
-      value ? 'Yes' : 'No'
-      : value}
-  </span>
-
-const renderHeaderInfo = (key: string, value: string) => <Grid item key={`${value}${key}`}>
-  <Grid direction={'column'} container>
-    <span>{keyTitle(key)}</span>
-    {
-      key === 'Rating' ? <Grid container direction={'row'} alignItems={'center'}>
-          <div className={paintRatingClass(value)}></div>
-          {renderValue(value)}
-        </Grid>
-        :
-        <>{renderValue(value)}</>
-    }
-  </Grid>
-</Grid>;
+import GeneralInfo from "./GeneralInfo";
+import Essentials from "./Essentials";
+import RoseNList from "./RoseNList";
 
 
 const Details = (props: any) => {
@@ -81,122 +58,14 @@ const Details = (props: any) => {
           </div>
           {/* TODO: refactor these in separate components */}
           <Grid container spacing={3} style={{gap: '5px'}}>
-            {/* header container */}
-            <Grid item sm={12} className={styles.paintContainer}>
-              <Grid direction={'row'} container >
-                <Grid item className={styles.companyHeader}>
-                  <Grid direction={'row'} container>
-                    <span className={styles.titleFont}> {data.companyHeader.name} </span>
-                    {
-                      Object.keys(data.companyHeader).map((key) => {
-                        if (key !== 'name') return renderHeaderInfo(key, data.companyHeader[key])
-                      })
-                    }
-                  </Grid>
-                </Grid>
-                <Rounded>EXPORT<ExpandMoreIcon /></Rounded>
-              </Grid>
-            </Grid>
-            <Grid item sm={12} className={`${styles.paintContainer} ${styles.generalContainer}`}>
-              <span className={`${styles.titleFont} ${styles.titleSubFontSize}`}>General</span>
-              <Grid container justify={"space-between"}>
-                <Grid item sm={4}>
-                  <Grid wrap={'nowrap'} container direction={'row'} className={styles.gap20}>
-                    <span className={styles.paleFont}>Address:</span>
-                    <span className={styles.littleFont}>{data.companyGeneral.address}</span>
-                  </Grid>
-                </Grid>
-                <Grid item sm={4}>
-                  <Grid wrap={'nowrap'} container direction={'row'} className={styles.gap20}>
-                    <span className={styles.paleFont}>ID:</span>
-                    <div className={`${styles.littleFont} ${styles.flexCol}`}>
-                      <span>ID: {data.companyGeneral.id}</span>
-                      {data.companyGeneral.lei && <span>LEI: {data.companyGeneral.lei}</span>}
-                    </div>
-                  </Grid>
-                </Grid>
-                <Grid item sm={3}>
-                  {!!data.companyGeneral.industries.length &&
-                  <Grid wrap={'nowrap'} container direction={'row'} className={styles.gap20}>
-                    <div><span className={styles.paleFont}>Industry:</span></div>
-                    <div
-                      className={`${styles.littleFont} ${styles.flexCol}`}
-                      style={{lineHeight: '2em'}}
-                    >
-                      {data.companyGeneral.industries.map((industry: string) =>
-                        <span key={industry}>{industry}</span>)}
-                    </div>
-                  </Grid>}
-                </Grid>
-              </Grid>
-            </Grid>
+            <GeneralInfo data={data} />
             {/* essentials */}
             <Grid item sm={12}>
-              <Grid container spacing={3} style={{gap: '5px'}} wrap={'nowrap'}>
-                {data.essentialRating && <Grid sm={4} item className={styles.paintContainer} style={{maxWidth: '33%'}}>
-                  <EssentialRadialRating
-                    title={'Essential Rating'}
-                    styles={styles}
-                    data={data.essentialRating}
-                    renderHeaderInfo={renderHeaderInfo}
-                  />
-                </Grid>}
-                {/*advancedForecast advanced*/}
-                {/*ratingBars essential*/}
-                {/*TODO: advanced total, advanced forecast on advanced mode*/}
-                {(data.advancedTotalRating || data.essentialRatingDiversityScore) && <Grid sm={4} item
-                       className={styles.paintContainer}
-                       style={{maxWidth: '33%'}}
-                >
-                  <EssentialRadialRating
-                    title={isAdvanced ? 'Advanced Total Rating' : "Essential Diversity Rating"}
-                    styles={styles}
-                    data={data[isAdvanced ? 'advancedTotalRating' : 'essentialRatingDiversityScore']}
-                    renderHeaderInfo={renderHeaderInfo}
-                  />
-                </Grid>}
-                {(data.essentialRatingEquityAndInclusionScore || data.advancedForecastRating) && <Grid
-                  item
-                  sm={4}
-                  className={`${styles.paintContainer}`}
-                  style={{maxWidth: '33%'}}
-                >
-                  <EssentialRadialRating
-                    title={isAdvanced ? 'Advanced Forecast Rating' : 'Essential Equity & Inclusion Rating'}
-                    styles={styles}
-                    data={data[isAdvanced ? 'advancedForecastRating' : 'essentialRatingEquityAndInclusionScore']}
-                    renderHeaderInfo={renderHeaderInfo}
-                  />
-                </Grid>}
-              </Grid>
+              <Essentials data={data} isAdvanced={isAdvanced} />
             </Grid>
 
             {data.ratingsWindRose && <Grid item sm={12} style={{padding: '0'}}>
-              <Grid direction={'row'} container style={{gap: '5px'}} wrap={'nowrap'}>
-                <RatingWrapper
-                  mode={WrapperModes.advanced}
-                  title={`${isAdvanced ? 'Advanced' : 'Essential'} Rating`}
-                  data={data.ratingsWindRose}
-                  sm={8}
-                >
-                  <Radar
-                    paintRating={paintRating}
-                    data={data.ratingsWindRose}
-                  />
-                </RatingWrapper>
-                {(data.ratingBars || data.ratingsWindRose) && <RatingWrapper
-                  mode={WrapperModes.advanced}
-                  title={`${isAdvanced ? 'Advanced' : 'Essential'} Sub Scores`}
-                  data={isAdvanced ? data.ratingsWindRose : data.ratingBars}
-                  justify={'space-between'}
-                  sm={4}
-                >
-                  <List
-                    classes={styles.littleFont}
-                    data={isAdvanced ? data.ratingsWindRose : data.ratingBars}
-                  />
-                </RatingWrapper>}
-              </Grid>
+              <RoseNList data={data} isAdvanced={isAdvanced} />
             </Grid>}
 
             {!isAdvanced && <Grid item sm={12} style={{padding: '0'}}>
@@ -211,7 +80,6 @@ const Details = (props: any) => {
                 </RatingWrapper>
               </Grid>
             </Grid>}
-
           </Grid>
         </div>
       </div> : <CircularProgress className={styles.centerLoader} />}

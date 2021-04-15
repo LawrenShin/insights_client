@@ -19,15 +19,15 @@ const renderEssentialRatings = (data: any, styles: any) => {
   </div>
 }
 // NOTE: header info is a container which provides styles for spans from renderHeaderInfo. Needs refactor
-const EssentialRadialRating = ({title, styles, data, renderHeaderInfo}: any) => {
+const EssentialRadialRating = ({title, styles, data, renderSingleProp}: any) => {
   return (
     // TODO: refactor container div into component to wrap any content
     <>
       <span className={`${styles.titleFont} ${styles.titleSubFontSize}`}>{title}</span>
       {renderEssentialRatings(data, styles)}
       <Grid justify={'space-around'} container direction={'row'} className={styles.companyHeader}>
-        {renderHeaderInfo('Rating', data.rating)}
-        {renderHeaderInfo('Strength score', data.strength)}
+        {renderSingleProp('Rating', data.rating)}
+        {renderSingleProp('Strength score', data.strength)}
       </Grid>
     </>
   );
