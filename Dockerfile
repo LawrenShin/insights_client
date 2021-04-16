@@ -14,7 +14,7 @@ RUN npm install
 RUN npm install -g serve
 
 # Bundle app source
-COPY . .
+COPY client_frontend .
 
 RUN npm run-script build
 
