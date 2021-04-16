@@ -79,14 +79,14 @@ const Details = (props: any) => {
               </Grid>
             </Grid>}
             <Grid container style={{gap: '5px', padding: '0'}} wrap={'nowrap'}>
-              <PieCharts
+              {data.boardStats && <PieCharts
                 title={'Board'}
                 data={data.boardStats}
-              />
-              <PieCharts
+              />}
+              {data.executivesStats && <PieCharts
                 title={'Executives'}
                 data={data.executivesStats}
-              />
+              />}
               <RatingWrapper
                 title={'Map'}
                 sm={4}

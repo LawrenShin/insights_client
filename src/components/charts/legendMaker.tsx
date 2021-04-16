@@ -1,5 +1,6 @@
 import React from 'react';
 import useStyles, {paintLegend} from "./useStyles";
+import {keyTitle} from "../../helpers";
 
 interface Props {
   legend: {
@@ -16,7 +17,7 @@ const renderItem = <S extends { [key: string]: string }>(value: string, styles: 
   >
     <div style={{ background: paintLegend(value) }}> </div>
     <span className={`${styles.paleFont}`}>
-      {value}
+      {keyTitle(value)}
     </span>
   </div>;
 

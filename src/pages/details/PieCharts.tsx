@@ -36,7 +36,7 @@ const PieCharts = ({ data, title }: Props) => {
       title={title}
       sm={4}
     >
-      <Grid container direction={'row'}>
+      <Grid container direction={'row'} spacing={3}>
         <Grid item sm={6} className={styles.pieChartContainer}>
           <span>Gender Ratio</span>
           <PieRating

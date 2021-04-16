@@ -25,9 +25,9 @@ export default makeStyles({
   legendContainer: {
     display: 'flex',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
   legendItem: {
-    flexBasis: '50%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
