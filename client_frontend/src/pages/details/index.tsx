@@ -18,6 +18,7 @@ import RatingWrapper, {WrapperModes} from "../../components/ratings/RatingWrappe
 import GeneralInfo from "./GeneralInfo";
 import Essentials from "./Essentials";
 import RoseNList from "./RoseNList";
+import PieCharts from "./PieCharts";
 
 
 const Details = (props: any) => {
@@ -80,6 +81,22 @@ const Details = (props: any) => {
                 </RatingWrapper>
               </Grid>
             </Grid>}
+            <Grid container style={{gap: '5px', padding: '0'}} wrap={'nowrap'}>
+              <PieCharts
+                title={'Board'}
+                data={data.boardStats}
+              />
+              <PieCharts
+                title={'Executives'}
+                data={data.executivesStats}
+              />
+              <RatingWrapper
+                title={'Map'}
+                sm={4}
+              >
+                MAPA
+              </RatingWrapper>
+            </Grid>
           </Grid>
         </div>
       </div> : <CircularProgress className={styles.centerLoader} />}

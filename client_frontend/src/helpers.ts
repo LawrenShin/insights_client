@@ -21,5 +21,5 @@ export function keyTitle (key: string, regex?: RegExp) {
     ?.join(' ')
     ?.toLowerCase();
   const headerName = lowerCasedKey?.replace(lowerCasedKey[0], lowerCasedKey[0].toUpperCase());
-  return headerName;
+  return headerName || '';
 }

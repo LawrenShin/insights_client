@@ -90,5 +90,8 @@ export default makeStyles({
   flexCol: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  pieChartContainer: {
+    '& > span': { fontSize: '.8em' },
   }
 });
