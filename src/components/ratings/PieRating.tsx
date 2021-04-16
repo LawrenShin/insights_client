@@ -2,6 +2,7 @@ import React, {useMemo} from "react";
 import { ResponsivePie } from '@nivo/pie';
 import {keyTitle} from "../../helpers";
 import {GenderColorsMap, RaceColorMap} from "../colorConstants";
+import Legend from "../charts/legendMaker";
 
 
 interface Data {
@@ -47,13 +48,7 @@ const PieRating = ({ height, data }: Props) => {
           />
         </div>
       </div>
-      <div>
-        <span>flsdjhbfsk</span>
-        <span>flsdjhbfsk</span>
-        <span>flsdjhbfsk</span>
-        <span>flsdjhbfsk</span>
-        <span>flsdjhbfsk</span>
-      </div>
+      <Legend legend={data} />
     </div>
   )
 }
