@@ -16,6 +16,7 @@ import GeneralInfo from "./GeneralInfo";
 import Essentials from "./Essentials";
 import RoseNList from "./RoseNList";
 import PieCharts from "./PieCharts";
+import EducationRating from "../../components/ratings/EducationRating";
 
 
 const Details = (props: any) => {
@@ -78,21 +79,22 @@ const Details = (props: any) => {
                 </RatingWrapper>
               </Grid>
             </Grid>}
-            <Grid container style={{gap: '5px', padding: '0'}} wrap={'nowrap'}>
+            <Grid container style={{ gap: '5px', padding: '0' }} wrap={'nowrap'}>
               {data.boardStats && <PieCharts
+                height={'150px'}
                 title={'Board'}
                 data={data.boardStats}
               />}
               {data.executivesStats && <PieCharts
+                height={'150px'}
                 title={'Executives'}
                 data={data.executivesStats}
               />}
-              <RatingWrapper
-                title={'Map'}
-                sm={4}
-              >
-                MAPA
-              </RatingWrapper>
+              {data.educationSubjects.subjects && <EducationRating
+                height={'150px'}
+                title={'Education'}
+                data={data.educationSubjects.subjects}
+              />}
             </Grid>
           </Grid>
         </div>

@@ -23,10 +23,11 @@ interface Props {
     raceStats: {
       [key in Race]: { name: Race, percentage: number }
     },
-  }
+  },
+  height?: string,
 }
 
-const PieCharts = ({ data, title }: Props) => {
+const PieCharts = ({ data, title, height }: Props) => {
   const styles = useStyles();
 
 
@@ -41,12 +42,14 @@ const PieCharts = ({ data, title }: Props) => {
           <span>Gender Ratio</span>
           <PieRating
             data={data.genderStats}
-            height={150}
+            height={height || '150px'}
           />
         </Grid>
         <Grid item sm={6} className={styles.pieChartContainer}>
           <span>Race/Ethnicity Ratio</span>
-          <PieRating data={data.raceStats} height={150} />
+          <PieRating
+            data={data.raceStats}
+            height={height || '150px'} />
         </Grid>
       </Grid>
     </RatingWrapper>

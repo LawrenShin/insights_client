@@ -30,13 +30,18 @@ export default makeStyles({
   legendItem: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
     gap: '5px',
     '& > div': {
       height: '8px',
       width: '8px',
       borderRadius: '10px'
     }
+  },
+  legendItemBubble: {
+    flexBasis: '50%',
+  },
+  legendItemPie: {
+    justifyContent: 'center',
   },
   // LEGEND
   ratingListBar: {

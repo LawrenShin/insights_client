@@ -1,6 +1,7 @@
 import React from 'react';
 import { ResponsiveRadar } from '@nivo/radar'
 import {keyTitle} from "../../helpers";
+import ChartWrapper from "../ratings/ChartWrapper";
 
 
 const radarDataPreparer = (data: {[key: string]: any}) => {
@@ -20,8 +21,8 @@ const Radar = ({data, paintRating}: any) => {
   if (!redata) return <>No data</>;
 
   return (
-    <div style={{position: 'relative', height: '400px', width: '100%'}}>
-      <div style={{position: 'absolute', height: '400px', width: '100%'}}>
+    // TODO: refactor to sep wrapper
+    <ChartWrapper height={'400px'}>
         <ResponsiveRadar
           data={redata}
           keys={[ 'rating' ]}
@@ -46,15 +47,14 @@ const Radar = ({data, paintRating}: any) => {
           dotLabel="value"
           dotLabelYOffset={-14}
 
-          colors={{ scheme: 'set2' }}
+          colors={'rgba(155,155,155, .3)'}
           fillOpacity={0.5}
           blendMode="multiply"
           animate={true}
           isInteractive={true}
           theme={{}}
         />
-      </div>
-    </div>
+    </ChartWrapper>
   )
 }
 

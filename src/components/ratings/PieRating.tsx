@@ -2,11 +2,16 @@ import React, {useMemo} from "react";
 import { ResponsivePie } from '@nivo/pie';
 import {keyTitle} from "../../helpers";
 import {GenderColorsMap, RaceColorMap} from "../colorConstants";
-import Legend from "../charts/legendMaker";
+import Legend from "../charts/Legend";
+import ChartWrapper from "./ChartWrapper";
 
 
 interface Data {
   [key: string]: { name: string, percentage: number },
+}
+interface Props {
+  data: Data,
+  height?: string,
 }
 interface DataPiece {
   id: string,
@@ -25,19 +30,13 @@ const reData = (data: Data): DataPiece[] =>
     })
   );
 
-interface Props {
-  data: Data,
-  height?: number,
-}
-
 
 const PieRating = ({ height, data }: Props) => {
   const expensiveResult = useMemo(() => reData(data), [data])
 
   return (
     <div>
-      <div style={{position: 'relative', height: height || '100px', width: '100%'}}>
-        <div style={{position: 'absolute', height: height || '100px', width: '100%'}}>
+      <ChartWrapper height={height}>
           <ResponsivePie
             data={expensiveResult}
             margin={{top: 20, right: 0, bottom: 20, left: 0}}
@@ -46,8 +45,7 @@ const PieRating = ({ height, data }: Props) => {
             enableRadialLabels={false}
             enableSliceLabels={false}
           />
-        </div>
-      </div>
+      </ChartWrapper>
       <Legend legend={data} />
     </div>
   )

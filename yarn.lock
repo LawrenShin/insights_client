@@ -1552,6 +1552,18 @@
     "clsx" "^1.0.4"
     "lru-cache" "^6.0.0"
 
+"@nivo/circle-packing@^0.67.0":
+  "integrity" "sha512-/ci7082YaabBL9axOjAW6SsxjynGEoYyvFopsh5eKlkGyAB4bWLLyiCm7R0Z5ZmFRiPInxZ+z5aAMZXmfr/wbg=="
+  "resolved" "https://registry.npmjs.org/@nivo/circle-packing/-/circle-packing-0.67.0.tgz"
+  "version" "0.67.0"
+  dependencies:
+    "@nivo/colors" "0.67.0"
+    "@nivo/tooltip" "0.67.0"
+    "d3-hierarchy" "^1.1.8"
+    "lodash" "^4.17.11"
+    "react-motion" "^0.5.2"
+    "recompose" "^0.30.0"
+
 "@nivo/colors@0.67.0":
   "integrity" "sha512-y8x76SzQ4HYm6kkWYfBGQSE5fy/jtqGhCBjivlKsouU9Hv2G8g4a2JVMsfadJQHQIUjIsM/7Q0Y7zasFM9wkgA=="
   "resolved" "https://registry.npmjs.org/@nivo/colors/-/colors-0.67.0.tgz"
