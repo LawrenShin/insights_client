@@ -3,14 +3,12 @@ import {
   paleGrey,
   paleFont,
   RaceColorMap,
-  GenderColorsMap,
+  GenderColorsMap, average, good, poor,
 } from "../colorConstants";
 
 
 export const fontColorSegment = 'rgba(8, 0, 55, .4)';
-export const good = 'rgb(163,229,178)';
-export const average = 'rgb(255,234,160)';
-export const poor = 'rgb(255,210,210)';
+
 
 export const setBarWidth = (value: number): string => `${value}%`;
 // TODO: not rly able to use here thus have to use it with style prop which is bad. What's the alternative?

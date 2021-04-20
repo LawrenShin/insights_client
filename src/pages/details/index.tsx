@@ -17,6 +17,7 @@ import Essentials from "./Essentials";
 import RoseNList from "./RoseNList";
 import PieCharts from "./PieCharts";
 import EducationRating from "../../components/ratings/EducationRating";
+import Benchmark from "../../components/ratings/benchmark";
 
 
 const Details = (props: any) => {
@@ -96,7 +97,23 @@ const Details = (props: any) => {
                 data={data.educationSubjects.subjects}
               />}
             </Grid>
-          </Grid>
+            <Grid container style={{ gap: '5px', padding: '0' }} wrap={'nowrap'}>
+              <RatingWrapper
+                mode={WrapperModes.advanced}
+                title={'Peer Benchmark: Industry'}
+                sm={4}
+              >
+                <Benchmark />
+              </RatingWrapper>
+              <RatingWrapper
+                mode={WrapperModes.advanced}
+                title={'Peer Benchmark: Geography'}
+                sm={4}
+              >
+                <Benchmark />
+              </RatingWrapper>
+            </Grid>
+            </Grid>
         </div>
       </div> : <CircularProgress className={styles.centerLoader} />}
     </div>
