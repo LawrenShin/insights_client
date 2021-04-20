@@ -98,20 +98,18 @@ const Details = (props: any) => {
               />}
             </Grid>
             <Grid container style={{ gap: '5px', padding: '0' }} wrap={'nowrap'}>
-              <RatingWrapper
-                mode={WrapperModes.advanced}
+              {data.peerIndustryBenchmark && <RatingWrapper
                 title={'Peer Benchmark: Industry'}
                 sm={4}
               >
-                <Benchmark />
-              </RatingWrapper>
-              <RatingWrapper
-                mode={WrapperModes.advanced}
+                <Benchmark data={data.peerIndustryBenchmark}/>
+              </RatingWrapper>}
+              {data.peerCountryBenchmark && <RatingWrapper
                 title={'Peer Benchmark: Geography'}
                 sm={4}
               >
-                <Benchmark />
-              </RatingWrapper>
+                <Benchmark data={data.peerCountryBenchmark} />
+              </RatingWrapper>}
             </Grid>
             </Grid>
         </div>

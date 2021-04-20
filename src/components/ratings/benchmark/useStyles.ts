@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-import {average, dialogPeerShadow, good, paleFont, poor} from "../../colorConstants";
+import {average, dialogPeerShadow, good, paleFont, poor, RaceColorMap} from "../../colorConstants";
 
 export const useStyles = makeStyles({
   containerRow: {
@@ -12,11 +12,12 @@ export const useStyles = makeStyles({
   },
   gap5: {gap: '5px'},
   indicator: {
-    width: 'fit-content',
+    width: 0,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    position: 'relative',
   },
   progressBar: {},
   barParts: {
@@ -50,18 +51,21 @@ export const useStyles = makeStyles({
     position: 'relative',
     marginBottom: '15px',
   },
-  dialogTriangle: {
-    position: 'absolute',
-    height: '10px',
-    width: '10px',
-    background: '#fff',
-    left: '50%',
-    marginLeft: '-5px',
-    transform: 'rotate(45deg)',
-  },
   triangle: {
     width: 'fit-content',
     height: '20px',
+  },
+  circle: {
+    height: '20px',
+    width: '20px',
+    borderRadius: '50%',
+    background: RaceColorMap.get('caucasian'),
+    boxShadow: dialogPeerShadow,
+  },
+  mrgTop50: {marginTop: '30px'},
+  localLegendItem: {
+    display: 'flex',
+    gap: '5px',
   },
   ...paleFont,
 });
