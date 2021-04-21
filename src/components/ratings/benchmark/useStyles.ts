@@ -11,6 +11,9 @@ export const useStyles = makeStyles({
     flexDirection: 'column',
   },
   gap5: {gap: '5px'},
+  marginChart: {
+    margin: '5% 0 2% 0',
+  },
   indicator: {
     width: 0,
     display: 'flex',

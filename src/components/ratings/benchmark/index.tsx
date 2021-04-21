@@ -31,6 +31,7 @@ const Benchmark = ({ data }: Props) => {
     mrgTop50,
     circle,
     localLegendItem,
+    marginChart,
   } = useStyles();
 
 
@@ -56,7 +57,7 @@ const Benchmark = ({ data }: Props) => {
     {[1, 2, 3].map((n) => <span key={Math.random()}>{_.times(n, () => name)}</span>)}
   </div>
 
-  return (<div className={`${containerCol} ${gap5}`}>
+  return (<div className={`${containerCol} ${gap5} ${marginChart}`}>
     <div className={containerRow}>
       {renderIndicator(data.peerRating.score)}
       {renderIndicator(data.companyRating.score, true)}
