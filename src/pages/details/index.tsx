@@ -9,9 +9,6 @@ import {Dispatch} from "redux";
 import {CreateAction} from "../../store/actionType";
 import {DetailsActionType} from "./duck";
 import {RequestStatuses} from "../../api/requestTypes";
-import {paintRating} from '../../components/charts/useStyles';
-import Radar from "../../components/charts/radarChart";
-import List from "../../components/charts/list";
 import Research from "../../components/charts/Research";
 import BreadCrumbs from "../../components/breadCrumbs/breadCrumbs";
 import RatingWrapper, {WrapperModes} from "../../components/ratings/RatingWrapper";
@@ -19,6 +16,8 @@ import GeneralInfo from "./GeneralInfo";
 import Essentials from "./Essentials";
 import RoseNList from "./RoseNList";
 import PieCharts from "./PieCharts";
+import EducationRating from "../../components/ratings/EducationRating";
+import Benchmark from "../../components/ratings/benchmark";
 
 
 const Details = (props: any) => {
@@ -81,23 +80,38 @@ const Details = (props: any) => {
                 </RatingWrapper>
               </Grid>
             </Grid>}
-            <Grid container style={{gap: '5px', padding: '0'}} wrap={'nowrap'}>
-              <PieCharts
+            <Grid container style={{ gap: '5px', padding: '0' }} wrap={'nowrap'}>
+              {data.boardStats && <PieCharts
+                height={'150px'}
                 title={'Board'}
                 data={data.boardStats}
-              />
-              <PieCharts
+              />}
+              {data.executivesStats && <PieCharts
+                height={'150px'}
                 title={'Executives'}
                 data={data.executivesStats}
-              />
-              <RatingWrapper
-                title={'Map'}
+              />}
+              {data.educationSubjects.subjects && <EducationRating
+                height={'150px'}
+                title={'Education'}
+                data={data.educationSubjects.subjects}
+              />}
+            </Grid>
+            <Grid container style={{ gap: '5px', padding: '0' }} wrap={'nowrap'}>
+              {data.peerIndustryBenchmark && <RatingWrapper
+                title={'Peer Benchmark: Industry'}
                 sm={4}
               >
-                MAPA
-              </RatingWrapper>
+                <Benchmark data={data.peerIndustryBenchmark}/>
+              </RatingWrapper>}
+              {data.peerCountryBenchmark && <RatingWrapper
+                title={'Peer Benchmark: Geography'}
+                sm={4}
+              >
+                <Benchmark data={data.peerCountryBenchmark} />
+              </RatingWrapper>}
             </Grid>
-          </Grid>
+            </Grid>
         </div>
       </div> : <CircularProgress className={styles.centerLoader} />}
     </div>

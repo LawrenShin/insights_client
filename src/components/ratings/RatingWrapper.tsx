@@ -5,6 +5,7 @@ import AdvancedRatingWrapper, {Props as AdvancedProps} from './AdvancedRatingWra
 
 export enum WrapperModes {
   basic = 'basic',
+  // advanced renders with rating scores
   advanced = 'advanced',
 }
 interface Props extends AdvancedProps {
