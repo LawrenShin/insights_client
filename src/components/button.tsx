@@ -30,9 +30,9 @@ const ColorButtonRounded = withStyles((theme: Theme) => ({
   },
 }))(Button);
 
-export const Squared = ({onClick, style, children, ...rest}: any) => <ColorButtonSquared
+export const Squared = ({onClick, styles, children, ...rest}: any) => <ColorButtonSquared
   onClick={onClick}
-  className={style}
+  className={styles}
   variant="contained"
   color="inherit"
   {...rest}
