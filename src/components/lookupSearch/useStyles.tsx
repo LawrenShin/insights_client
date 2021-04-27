@@ -7,6 +7,7 @@ const useStyles = makeStyles({
     maxHeight: '200px',
   },
   tabs: {
+    display: 'flex',
     '& div': {
       background: purp,
       color: '#fff',
@@ -20,6 +21,9 @@ const useStyles = makeStyles({
         background: '#fff',
         color: purp,
       }
+    },
+    selected: {
+
     },
   },
   inputContainer: {
