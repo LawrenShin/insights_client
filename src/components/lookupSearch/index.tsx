@@ -34,6 +34,7 @@ const LookupSearch = ({
     error,
   }: Props) => {
   const [search, setSearch] = useState<string>('');
+  const [tab, setTab] = useState<string>('company');
   const [timer, setTimer] = useState<any>(null);
   const styles = useStyles();
   const {
@@ -98,11 +99,26 @@ const LookupSearch = ({
     }
   }, [search, pageNumber, companies]);
 
+  useEffect(() => {
+
+  }, []);
+
   return (<>
     <div className={styles.container}>
       <div className={styles.tabs}>
-        <div><span>Company Database</span></div>
-        <div><span>Industry Database</span></div>
+        {
+          ['Company Database', 'Industry Database'].map(item => {
+            const tabName = item.split(' ')[0].toLowerCase();
+            return (<div
+              key={item}
+              className={tabName === tab ? styles.selected : styles.unselected}
+              onClick={() => setTab(tabName)}
+            >
+              <span>{item}</span>
+            </div>)
+          })
+        }
+
       </div>
       <div className={styles.inputContainer}>
         <TextField

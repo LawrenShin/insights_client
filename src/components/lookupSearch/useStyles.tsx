@@ -9,8 +9,6 @@ const useStyles = makeStyles({
   tabs: {
     display: 'flex',
     '& div': {
-      background: purp,
-      color: '#fff',
       fontFamily: 'Poppins, sans-serif',
       borderRadius: '5px',
       padding: '10px',
@@ -22,9 +20,14 @@ const useStyles = makeStyles({
         color: purp,
       }
     },
-    selected: {
-
-    },
+  },
+  selected: {
+    background: '#fff',
+    color: purp,
+  },
+  unselected: {
+    background: purp,
+    color: '#fff',
   },
   inputContainer: {
     display: 'flex',

@@ -57,7 +57,7 @@ export async function postRequest(
 
 export async function getRequest(
   url: string,
-  params: string
+  params?: string
 ) {
   const response = await get(url, params);
   const parsed = await response.json();
