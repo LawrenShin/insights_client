@@ -1,7 +1,7 @@
 import {RequestStatuses} from "../api/requestTypes";
 import {AnyAction} from "redux";
 
-interface State {
+export interface State {
   data: any;
   status: RequestStatuses;
   error: string | null;
@@ -31,6 +31,7 @@ export default function (name: string) {
     if (type === `${name}_SUCCESS`) return {
       ...state,
       error: null,
+      status: RequestStatuses.still,
       data: payload,
     }
 

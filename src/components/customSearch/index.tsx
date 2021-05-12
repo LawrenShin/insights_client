@@ -1,17 +1,22 @@
 import React from 'react';
 import useStyles from "./useStyles";
-import Welcome from "../forms/register/steps/welcome";
-import {paleGrey, purp} from "../colorConstants";
-import {SimplePaintedChecbox, StyledCheckbox} from "../checkbox";
+import IndustriesOptions from "./industriesOptions";
 
-const SearchSettings  = () => {
+interface OwnProps {
+  tab: string;
+  setTab: (tab: string) => void;
+}
+interface Props extends OwnProps {}
+
+
+const CustomSearch  = ({ tab }: Props) => {
   const styles = useStyles();
 
   return (
     <div className={styles.container}>
-      <StyledCheckbox />
+      {tab === 'industry' && <IndustriesOptions />}
     </div>
   )
 }
 
-export default SearchSettings;
+export default CustomSearch;

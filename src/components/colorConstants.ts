@@ -24,3 +24,11 @@ export const paleFont = {
       color: paleGrey,
   }
 };
+
+export const loaderContainer = {
+  loaderContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '20px',
+  }
+}

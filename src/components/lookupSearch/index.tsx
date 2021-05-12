@@ -13,7 +13,10 @@ import {RequestStatuses} from "../../api/requestTypes";
 import {useHistory} from 'react-router-dom';
 import {ResultsActionType} from '../../pages/results/duck';
 
-
+interface OwnProps {
+  tab: string;
+  setTab: (tab: string) => void;
+}
 interface DispatchProps {
   lookupRequest: (url: string, params: string) => void;
   resultsRequest: (url: string, params: string) => void;
@@ -21,7 +24,7 @@ interface DispatchProps {
   clearSearch: () => void;
   saveSearch: (search: string) => void;
 }
-interface Props extends StateProps, DispatchProps {}
+interface Props extends StateProps, DispatchProps, OwnProps {}
 
 const LookupSearch = ({
     incrementPageNumber,
@@ -32,9 +35,10 @@ const LookupSearch = ({
     data,
     status,
     error,
+    tab,
+    setTab,
   }: Props) => {
   const [search, setSearch] = useState<string>('');
-  const [tab, setTab] = useState<string>('company');
   const [timer, setTimer] = useState<any>(null);
   const styles = useStyles();
   const {
