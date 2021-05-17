@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-import {purp} from "../colorConstants";
+import {main} from "../colorConstants";
 
 const useStyles = makeStyles({
   container: {
@@ -16,18 +16,18 @@ const useStyles = makeStyles({
       marginBottom: '-5px',
       '&:hover': {
         cursor: 'pointer',
-        background: purp,
+        background: main,
         color: '#fff',
       }
     },
   },
   selected: {
-    background: purp,
+    background: main,
     color: '#fff',
   },
   unselected: {
     background: '#fff',
-    color: purp,
+    color: main,
   },
   inputContainer: {
     display: 'flex',
@@ -41,10 +41,10 @@ const useStyles = makeStyles({
     },
     '& .MuiOutlinedInput-root': {
       '&:hover fieldset': {
-        borderColor: purp,
+        borderColor: main,
       },
       '&.Mui-focused fieldset': {
-        borderColor: purp,
+        borderColor: main,
         borderWidth: '1px',
       },
     },
@@ -76,7 +76,7 @@ const useStyles = makeStyles({
     fontFamily: 'Poppins',
     height: 'fit-content',
     '&:hover': {
-      color: purp,
+      color: main,
       cursor: 'pointer',
       background: 'rgba(188, 178, 217, 0.3)'
     }
@@ -85,9 +85,9 @@ const useStyles = makeStyles({
   showMore: {
     fontFamily: 'open sans',
     fontWeight: 400,
-    color: purp,
+    color: main,
     background: '#fff',
-    border: `1px solid ${purp}`,
+    border: `1px solid ${main}`,
     borderRadius: '50px',
     margin: '0px 15px',
     height: '35px',
@@ -95,7 +95,7 @@ const useStyles = makeStyles({
     '&:hover': {
       cursor: 'pointer',
       color: '#fff',
-      background: purp
+      background: main
     },
   },
   result: {
