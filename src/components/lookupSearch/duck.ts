@@ -13,6 +13,7 @@ export enum PaginationActionTypes {
 export enum LookupSearchActionType {
   LOOKUP_LOAD = 'LOOKUP_LOAD',
   SAVE_SEARCH = 'SAVE_SEARCH',
+  SAVE_INDUSTRY_OPTIONS = 'SAVE_INDUSTRY_OPTIONS',
   LOOKUP_LOAD_SUCCESS = 'LOOKUP_LOAD_SUCCESS',
   LOOKUP_LOAD_FAIL = 'LOOKUP_LOAD_FAIL',
   LOOKUP_LOAD_CLEAR = 'LOOKUP_LOAD_CLEAR',
@@ -59,6 +60,8 @@ export interface State {
     companies: Company[] | [],
     pagination: Pagination,
     search: string,
+    // NOTE: for now like that. If added more kinds of options maybe thats the place
+    options: number[],
   }
   status: RequestStatuses;
   error: string | null;
@@ -68,6 +71,8 @@ export const initialState = {
   data: {
     search: '',
     companies: [],
+    // NOTE: options might relate to both companies and industries thus left naming abstract
+    options: [],
     pagination: {
       pageSize: 10,
       pageNumber: 1,
@@ -82,6 +87,7 @@ export function reducer(state: State = initialState, action: Action) {
   const {type, payload} = action;
   if (type === LookupSearchActionType.LOOKUP_LOAD) return {...state, status: RequestStatuses.loading};
 
+  // NOTE: not sure what this is for
   if (type === LookupSearchActionType.SAVE_SEARCH) return {
     ...state,
     data: {
@@ -89,6 +95,19 @@ export function reducer(state: State = initialState, action: Action) {
       search: payload,
     },
   };
+
+  if (type === LookupSearchActionType.SAVE_INDUSTRY_OPTIONS) {
+    const {id, checked} = payload;
+    const {options} = state.data;
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        options: checked ?
+          [...options, id] : options.filter(opt => opt !== id),
+      },
+    }
+  }
 
   if (type === LookupSearchActionType.LOOKUP_LOAD_SUCCESS) return {
     ...state,

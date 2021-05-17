@@ -4,28 +4,25 @@ import {makeStyles} from "@material-ui/core";
 export default makeStyles({
   root: {
     background: '#E5E5E5',
-    height: '100vh',
+    minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
   },
   searchWrapper: {
-    flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-around',
-    padding: '30px'
+    padding: '30px',
+    gap: '15px',
   },
   searchContainer: {
     background: '#E0E9FF',
-    minHeight: '25%',
-    maxHeight: '25%',
   },
   searchSettingsContainer: {
-    display: 'flex',
+    minHeight: '60vh',
     justifyContent: 'center',
     alignItems: 'center',
     background: '#fff',
-    minHeight: '70%',
+    borderRadius: '5px',
   },
 });
 

@@ -1,10 +1,11 @@
-import {call, put, takeLatest} from "typed-redux-saga";
-import {getRequest} from "../../api";
+import {call, put, select, takeLatest} from "typed-redux-saga";
+import {getRequest, postRequest} from "../../api";
 import {CreateAction} from "../../store/actionType";
 import {SignInType} from "../SignIn/duck";
 import {RequestStatuses} from "../../api/requestTypes";
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 import {AnyAction} from "redux";
+import {RootState} from "../../store/rootReducer";
 
 export enum ResultsActionType {
   RESULTS_LOAD = 'RESULTS_LOAD',
@@ -13,12 +14,21 @@ export enum ResultsActionType {
   RESULTS_PAGINATION = 'RESULTS_PAGINATION',
   RESULTS_CLEAR = 'RESULTS_CLEAR',
 }
+// SELECTORS
+const getOptions = (state: RootState) => state.LookupSearch.data.options;
+const getPagination = (state: RootState) => state.LookupSearch.data.pagination;
 
 // SAGAS
 export function* worker (action: any) {
   const {url, params} = action.payload;
+  const options = yield select(getOptions);
+
   try {
-    const res = yield call(getRequest, url, params);
+    const res = yield url === 'companies' ?
+      call(getRequest, url, params)
+      :
+      call(postRequest, url, {ids: options});
+
     yield put(CreateAction(ResultsActionType.RESULTS_SUCCESS, res));
   } catch(error: any) {
     if (error.message === '403') return yield put(CreateAction(SignInType.LOGOUT));
@@ -31,9 +41,40 @@ export function* watcher () {
 }
 
 // REDUCER
+type GenCompanyInfo = {
+  address: string,
+  id: string,
+  industries: [],
+  lei?: string,
+}
+interface Industry {
+  name: string,
+  type: string,
+  averageAdvancedDEIFocus?: number,
+  averageAdvancedForecast?: number,
+  averageAdvancedGenderBoard?: number,
+  averageAdvancedGenderExecutive?: number,
+  averageAdvancedInclusion?: number,
+  averageAdvancedRaceBoard?: number,
+  averageAdvancedRaceExecutive?: number,
+  averageAdvancedTotal?: number,
+  averageEssentialDiversity?: number,
+  averageEssentialEquityAndInclusion?: number,
+  averageEssentialTotal?: number,
+}
+interface Company {
+  mode: string,
+  companyGeneral?: GenCompanyInfo,
+  companyHeader?: any,
+  essentialRating?: any,
+  essentialRatingDiversityScore?: any,
+  essentialRatingEquityAndInclusionScore?: any,
+  ratingBars?: any,
+  ratingsWindRose?: any,
+}
 export interface ResultsState {
-  // TODO: replace any
   data: {
+    // TODO: replace any with industries and companies types
     companies: any[] | null,
     pagination: PaginationType
   };

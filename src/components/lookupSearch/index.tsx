@@ -6,14 +6,17 @@ import {connect} from "react-redux";
 import {RootState} from "../../store/rootReducer";
 import {Dispatch} from "redux";
 import {CreateAction} from "../../store/actionType";
-import {LookupSearchActionType, Pagination as PaginationType, PaginationActionTypes, State as StateProps} from "./duck";
+import {LookupSearchActionType, PaginationActionTypes, State as StateProps} from "./duck";
 import {FixedSizeList, ListChildComponentProps} from 'react-window';
 import {usePrevious} from "../../helpers";
 import {RequestStatuses} from "../../api/requestTypes";
 import {useHistory} from 'react-router-dom';
 import {ResultsActionType} from '../../pages/results/duck';
 
-
+interface OwnProps {
+  tab: string;
+  setTab: (tab: string) => void;
+}
 interface DispatchProps {
   lookupRequest: (url: string, params: string) => void;
   resultsRequest: (url: string, params: string) => void;
@@ -21,7 +24,11 @@ interface DispatchProps {
   clearSearch: () => void;
   saveSearch: (search: string) => void;
 }
-interface Props extends StateProps, DispatchProps {}
+interface Props extends StateProps, DispatchProps, OwnProps {}
+// NOTE: were written with thought of sending request from here on click on show all results button.
+// but eventually if we select only options button in here stays disabled. So using this makes sence if we provide name
+// besides options for industries. It makes 2 places where we can initiate the request. (here and from indOptions)
+const getUrl = (tab: string) => tab === 'company' ? 'companiesLookup' : 'industries';
 
 const LookupSearch = ({
     incrementPageNumber,
@@ -32,6 +39,8 @@ const LookupSearch = ({
     data,
     status,
     error,
+    tab,
+    setTab,
   }: Props) => {
   const [search, setSearch] = useState<string>('');
   const [timer, setTimer] = useState<any>(null);
@@ -84,10 +93,8 @@ const LookupSearch = ({
     if ((searchChange || pageNumberChange) && search) {
       if (searchChange) clearSearch();
       return setTimer(setTimeout(() => {
-        lookupRequest(
-          'companiesLookup',
-          params
-        );
+        lookupRequest( getUrl(tab), params );
+        // NOTE: not sure what dats for
         saveSearch(search);
       }, 500));
     }
@@ -98,10 +105,23 @@ const LookupSearch = ({
     }
   }, [search, pageNumber, companies]);
 
+
   return (<>
     <div className={styles.container}>
       <div className={styles.tabs}>
-        <div><span>Company Database</span></div>
+        {
+          ['Company Database', 'Industry Database'].map(item => {
+            const tabName = item.split(' ')[0].toLowerCase();
+            return (<div
+              key={item}
+              className={tabName === tab ? styles.selected : styles.unselected}
+              onClick={() => setTab(tabName)}
+            >
+              <span>{item}</span>
+            </div>)
+          })
+        }
+
       </div>
       <div className={styles.inputContainer}>
         <TextField
@@ -110,6 +130,7 @@ const LookupSearch = ({
           name={'search'}
           placeholder={'Search...'}
           variant="outlined"
+          disabled={tab === 'industry'}
           // error={}
           // helperText={}
           value={search}

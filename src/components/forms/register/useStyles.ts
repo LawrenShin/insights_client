@@ -1,6 +1,8 @@
 import {makeStyles} from "@material-ui/core";
+import {loaderContainer} from "../../colorConstants";
 
 const useStyles = makeStyles({
+  ...loaderContainer,
   DiSvgContainer: {
     width: '100%',
     '& img': { width: '30%' },
@@ -27,11 +29,6 @@ const useStyles = makeStyles({
       cursor: 'pointer',
     }
   },
-  loaderContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '20px',
-  }
 });
 
 export default useStyles;
