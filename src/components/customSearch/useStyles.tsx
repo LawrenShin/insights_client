@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-import {loaderContainer, purpBack} from "../colorConstants";
+import {darkBlueBack, loaderContainer, main} from "../colorConstants";
 
 
 export const useStyles = makeStyles({
@@ -8,18 +8,18 @@ export const useStyles = makeStyles({
     fontFamily: 'Poppins, sans-serif',
     '& h6': {
       fontFamily: 'Poppins, sans-serif',
-      color: '#5926EB',
+      color: main,
     },
   },
   titlesContainer: {
     marginBottom: '20px',
     '& > h4': {
-      color: '#5926EB',
+      color: main,
       fontWeight: 500,
     },
   },
   iconContainer: {
-    color: '#5926EB',
+    color: main,
     '& svg': {
       marginTop: '5px',
     },
@@ -27,7 +27,7 @@ export const useStyles = makeStyles({
   searchExplanation: {
     gap: '10px',
     display: 'flex',
-    background: 'rgba(35%, 15%, 92%, 5%)',
+    background: darkBlueBack,
     borderRadius: '5px',
     padding: '30px 20px'
   }
@@ -44,7 +44,7 @@ export const useIndustruOptionStyles = makeStyles({
     flexWrap: 'wrap',
     height: '900px',
     '& > div': {
-      borderRight: `1px solid ${purpBack}`,
+      borderRight: `1px solid ${darkBlueBack}`,
       width: '25%',
     },
   },
@@ -56,7 +56,7 @@ export const useIndustruOptionStyles = makeStyles({
     },
   },
   searchTitle: {
-    border: `1px solid ${purpBack}`,
+    border: `1px solid ${darkBlueBack}`,
     borderRadius: '5px',
     padding: '10px 20px',
   }

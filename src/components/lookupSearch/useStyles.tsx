@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-import {main} from "../colorConstants";
+import {darkBlueBack, main} from "../colorConstants";
 
 const useStyles = makeStyles({
   container: {
@@ -57,7 +57,7 @@ const useStyles = makeStyles({
     fontFamily: 'Poppins, sans-serif',
     fontSize: '14px',
     '&:disabled': {
-      background: '#BCB2D9',
+      background: '#CCC',
     }
   },
 
@@ -78,7 +78,7 @@ const useStyles = makeStyles({
     '&:hover': {
       color: main,
       cursor: 'pointer',
-      background: 'rgba(188, 178, 217, 0.3)'
+      background: darkBlueBack,
     }
   },
   bold: {fontWeight: 'bold'},
