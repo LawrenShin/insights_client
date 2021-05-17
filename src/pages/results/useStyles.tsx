@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-import {purp} from "../../components/colorConstants";
+import {main} from "../../components/colorConstants";
 
 export default makeStyles({
   root: {},
@@ -82,7 +82,7 @@ export default makeStyles({
     justifyContent: 'space-around',
     padding: '30px',
     '& > span': {
-      color: purp,
+      color: main,
       marginBottom: '20px',
     },
     '& > h5': {

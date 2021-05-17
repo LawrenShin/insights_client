@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-import {purp} from "../colorConstants";
+import {main} from "../colorConstants";
 
 const useStyles = makeStyles({
   root: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     fontSize: '1.1em',
     '& :hover': {
       cursor: 'pointer',
-      color: purp,
+      color: main,
     }
   },
   logout: { '& button': {margin: 0} },
