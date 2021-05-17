@@ -25,6 +25,10 @@ interface DispatchProps {
   saveSearch: (search: string) => void;
 }
 interface Props extends StateProps, DispatchProps, OwnProps {}
+// NOTE: were written with thought of sending request from here on click on show all results button.
+// but eventually if we select only options button in here stays disabled. So using this makes sence if we provide name
+// besides options for industries. It makes 2 places where we can initiate the request. (here and from indOptions)
+const getUrl = (tab: string) => tab === 'company' ? 'companiesLookup' : 'industries';
 
 const LookupSearch = ({
     incrementPageNumber,
@@ -89,10 +93,8 @@ const LookupSearch = ({
     if ((searchChange || pageNumberChange) && search) {
       if (searchChange) clearSearch();
       return setTimer(setTimeout(() => {
-        lookupRequest(
-          'companiesLookup',
-          params
-        );
+        lookupRequest( getUrl(tab), params );
+        // NOTE: not sure what dats for
         saveSearch(search);
       }, 500));
     }
@@ -103,9 +105,6 @@ const LookupSearch = ({
     }
   }, [search, pageNumber, companies]);
 
-  useEffect(() => {
-
-  }, []);
 
   return (<>
     <div className={styles.container}>
@@ -131,6 +130,7 @@ const LookupSearch = ({
           name={'search'}
           placeholder={'Search...'}
           variant="outlined"
+          disabled={tab === 'industry'}
           // error={}
           // helperText={}
           value={search}

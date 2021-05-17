@@ -6,28 +6,46 @@ import {State} from "../../store/createReducer";
 import {Dispatch} from "redux";
 import {CreateAction} from "../../store/actionType";
 import {RequestStatuses} from "../../api/requestTypes";
-import {CircularProgress, Grid, LinearProgress} from "@material-ui/core";
+import {Grid, LinearProgress} from "@material-ui/core";
 import {useIndustruOptionStyles} from "./useStyles";
 import {Rounded} from "../button";
+import {LookupSearchActionType} from "../lookupSearch/duck";
+import {ResultsActionType} from "../../pages/results/duck";
 
-
+// industry
 type IndustryOption = {
-  id: number;
-  name: string;
-  children?: IndustryOption[];
+  id: number,
+  name: string,
+  children?: IndustryOption[],
 }
-
+interface IndustryOptionProps {
+  industry: IndustryOption,
+  options: number[],
+  saveIndustryOptions: (checked: boolean, id: number) => void,
+}
+// industries
 interface StateProps {
   industries: State;
 }
 interface DispatchProps {
   getDictionaries: () => void;
+  resultsRequest: () => void;
 }
 interface Props extends StateProps, DispatchProps {}
 
 
-
-const IndustryOption = ({industry: {id, name, children}}: { industry: IndustryOption }) => {
+const IndustryOption = connect(
+  (state: RootState) => ({
+    options: state.LookupSearch.data.options
+  }),
+  (dispatch: Dispatch) => ({
+    saveIndustryOptions: (checked: boolean, id: number) =>
+      dispatch(CreateAction(LookupSearchActionType.SAVE_INDUSTRY_OPTIONS, {checked, id})),
+  })
+)(({
+   industry: {id, name, children},
+   saveIndustryOptions,
+}: IndustryOptionProps) => {
   const styles = useIndustruOptionStyles();
 
   const renderRow = (name: string) => <Grid
@@ -35,7 +53,7 @@ const IndustryOption = ({industry: {id, name, children}}: { industry: IndustryOp
     alignItems={'center'}
     className={!children ? styles.marginLeft15 : styles.parent}
   >
-    <div><StyledCheckbox /></div>
+    <div><StyledCheckbox onChange={(e) => saveIndustryOptions(e.target.checked, id)} /></div>
     <div><span>{name}</span></div>
   </Grid>
 
@@ -43,17 +61,20 @@ const IndustryOption = ({industry: {id, name, children}}: { industry: IndustryOp
     {renderRow(name)}
     {children && renderOptions(children)}
   </>
-}
+});
+
 
 const renderOptions = (industries: IndustryOption[]) =>
   industries.map(industry => <IndustryOption key={industry.id} industry={industry} />);
 
-const IndustriesOptions = ({
+
+const IndustriesOptions = (props: Props) => {
+  const styles = useIndustruOptionStyles();
+  const {
     industries,
     getDictionaries,
-  }: Props) => {
-  const styles = useIndustruOptionStyles();
-
+    resultsRequest,
+  } = props;
   useEffect(() => {
     if (!industries.data) getDictionaries();
   }, []);
@@ -65,7 +86,7 @@ const IndustriesOptions = ({
         <div className={styles.list}>
           {industries.data && renderOptions(industries.data.industries)}
           <br/>
-          <Rounded>View results</Rounded>
+          <Rounded onClick={() => resultsRequest()}>View results</Rounded>
         </div>
       </div>
     :
@@ -77,7 +98,10 @@ export default connect(
   (state: RootState) => ({
     industries: state.Dictionaries,
   }),
-  (dispatch: Dispatch) => ({
+  (dispatch: Dispatch, state: RootState) => ({
     getDictionaries: () => dispatch(CreateAction('DICTIONARIES_LOAD', {url: 'dictionaries'})),
+    resultsRequest: () => dispatch(
+        CreateAction(ResultsActionType.RESULTS_LOAD, {url: 'industries', payload: {}})
+    ),
   })
 )(IndustriesOptions);

@@ -38,19 +38,19 @@ const PieCharts = ({ data, title, height }: Props) => {
       sm={4}
     >
       <Grid container direction={'row'} spacing={3}>
-        <Grid item sm={6} className={styles.pieChartContainer}>
+        {data?.genderStats && <Grid item sm={6} className={styles.pieChartContainer}>
           <span>Gender Ratio</span>
           <PieRating
             data={data.genderStats}
             height={height || '150px'}
           />
-        </Grid>
-        <Grid item sm={6} className={styles.pieChartContainer}>
+        </Grid>}
+        {data?.raceStats && <Grid item sm={6} className={styles.pieChartContainer}>
           <span>Race/Ethnicity Ratio</span>
           <PieRating
             data={data.raceStats}
-            height={height || '150px'} />
-        </Grid>
+            height={height || '150px'}/>
+        </Grid>}
       </Grid>
     </RatingWrapper>
   );

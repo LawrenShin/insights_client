@@ -14,6 +14,7 @@ const CustomSearch  = ({ tab }: Props) => {
 
   return (
     <div className={styles.container}>
+      {/* @ts-ignore*/}
       {tab === 'industry' && <IndustriesOptions />}
     </div>
   )

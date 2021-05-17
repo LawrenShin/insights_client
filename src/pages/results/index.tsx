@@ -36,6 +36,7 @@ const Results = (props: any) => {
   } = props;
   const history = useHistory();
   const locState = history.location.state as LocStateType;
+  // TODO: create types, typeGuards and split logic for companies and industries
   const {pagination, companies} = data;
   const defineSearch = locState?.search || search;
 

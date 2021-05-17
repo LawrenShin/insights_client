@@ -38,7 +38,6 @@ export const get = (url: string, params?: string) =>
 //     referrerPolicy: 'no-referrer',
 //   })
 
-// TODO: can refactor these and place 'em all in one
 export async function postRequest(
   url: string,
   data: any,
