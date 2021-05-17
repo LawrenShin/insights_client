@@ -1,6 +1,8 @@
 import {makeStyles} from "@material-ui/core";
+import {loaderContainer} from "../../colorConstants";
 
 export default makeStyles({
+  ...loaderContainer,
   inputs: {
     display: 'flex',
     flexDirection: 'column',
@@ -24,8 +26,4 @@ export default makeStyles({
       color: 'white',
     }
   },
-  loaderContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-  }
 });
