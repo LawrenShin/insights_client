@@ -16,18 +16,18 @@ const useStyles = makeStyles({
       marginBottom: '-5px',
       '&:hover': {
         cursor: 'pointer',
-        background: '#fff',
-        color: purp,
+        background: purp,
+        color: '#fff',
       }
     },
   },
   selected: {
-    background: '#fff',
-    color: purp,
-  },
-  unselected: {
     background: purp,
     color: '#fff',
+  },
+  unselected: {
+    background: '#fff',
+    color: purp,
   },
   inputContainer: {
     display: 'flex',
