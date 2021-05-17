@@ -1,9 +1,9 @@
 import {makeStyles} from "@material-ui/core";
-import {paleGrey, purp} from "../colorConstants";
+import {paleGrey, main} from "../colorConstants";
 
 export default makeStyles({
   purpColor: {
-    color: purp,
+    color: main,
   },
   link: {
     '&:hover': {

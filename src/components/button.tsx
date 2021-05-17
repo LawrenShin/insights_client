@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Theme, withStyles} from "@material-ui/core";
-import {purp} from "./colorConstants";
+import {main} from "./colorConstants";
 
 
 const ColorButtonSquared = withStyles((theme: Theme) => ({
@@ -15,9 +15,9 @@ const ColorButtonRounded = withStyles((theme: Theme) => ({
   root: {
     fontFamily: 'open sans',
     fontWeight: 400,
-    color: purp,
+    color: main,
     background: '#fff',
-    border: `1px solid ${purp}`,
+    border: `1px solid ${main}`,
     borderRadius: '50px',
     margin: '0px 15px',
     height: '35px',
@@ -25,7 +25,7 @@ const ColorButtonRounded = withStyles((theme: Theme) => ({
     '&:hover': {
       cursor: 'pointer',
       color: '#fff',
-      background: purp
+      background: main
     },
   },
 }))(Button);

@@ -2,7 +2,7 @@ import {makeStyles} from "@material-ui/core";
 import {loaderContainer, purpBack} from "../colorConstants";
 
 
-const useStyles = makeStyles({
+export const useStyles = makeStyles({
   container: {
     width: '100%',
     fontFamily: 'Poppins, sans-serif',

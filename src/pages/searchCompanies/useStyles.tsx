@@ -24,6 +24,11 @@ export default makeStyles({
     background: '#fff',
     borderRadius: '5px',
   },
+  centerContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justify: 'center',
+  }
 });
 
 

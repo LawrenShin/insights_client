@@ -1,7 +1,7 @@
 import React from 'react';
 import {makeStyles, withStyles} from "@material-ui/core";
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
-import {paleGrey, purp} from "./colorConstants";
+import {paleGrey, main} from "./colorConstants";
 
 export const SimplePaintedChecbox = ({color, checkedColor}: { color: string, checkedColor: string }) => {
   const PaintedComponent = withStyles({
@@ -44,7 +44,7 @@ const useStyles = makeStyles({
   },
   checkedIcon: {
     backgroundColor: '#F8F9FB',
-    border: `1px solid ${purp}`,
+    border: `1px solid ${main}`,
     backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
     '&:before': {
       display: 'block',

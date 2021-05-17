@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-import {paleGrey, purp, purpBack} from "../../components/colorConstants";
+import {paleGrey, main, purpBack} from "../../components/colorConstants";
 
 export default makeStyles({
   root: {
@@ -30,7 +30,7 @@ export default makeStyles({
   },
   list: {
     width: '20vw',
-    color: purp,
+    color: main,
     borderRadius: '5px',
     fontFamily: 'Poppins, sans-serif',
     '& ul': {
@@ -45,7 +45,7 @@ export default makeStyles({
     background: purpBack,
   },
   purpColor: {
-    color: purp,
+    color: main,
   },
   companyDetails: {},
   companyHeader: {
