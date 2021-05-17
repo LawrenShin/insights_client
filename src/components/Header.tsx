@@ -15,7 +15,9 @@ const useStyles = makeStyles({
   },
   DiSvgContainer: {
     width: '100%',
-    '& img': { width: '10%' },
+    display: 'flex',
+    alignItems: 'center',
+    '& img': { width: '150px' },
     '& :hover': {
       cursor: 'pointer',
     }

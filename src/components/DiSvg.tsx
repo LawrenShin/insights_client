@@ -7,7 +7,7 @@ interface Props {
 }
 
 const DiSvg = ({styles, onClick}: Props) => <Box className={styles} onClick={onClick}>
-  <img src={'/dilogo.png'} alt={'DI logo'} />
+  <img src={'/dinominator_logo.png'} alt={'DI logo'} />
 </Box>
 
 export default DiSvg;
