@@ -17,7 +17,7 @@ const Welcome = ({toSignIn, classes}: Props) => {
   if (classes) return(
     <div style={{ width: '50%' }}>
       <div className={classes.titlesContainer}>
-        <Typography variant={'h4'}>Welcome to DI insights!</Typography>
+        <Typography variant={'h4'}>Welcome to Denominator!</Typography>
         <span>Are you ready to explore?</span>
       </div>
       <div className={classes.searchExplanation}>
