@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    '& img': { width: '15%' },
+    '& img': { width: '150px' },
     '& :hover': {
       cursor: 'pointer',
     }
