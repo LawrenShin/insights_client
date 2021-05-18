@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid} from "@material-ui/core";
 import useStyles from "./useStyles";
-import {paintRatingClass} from "../../pages/results/prepareForGrid";
+import {paintRatingClass} from "../../pages/results/prepareCompaniesForGrid";
 // TODO: can rafactor in unicontainer
 export interface Props {
   data?: {

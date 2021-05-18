@@ -40,14 +40,26 @@ export function* watcher () {
   yield takeLatest(ResultsActionType.RESULTS_LOAD, worker);
 }
 
+// TYPE GUARDS
+export const isCompany = (items: (CompanyLookup | Industry)[] | undefined | null): items is CompanyLookup[] => {
+  if (items) {
+    return (items[0] as CompanyLookup)?.lei !== undefined;
+  }
+  return false;
+}
+export const isIndustry = (item: CompanyLookup | Industry): item is Industry => {
+  return (item as Industry)?.type !== undefined;
+}
+
 // REDUCER
+// this relates to company details
 type GenCompanyInfo = {
   address: string,
   id: string,
   industries: [],
   lei?: string,
 }
-interface Industry {
+export interface Industry {
   name: string,
   type: string,
   averageAdvancedDEIFocus?: number,
@@ -62,20 +74,24 @@ interface Industry {
   averageEssentialEquityAndInclusion?: number,
   averageEssentialTotal?: number,
 }
-interface Company {
-  mode: string,
-  companyGeneral?: GenCompanyInfo,
-  companyHeader?: any,
-  essentialRating?: any,
-  essentialRatingDiversityScore?: any,
-  essentialRatingEquityAndInclusionScore?: any,
-  ratingBars?: any,
-  ratingsWindRose?: any,
+export interface CompanyLookup {
+  id: number,
+  name: string,
+  country?: string,
+  city?: string,
+  postcode?: string,
+  street1?: string,
+  publicOrPrivate?: string,
+  status?: string,
+  essential?: string,
+  essentialDiversityScore?: string,
+  essentialEquityAndInclusionScore?: string,
+  lei?: string,
 }
 export interface ResultsState {
   data: {
     // TODO: replace any with industries and companies types
-    companies: any[] | null,
+    items: (CompanyLookup | Industry)[] | null,
     pagination: PaginationType
   };
   status: RequestStatuses;
@@ -84,7 +100,7 @@ export interface ResultsState {
 
 const initState = {
   data: {
-    companies: null,
+    items: null,
     pagination: {
       pageNumber: 1,
       pageSize: 10,
@@ -103,15 +119,18 @@ export function reducer (state: ResultsState = initState, action: AnyAction) {
     ...state,
     status: RequestStatuses.loading,
   }
-  if (type === ResultsActionType.RESULTS_SUCCESS) return {
-    ...state,
-    data: {
-      companies: payload.companies,
-      pagination: state.data.pagination.pageCount !== payload.pagination.pageCount ?
-        payload.pagination : state.data.pagination,
-    },
-    status: RequestStatuses.still,
-    error: null,
+  if (type === ResultsActionType.RESULTS_SUCCESS) {
+    const {companies, industries} = payload;
+    return {
+      ...state,
+      data: {
+        items: companies || industries,
+        pagination: state.data.pagination.pageCount !== payload.pagination.pageCount ?
+          payload.pagination : state.data.pagination,
+      },
+      status: RequestStatuses.still,
+      error: null,
+    }
   }
   if (type === ResultsActionType.RESULTS_FAIL) return {
     ...state,

@@ -7,13 +7,11 @@ import {RootState} from "../../store/rootReducer";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import CustomPagination from "./customPagination";
-// import {Rounded} from '../../components/button';
-// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {useHistory} from "react-router-dom";
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
-import prepareForGrid from "./prepareForGrid";
+import prepareCompaniesForGrid from "./prepareCompaniesForGrid";
 import {CreateAction} from "../../store/actionType";
-import {ResultsActionType} from "./duck";
+import {isCompany, ResultsActionType} from "./duck";
 import {RequestStatuses} from "../../api/requestTypes";
 import CustomLoadingOverlay from "../../components/LinearCustomOverlay";
 import BreadCrumbs from "../../components/breadCrumbs/breadCrumbs";
@@ -37,7 +35,7 @@ const Results = (props: any) => {
   const history = useHistory();
   const locState = history.location.state as LocStateType;
   // TODO: create types, typeGuards and split logic for companies and industries
-  const {pagination, companies} = data;
+  const {pagination, items} = data;
   const defineSearch = locState?.search || search;
 
   const styles = useStyles();
@@ -46,8 +44,9 @@ const Results = (props: any) => {
     const paginationParams = `page_number=${pageNumber}&page_size=${pageSize}`;
     return `search_prefix=${search}&${paginationParams}`;
   }
-
-  const readyForGrid = (companies && companies.length) ? prepareForGrid(data, styles, history): {columns: [], rows: []};
+  if (items && items.length) console.log(isCompany(items))
+  const readyForGrid = (items && items.length && isCompany(items)) ?
+    prepareCompaniesForGrid(data, styles, history) : {columns: [], rows: []};
   // initial request
   useEffect(() => {
     resultsRequest('companies', makeParams(pagination, defineSearch));
@@ -93,7 +92,7 @@ const Results = (props: any) => {
               LoadingOverlay: CustomLoadingOverlay,
             }}
             hideFooterSelectedRowCount={true}
-            loading={!companies || status === RequestStatuses.loading}
+            loading={!items || status === RequestStatuses.loading}
             {...readyForGrid}
           />}
         </div>

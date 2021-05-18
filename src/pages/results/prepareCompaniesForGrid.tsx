@@ -1,5 +1,6 @@
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 import {keyTitle} from "../../helpers";
+import {CompanyLookup, Industry} from "./duck";
 
 export const paintRatingClass = (value: string): string => `dot rating${value}`;
 
@@ -43,19 +44,19 @@ const nameRenderProvider = (gridValid: any, history: any) => ({
 });
 
 
-
-const prepareForGrid = <S extends {[key: string]: string}>(
+// TODO: create another for idustries
+const prepareCompaniesForGrid = <S extends {[key: string]: string}>(
   data: {
-    companies: any[],
+    items: CompanyLookup[],
     pagination: PaginationType
   },
   styles: S,
   history?: any,
 ) => {
 
-  const {companies} = data;
+  const {items} = data;
 
-  const columns = Object.keys(companies[0]).map((key: string) => {
+  const columns = Object.keys(items[0]).map((key: string) => {
 
     // sentence out of key
     const headerName = key === 'id' ? 'DEI ID' :
@@ -74,9 +75,9 @@ const prepareForGrid = <S extends {[key: string]: string}>(
     return gridValid;
   });
 
-  const rows = companies;
+  const rows = items;
 
   return {columns, rows};
 }
 
-export default prepareForGrid;
+export default prepareCompaniesForGrid;
