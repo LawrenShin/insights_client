@@ -1,6 +1,6 @@
 import {Grid} from "@material-ui/core";
 import {keyTitle} from "../../helpers";
-import {paintRatingClass} from "../results/prepareCompaniesForGrid";
+import {paintRatingClass} from "../results/prepareForGrid";
 import React from "react";
 
 // TODO: actually might be refactored into component

@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-import {darkBlueBack, main} from "../colorConstants";
+import {darkBlueBack, disabledButton, main} from "../colorConstants";
 
 const useStyles = makeStyles({
   container: {
@@ -57,7 +57,8 @@ const useStyles = makeStyles({
     fontFamily: 'Poppins, sans-serif',
     fontSize: '14px',
     '&:disabled': {
-      background: '#CCC',
+      background: disabledButton,
+      color: '#fff',
     }
   },
 

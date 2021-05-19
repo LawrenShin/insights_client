@@ -1,6 +1,6 @@
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 import {keyTitle} from "../../helpers";
-import {CompanyLookup, Industry} from "./duck";
+import {CompanyLookup, Industry, isCompanies, isIndustries} from "./duck";
 
 export const paintRatingClass = (value: string): string => `dot rating${value}`;
 
@@ -17,17 +17,19 @@ const WidthMatch: {[key: string]: number} = {
   'id': 100,
   'postcode': 115,
 }
+
 export const setWidth = (key: string): number => WidthMatch[key] || 200;
 
 const ratingRenderProvider = (gridValid: any) => ({
 ...gridValid,
     renderCell: ({value}: any) => {
     return <>
-      <div className={paintRatingClass(value)}></div>
+      <div className={paintRatingClass(value)}> </div>
       <span>{value}</span>
     </>
   }
 });
+
 const nameRenderProvider = (gridValid: any, history: any) => ({
   ...gridValid,
   renderCell: ({value, row: {id}}: any) => {
@@ -45,9 +47,9 @@ const nameRenderProvider = (gridValid: any, history: any) => ({
 
 
 // TODO: create another for idustries
-const prepareCompaniesForGrid = <S extends {[key: string]: string}>(
+const prepareForGrid = <S extends {[key: string]: string}>(
   data: {
-    items: CompanyLookup[],
+    items: (CompanyLookup | Industry)[],
     pagination: PaginationType
   },
   styles: S,
@@ -69,8 +71,14 @@ const prepareCompaniesForGrid = <S extends {[key: string]: string}>(
       width: setWidth(key),
     };
 
-    if (key.match(/essential/gi)) return ratingRenderProvider(gridValid);
-    if (key === 'name') return nameRenderProvider(gridValid, history);
+    if (isIndustries(items) && key !== 'name' && key !== 'type' && !key.match(/id/gi)) {
+      if (key === 'name') return nameRenderProvider(gridValid, history);
+      return ratingRenderProvider(gridValid);
+    } else {
+      if (key.match(/essential/gi)) return ratingRenderProvider(gridValid);
+      if (key === 'name') return nameRenderProvider(gridValid, history);
+    }
+
 
     return gridValid;
   });
@@ -80,4 +88,4 @@ const prepareCompaniesForGrid = <S extends {[key: string]: string}>(
   return {columns, rows};
 }
 
-export default prepareCompaniesForGrid;
+export default prepareForGrid;

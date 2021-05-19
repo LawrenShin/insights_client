@@ -8,6 +8,7 @@ export const average = 'rgb(255,234,160)';
 export const poor = 'rgb(255,210,210)';
 export const dialogPeerShadow = '0px 2px 10px rgba(0, 0, 0, .2)';
 export const blue = '#2B69F0';
+export const disabledButton = '#88A6D2';
 
 export const GenderColorsMap = new Map([
   ['female', '#D765FF'],

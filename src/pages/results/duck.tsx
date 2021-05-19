@@ -13,6 +13,7 @@ export enum ResultsActionType {
   RESULTS_FAIL = 'RESULTS_FAIL',
   RESULTS_PAGINATION = 'RESULTS_PAGINATION',
   RESULTS_CLEAR = 'RESULTS_CLEAR',
+  RESULTS_SET_TAB = 'RESULTS_SET_TAB',
 }
 // SELECTORS
 const getOptions = (state: RootState) => state.LookupSearch.data.options;
@@ -32,6 +33,7 @@ export function* worker (action: any) {
     yield put(CreateAction(ResultsActionType.RESULTS_SUCCESS, res));
   } catch(error: any) {
     if (error.message === '403') return yield put(CreateAction(SignInType.LOGOUT));
+    yield console.log(error.message);
     yield put(CreateAction(ResultsActionType.RESULTS_FAIL, error.message));
   }
 }
@@ -41,14 +43,14 @@ export function* watcher () {
 }
 
 // TYPE GUARDS
-export const isCompany = (items: (CompanyLookup | Industry)[] | undefined | null): items is CompanyLookup[] => {
+export const isCompanies = (items: (CompanyLookup | Industry)[] | undefined | null): items is CompanyLookup[] => {
   if (items) {
     return (items[0] as CompanyLookup)?.lei !== undefined;
   }
   return false;
 }
-export const isIndustry = (item: CompanyLookup | Industry): item is Industry => {
-  return (item as Industry)?.type !== undefined;
+export const isIndustries = (item: (CompanyLookup | Industry)[]): item is Industry[] => {
+  return ((item[0] as Industry)?.type !== undefined) || ((item[0] as Industry)?.averageAdvancedDEIFocus !== undefined);
 }
 
 // REDUCER
@@ -60,6 +62,7 @@ type GenCompanyInfo = {
   lei?: string,
 }
 export interface Industry {
+  id: number,
   name: string,
   type: string,
   averageAdvancedDEIFocus?: number,
@@ -94,6 +97,7 @@ export interface ResultsState {
     items: (CompanyLookup | Industry)[] | null,
     pagination: PaginationType
   };
+  tab: string,
   status: RequestStatuses;
   error: null | string;
 }
@@ -107,6 +111,7 @@ const initState = {
       pageCount: 0,
     }
   },
+  tab: localStorage.getItem('tab') || 'company',
   status: RequestStatuses.still,
   error: null,
 }
@@ -146,7 +151,19 @@ export function reducer (state: ResultsState = initState, action: AnyAction) {
       }
     }
   }
-  if (type === ResultsActionType.RESULTS_CLEAR) return initState;
+  if (type === ResultsActionType.RESULTS_SET_TAB) {
+    localStorage.setItem('tab', payload);
+    return {
+      ...state,
+      tab: payload,
+    }
+  }
+  if (type === ResultsActionType.RESULTS_CLEAR) {
+    return {
+      ...initState,
+      tab: localStorage.getItem('tab') || 'company',
+    };
+  }
 
   return state
 }
