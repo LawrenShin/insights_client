@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-import {paleGrey, main, purpBack} from "../../components/colorConstants";
+import {paleGrey, main, darkBlueBack} from "../../components/colorConstants";
 
 export default makeStyles({
   root: {
@@ -42,7 +42,7 @@ export default makeStyles({
     },
   },
   listSelected: {
-    background: purpBack,
+    background: darkBlueBack,
   },
   purpColor: {
     color: main,

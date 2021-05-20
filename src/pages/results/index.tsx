@@ -1,14 +1,12 @@
 import React, {useEffect} from 'react';
 import Header from "../../components/Header";
 import useStyles from "./useStyles";
-import {Typography} from "@material-ui/core";
+import {Grid, Typography} from "@material-ui/core";
 import {DataGrid} from '@material-ui/data-grid';
 import {RootState} from "../../store/rootReducer";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import CustomPagination from "./customPagination";
-// import {Rounded} from '../../components/button';
-// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {useHistory} from "react-router-dom";
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 import prepareForGrid from "./prepareForGrid";
@@ -33,11 +31,15 @@ const Results = (props: any) => {
     resultsRequest,
     setPagination,
     clearStore,
+    tab,
+    options,
   } = props;
   const history = useHistory();
   const locState = history.location.state as LocStateType;
-  // TODO: create types, typeGuards and split logic for companies and industries
-  const {pagination, companies} = data;
+  const isCompanyTab = tab === 'company';
+
+  const {pagination, items} = data;
+
   const defineSearch = locState?.search || search;
 
   const styles = useStyles();
@@ -46,16 +48,20 @@ const Results = (props: any) => {
     const paginationParams = `page_number=${pageNumber}&page_size=${pageSize}`;
     return `search_prefix=${search}&${paginationParams}`;
   }
+  const makeRequest = () => isCompanyTab ? resultsRequest('companies', makeParams(pagination, defineSearch))
+    : resultsRequest('industries', {});
 
-  const readyForGrid = (companies && companies.length) ? prepareForGrid(data, styles, history): {columns: [], rows: []};
+  const readyForGrid = (items && items.length) ? prepareForGrid(data, styles, history)
+    : { columns: [], rows: [] };
+
   // initial request
   useEffect(() => {
-    resultsRequest('companies', makeParams(pagination, defineSearch));
-    return clearStore()
+    makeRequest();
+    return clearStore();
   }, []);
   // TODO: resultsRequest needs optimization
   useEffect(() => {
-    resultsRequest('companies', makeParams(pagination, defineSearch));
+    makeRequest();
   }, [pagination]);
 
   return (
@@ -65,14 +71,15 @@ const Results = (props: any) => {
 
         <BreadCrumbs crumbs={['mainSearch']} />
         <Typography variant={'h5'} style={{marginTop : '10px'}}>
-          List of companies
+          {`${ isCompanyTab ? 'List of companies' : 'Results for Industry/Sector'}`}
         </Typography>
 
         <div className={styles.content}>
-          {<DataGrid
+          {
+            !error ? <DataGrid
             className={styles.dataGrid}
             page={pagination.pageNumber || 0}
-            pageSize={pagination.pageSize || 0}
+            pageSize={pagination.pageSize || 10}
             onPageChange={(params) => {
               setPagination({...pagination, pageNumber: params.page});
             }}
@@ -93,9 +100,14 @@ const Results = (props: any) => {
               LoadingOverlay: CustomLoadingOverlay,
             }}
             hideFooterSelectedRowCount={true}
-            loading={!companies || status === RequestStatuses.loading}
+            loading={!items && status === RequestStatuses.loading && status !== RequestStatuses.fail}
             {...readyForGrid}
-          />}
+          />
+          :
+            <Grid container justify={'center'}>
+              <Typography color={'error'}>{error}</Typography>
+            </Grid>
+          }
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-import {loaderContainer} from "../../colorConstants";
+import {loaderContainer, main} from "../../colorConstants";
 
 export default makeStyles({
   ...loaderContainer,
@@ -11,18 +11,18 @@ export default makeStyles({
   button: {
     borderRadius: '30px',
     '&:hover': {
-      color: '#5926EB',
-      background: '#fff',
+      color: '#fff',
+      background: main,
     },
   },
   textAlignRight: { textAlign: 'right', },
   fullWidth: { width: '100%' },
   whiteBack: {
     background: '#fff',
-    color: '#5926EB',
-    border: '1px solid #5926EB',
+    color: main,
+    border: `1px solid ${main}`,
     '&:hover': {
-      background: '#5926EB',
+      background: main,
       color: 'white',
     }
   },

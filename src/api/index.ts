@@ -1,4 +1,3 @@
-
 const host = 'https://ph96u94icf.execute-api.us-east-2.amazonaws.com/Prod';
 // const host = process.env.REACT_APP_HOST || process.env.HOST;
 
@@ -48,7 +47,9 @@ export async function postRequest(
 
   if (status) {
     if (status === 403) throw new Error(parsed.status);
-    if (status === 400) throw new Error(parsed.message);
+    if (status === 400) {
+      throw new Error(parsed.error)
+    };
   }
 
   return parsed;
@@ -64,7 +65,9 @@ export async function getRequest(
 
   if (status) {
     if (status === 403) throw new Error(parsed.status);
-    if (status === 400) throw new Error(parsed.message);
+    if (status === 400) {
+      throw new Error(parsed.error)
+    };
   }
 
   return parsed;

@@ -15,7 +15,7 @@ import {ResultsActionType} from '../../pages/results/duck';
 
 interface OwnProps {
   tab: string;
-  setTab: (tab: string) => void;
+  saveTab: (tab: string) => void;
 }
 interface DispatchProps {
   lookupRequest: (url: string, params: string) => void;
@@ -40,7 +40,7 @@ const LookupSearch = ({
     status,
     error,
     tab,
-    setTab,
+    saveTab,
   }: Props) => {
   const [search, setSearch] = useState<string>('');
   const [timer, setTimer] = useState<any>(null);
@@ -115,7 +115,7 @@ const LookupSearch = ({
             return (<div
               key={item}
               className={tabName === tab ? styles.selected : styles.unselected}
-              onClick={() => setTab(tabName)}
+              onClick={() => saveTab(tabName)}
             >
               <span>{item}</span>
             </div>)

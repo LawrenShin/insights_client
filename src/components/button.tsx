@@ -6,7 +6,7 @@ import {main} from "./colorConstants";
 const ColorButtonSquared = withStyles((theme: Theme) => ({
   root: {
     color: theme.palette.getContrastText('#5926EB'),
-    backgroundColor: '#5926EB',
+    backgroundColor: main,
     width: '100%',
   },
 }))(Button);

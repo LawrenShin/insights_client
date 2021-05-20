@@ -13,7 +13,7 @@ export default makeStyles({
       transform: 'translate(0px, 20%)',
     },
     '& button.Mui-selected': {
-      border: `1px solid #B496FE`,
+      border: `1px solid ${main}`,
       background: '#fff',
     },
     '& nav': {

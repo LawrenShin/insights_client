@@ -2,11 +2,13 @@
 export const main = '#00356B';
 export const paleGrey = 'rgba(8, 0, 55, .4)';
 export const purpBack = 'rgba(89, 38, 235, .2)';
+export const darkBlueBack = 'rgba(0, 53, 107, .2)';
 export const good = 'rgb(163,229,178)';
 export const average = 'rgb(255,234,160)';
 export const poor = 'rgb(255,210,210)';
 export const dialogPeerShadow = '0px 2px 10px rgba(0, 0, 0, .2)';
 export const blue = '#2B69F0';
+export const disabledButton = '#88A6D2';
 
 export const GenderColorsMap = new Map([
   ['female', '#D765FF'],
