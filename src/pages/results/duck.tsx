@@ -33,7 +33,6 @@ export function* worker (action: any) {
     yield put(CreateAction(ResultsActionType.RESULTS_SUCCESS, res));
   } catch(error: any) {
     if (error.message === '403') return yield put(CreateAction(SignInType.LOGOUT));
-    yield console.log(error.message);
     yield put(CreateAction(ResultsActionType.RESULTS_FAIL, error.message));
   }
 }

@@ -59,9 +59,10 @@ const prepareForGrid = <S extends {[key: string]: string}>(
   const {items} = data;
 
   const columns = Object.keys(items[0]).map((key: string) => {
+    const isId = key.match(/id/gi);
 
     // sentence out of key
-    const headerName = key === 'id' ? 'DEI ID' :
+    const headerName = isId ? 'DEI ID' :
       key === 'lei' ? key.toUpperCase() : keyTitle(key);
 
     // ready object for grid cell
@@ -71,9 +72,12 @@ const prepareForGrid = <S extends {[key: string]: string}>(
       width: setWidth(key),
     };
 
-    if (isIndustries(items) && key !== 'name' && key !== 'type' && !key.match(/id/gi)) {
+    if (isIndustries(items)) {
+      if (isId) return {...gridValid, hide: true};
+      if (key !== 'name' && key !== 'type' && !isId) {
+        return ratingRenderProvider(gridValid);
+      }
       if (key === 'name') return nameRenderProvider(gridValid, history);
-      return ratingRenderProvider(gridValid);
     } else {
       if (key.match(/essential/gi)) return ratingRenderProvider(gridValid);
       if (key === 'name') return nameRenderProvider(gridValid, history);
