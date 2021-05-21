@@ -4,7 +4,7 @@ import IndustriesOptions from "./industriesOptions";
 
 interface OwnProps {
   tab: string;
-  setTab: (tab: string) => void;
+  saveTab: (tab: string) => void;
 }
 interface Props extends OwnProps {}
 

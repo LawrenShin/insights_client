@@ -1,5 +1,6 @@
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 import {keyTitle} from "../../helpers";
+import {CompanyLookup, Industry, isCompanies, isIndustries} from "./duck";
 
 export const paintRatingClass = (value: string): string => `dot rating${value}`;
 
@@ -16,17 +17,19 @@ const WidthMatch: {[key: string]: number} = {
   'id': 100,
   'postcode': 115,
 }
+
 export const setWidth = (key: string): number => WidthMatch[key] || 200;
 
 const ratingRenderProvider = (gridValid: any) => ({
 ...gridValid,
     renderCell: ({value}: any) => {
     return <>
-      <div className={paintRatingClass(value)}></div>
+      <div className={paintRatingClass(value)}> </div>
       <span>{value}</span>
     </>
   }
 });
+
 const nameRenderProvider = (gridValid: any, history: any) => ({
   ...gridValid,
   renderCell: ({value, row: {id}}: any) => {
@@ -43,22 +46,23 @@ const nameRenderProvider = (gridValid: any, history: any) => ({
 });
 
 
-
+// TODO: create another for idustries
 const prepareForGrid = <S extends {[key: string]: string}>(
   data: {
-    companies: any[],
+    items: (CompanyLookup | Industry)[],
     pagination: PaginationType
   },
   styles: S,
   history?: any,
 ) => {
 
-  const {companies} = data;
+  const {items} = data;
 
-  const columns = Object.keys(companies[0]).map((key: string) => {
+  const columns = Object.keys(items[0]).map((key: string) => {
+    const isId = key.match(/id/gi);
 
     // sentence out of key
-    const headerName = key === 'id' ? 'DEI ID' :
+    const headerName = isId ? 'DEI ID' :
       key === 'lei' ? key.toUpperCase() : keyTitle(key);
 
     // ready object for grid cell
@@ -68,13 +72,22 @@ const prepareForGrid = <S extends {[key: string]: string}>(
       width: setWidth(key),
     };
 
-    if (key.match(/essential/gi)) return ratingRenderProvider(gridValid);
-    if (key === 'name') return nameRenderProvider(gridValid, history);
+    if (isIndustries(items)) {
+      if (isId) return {...gridValid, hide: true};
+      if (key !== 'name' && key !== 'type' && !isId) {
+        return ratingRenderProvider(gridValid);
+      }
+      if (key === 'name') return nameRenderProvider(gridValid, history);
+    } else {
+      if (key.match(/essential/gi)) return ratingRenderProvider(gridValid);
+      if (key === 'name') return nameRenderProvider(gridValid, history);
+    }
+
 
     return gridValid;
   });
 
-  const rows = companies;
+  const rows = items;
 
   return {columns, rows};
 }

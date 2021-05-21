@@ -11,6 +11,7 @@ import {useIndustruOptionStyles} from "./useStyles";
 import {Rounded} from "../button";
 import {LookupSearchActionType} from "../lookupSearch/duck";
 import {ResultsActionType} from "../../pages/results/duck";
+import {useHistory} from "react-router-dom";
 
 // industry
 type IndustryOption = {
@@ -75,6 +76,8 @@ const IndustriesOptions = (props: Props) => {
     getDictionaries,
     resultsRequest,
   } = props;
+  const history = useHistory();
+
   useEffect(() => {
     if (!industries.data) getDictionaries();
   }, []);
@@ -86,7 +89,10 @@ const IndustriesOptions = (props: Props) => {
         <div className={styles.list}>
           {industries.data && renderOptions(industries.data.industries)}
           <br/>
-          <Rounded onClick={() => resultsRequest()}>View results</Rounded>
+          <Rounded onClick={() => {
+            resultsRequest();
+            history.push('/results');
+          }}>View results</Rounded>
         </div>
       </div>
     :

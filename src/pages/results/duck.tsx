@@ -13,6 +13,7 @@ export enum ResultsActionType {
   RESULTS_FAIL = 'RESULTS_FAIL',
   RESULTS_PAGINATION = 'RESULTS_PAGINATION',
   RESULTS_CLEAR = 'RESULTS_CLEAR',
+  RESULTS_SET_TAB = 'RESULTS_SET_TAB',
 }
 // SELECTORS
 const getOptions = (state: RootState) => state.LookupSearch.data.options;
@@ -40,14 +41,27 @@ export function* watcher () {
   yield takeLatest(ResultsActionType.RESULTS_LOAD, worker);
 }
 
+// TYPE GUARDS
+export const isCompanies = (items: (CompanyLookup | Industry)[] | undefined | null): items is CompanyLookup[] => {
+  if (items) {
+    return (items[0] as CompanyLookup)?.lei !== undefined;
+  }
+  return false;
+}
+export const isIndustries = (item: (CompanyLookup | Industry)[]): item is Industry[] => {
+  return ((item[0] as Industry)?.type !== undefined) || ((item[0] as Industry)?.averageAdvancedDEIFocus !== undefined);
+}
+
 // REDUCER
+// this relates to company details
 type GenCompanyInfo = {
   address: string,
   id: string,
   industries: [],
   lei?: string,
 }
-interface Industry {
+export interface Industry {
+  id: number,
   name: string,
   type: string,
   averageAdvancedDEIFocus?: number,
@@ -62,35 +76,41 @@ interface Industry {
   averageEssentialEquityAndInclusion?: number,
   averageEssentialTotal?: number,
 }
-interface Company {
-  mode: string,
-  companyGeneral?: GenCompanyInfo,
-  companyHeader?: any,
-  essentialRating?: any,
-  essentialRatingDiversityScore?: any,
-  essentialRatingEquityAndInclusionScore?: any,
-  ratingBars?: any,
-  ratingsWindRose?: any,
+export interface CompanyLookup {
+  id: number,
+  name: string,
+  country?: string,
+  city?: string,
+  postcode?: string,
+  street1?: string,
+  publicOrPrivate?: string,
+  status?: string,
+  essential?: string,
+  essentialDiversityScore?: string,
+  essentialEquityAndInclusionScore?: string,
+  lei?: string,
 }
 export interface ResultsState {
   data: {
     // TODO: replace any with industries and companies types
-    companies: any[] | null,
+    items: (CompanyLookup | Industry)[] | null,
     pagination: PaginationType
   };
+  tab: string,
   status: RequestStatuses;
   error: null | string;
 }
 
 const initState = {
   data: {
-    companies: null,
+    items: null,
     pagination: {
       pageNumber: 1,
       pageSize: 10,
       pageCount: 0,
     }
   },
+  tab: localStorage.getItem('tab') || 'company',
   status: RequestStatuses.still,
   error: null,
 }
@@ -103,15 +123,18 @@ export function reducer (state: ResultsState = initState, action: AnyAction) {
     ...state,
     status: RequestStatuses.loading,
   }
-  if (type === ResultsActionType.RESULTS_SUCCESS) return {
-    ...state,
-    data: {
-      companies: payload.companies,
-      pagination: state.data.pagination.pageCount !== payload.pagination.pageCount ?
-        payload.pagination : state.data.pagination,
-    },
-    status: RequestStatuses.still,
-    error: null,
+  if (type === ResultsActionType.RESULTS_SUCCESS) {
+    const {companies, industries} = payload;
+    return {
+      ...state,
+      data: {
+        items: companies || industries,
+        pagination: state.data.pagination.pageCount !== payload.pagination.pageCount ?
+          payload.pagination : state.data.pagination,
+      },
+      status: RequestStatuses.still,
+      error: null,
+    }
   }
   if (type === ResultsActionType.RESULTS_FAIL) return {
     ...state,
@@ -127,7 +150,19 @@ export function reducer (state: ResultsState = initState, action: AnyAction) {
       }
     }
   }
-  if (type === ResultsActionType.RESULTS_CLEAR) return initState;
+  if (type === ResultsActionType.RESULTS_SET_TAB) {
+    localStorage.setItem('tab', payload);
+    return {
+      ...state,
+      tab: payload,
+    }
+  }
+  if (type === ResultsActionType.RESULTS_CLEAR) {
+    return {
+      ...initState,
+      tab: localStorage.getItem('tab') || 'company',
+    };
+  }
 
   return state
 }
