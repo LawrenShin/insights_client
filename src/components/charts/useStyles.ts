@@ -43,7 +43,7 @@ export default makeStyles({
   },
   // LEGEND
   ratingListBar: {
-    height: '4px',
+    height: '5px',
     borderRadius: '10px',
     width: '100%',
     background: 'red',

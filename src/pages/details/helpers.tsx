@@ -15,7 +15,7 @@ export const renderSingleProp = (key: string, value: string) => <Grid item key={
   <Grid direction={'column'} container>
     <span>{keyTitle(key)}</span>
     {
-      key === 'Rating' ? <Grid container direction={'row'} alignItems={'center'}>
+      (key === 'Rating' || key === 'Average score') ? <Grid container direction={'row'} alignItems={'center'}>
           <div className={paintRatingClass(value)}></div>
           {renderValue(value)}
         </Grid>
