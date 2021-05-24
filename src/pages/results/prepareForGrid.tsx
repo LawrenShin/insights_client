@@ -1,6 +1,6 @@
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 import {keyTitle} from "../../helpers";
-import {CompanyLookup, Industry, isCompanies, isIndustries} from "./duck";
+import {CompanyLookup, Industry, isIndustries} from "./duck";
 
 export const paintRatingClass = (value: string): string => `dot rating${value}`;
 
