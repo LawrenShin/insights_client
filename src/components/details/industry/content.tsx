@@ -15,7 +15,7 @@ const renderRating = (ratingName: string, data: any) => <RatingWrapper
     style={{ marginBottom: '5px' }}
   >
     <Grid container direction={'row'} style={{ marginTop: '20px', fontSize: '.8em'  }}>
-      {renderSingleProp('Average score', data.rating)}
+      {renderSingleProp('Average score', data.score)}
     </Grid>
     <Benchmark data={data} />
   </RatingWrapper>
