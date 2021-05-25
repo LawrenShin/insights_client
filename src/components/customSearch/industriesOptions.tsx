@@ -37,7 +37,7 @@ interface Props extends StateProps, DispatchProps {}
 
 const IndustryOption = connect(
   (state: RootState) => ({
-    options: state.LookupSearch.data.options
+    options: state.LookupSearch.data.options,
   }),
   (dispatch: Dispatch) => ({
     saveIndustryOptions: (checked: boolean, id: number) =>
@@ -45,7 +45,7 @@ const IndustryOption = connect(
   })
 )(({
    industry: {id, name, children},
-   saveIndustryOptions,
+   saveIndustryOptions, options,
 }: IndustryOptionProps) => {
   const styles = useIndustruOptionStyles();
 
@@ -56,7 +56,10 @@ const IndustryOption = connect(
     className={!children ? styles.marginLeft15 : styles.parent}
   >
     <div>
-      <StyledCheckbox onChange={(e) => saveIndustryOptions(e.target.checked, id)} />
+      <StyledCheckbox
+        onChange={(e) => saveIndustryOptions(e.target.checked, id)}
+        checked={options.indexOf(id) > -1}
+      />
     </div>
     <div><span>{name}</span></div>
   </Grid>

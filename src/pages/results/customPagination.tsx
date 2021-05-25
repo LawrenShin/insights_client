@@ -1,10 +1,12 @@
 import {GridBaseComponentProps} from "@material-ui/data-grid";
 import React from "react";
-import {FormControl, MenuItem, Select, TextField} from "@material-ui/core";
+import {FormControl, Grid, MenuItem, Select, TextField} from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import PaginationItem from "@material-ui/lab/PaginationItem";
 import useStyles from "./useStyles";
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
+import {Rounded} from "../../components/button";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 
 interface Props {
@@ -79,6 +81,14 @@ function CustomPagination(props: GridBaseComponentProps & Props) {
         });
       }}
     />
+    <div className={styles.exportButtonContainer}>
+      <Rounded
+        float={'right'}
+        onClick={() => console.log('ff')}
+      >
+        EXPORT<ExpandMoreIcon />
+      </Rounded>
+    </div>
   </div>);
 }
 

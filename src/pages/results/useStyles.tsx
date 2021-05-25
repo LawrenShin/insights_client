@@ -98,7 +98,12 @@ export default makeStyles({
     flexDirection: 'column',
     background: '#fff',
     boxShadow: '0px 2px 20px rgba(0, 0, 0, 0.05)',
-  }
+  },
+  exportButtonContainer: {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    flexGrow: 1,
+  },
 });
 
 
