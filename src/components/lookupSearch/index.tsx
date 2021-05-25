@@ -47,6 +47,7 @@ const LookupSearch = ({
   const styles = useStyles();
   const {
     companies,
+    options,
     pagination: {
       pageCount,
       pageNumber,
@@ -56,6 +57,7 @@ const LookupSearch = ({
   const prevSearch = usePrevious(search);
   const prevPageNumber = usePrevious(pageNumber);
   const history = useHistory();
+  const isIndustryTab = tab === 'industry';
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
@@ -138,9 +140,17 @@ const LookupSearch = ({
         />
         <Squared
           className={`${styles.button}`}
-          disabled={!companies.length}
+          disabled={
+            (() => {
+              if (isIndustryTab && !options.length) return true;
+              if (!companies.length && !isIndustryTab) return true;
+              return false;
+            })()
+          }
           type={'button'}
-          onClick={() => history.push('/results', {search})}
+          onClick={() =>
+            history.push('/results', {requestParams: isIndustryTab ? options : search})
+          }
         >
           {
             (status === RequestStatuses.loading && !companies.length) ?

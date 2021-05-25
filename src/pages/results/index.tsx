@@ -19,7 +19,7 @@ import BreadCrumbs from "../../components/breadCrumbs/breadCrumbs";
 
 export interface LocStateType {
   pagination: PaginationType;
-  search: string;
+  requestParams: string | (string | number)[];
 }
 
 // const styledButton = () => <Rounded>EXPORT<ExpandMoreIcon /></Rounded>
@@ -40,7 +40,7 @@ const Results = (props: any) => {
 
   const {pagination, items} = data;
 
-  const defineSearch = locState?.search || search;
+  const defineSearch = locState?.requestParams || search;
 
   const styles = useStyles();
   const makeParams = (pagination: PaginationType, search: string): string => {
