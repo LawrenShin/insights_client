@@ -50,11 +50,14 @@ const IndustryOption = connect(
   const styles = useIndustruOptionStyles();
 
   const renderRow = (name: string) => <Grid
+    wrap={'nowrap'}
     container
     alignItems={'center'}
     className={!children ? styles.marginLeft15 : styles.parent}
   >
-    <div><StyledCheckbox onChange={(e) => saveIndustryOptions(e.target.checked, id)} /></div>
+    <div>
+      <StyledCheckbox onChange={(e) => saveIndustryOptions(e.target.checked, id)} />
+    </div>
     <div><span>{name}</span></div>
   </Grid>
 
