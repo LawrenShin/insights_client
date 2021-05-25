@@ -66,13 +66,14 @@ export interface State {
   status: RequestStatuses;
   error: string | null;
 }
-
+const optsFromStorage = localStorage.getItem('optionsIndustry');
+const optsFromStorageParsed = optsFromStorage ? JSON.parse(optsFromStorage) : [];
 export const initialState = {
   data: {
     search: '',
     companies: [],
     // NOTE: options might relate to both companies and industries thus left naming abstract
-    options: [],
+    options: optsFromStorageParsed,
     pagination: {
       pageSize: 10,
       pageNumber: 1,
@@ -99,12 +100,14 @@ export function reducer(state: State = initialState, action: Action) {
   if (type === LookupSearchActionType.SAVE_INDUSTRY_OPTIONS) {
     const {id, checked} = payload;
     const {options} = state.data;
+    const newOptions = checked ?
+      [...options, id] : options.filter(opt => opt !== id);
+    localStorage.setItem('optionsIndustry', JSON.stringify(newOptions));
     return {
       ...state,
       data: {
         ...state.data,
-        options: checked ?
-          [...options, id] : options.filter(opt => opt !== id),
+        options: newOptions,
       },
     }
   }
