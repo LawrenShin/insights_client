@@ -14,8 +14,8 @@ const renderRating = (ratingName: string, data: any) => <RatingWrapper
     sm={12}
     style={{ marginBottom: '5px' }}
   >
-    <Grid container direction={'row'} style={{ marginTop: '20px' }}>
-      {renderSingleProp('Average score', data.score)}
+    <Grid container direction={'row'} style={{ marginTop: '20px', fontSize: '.8em'  }}>
+      {renderSingleProp('Average score', data.rating)}
     </Grid>
     <Benchmark data={data} />
   </RatingWrapper>
@@ -26,9 +26,11 @@ export const Content = ({data}: any) => {
   if (!data) return null;
 
   return (
-  <Grid container spacing={3} className={styles.root}>
+  <Grid container className={styles.root}>
     <Grid item xs={5} className={styles.paper}>
-      <span>Essential ratings</span>
+      <div className={styles.title}>
+        <span>Essential ratings</span>
+      </div>
       {
         Object.keys(data.essentialRatings)
           .map(
@@ -45,14 +47,13 @@ export const Content = ({data}: any) => {
         justify={'space-between'}
         sm={12}
       >
-        <List
-          // classes={styles.littleFont}
-          data={data.essentialRatings.essentialRatingBars}
-        />
+        <List data={data.essentialRatings.essentialRatingBars} />
       </RatingWrapper>}
     </Grid>
     <Grid item xs={5} className={styles.paper}>
-      <span>Advanced ratings</span>
+      <div className={styles.title}>
+        <span>Advanced ratings</span>
+      </div>
       {
         Object.keys(data.advancedRatings)
           .map(

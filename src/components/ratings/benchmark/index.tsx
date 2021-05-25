@@ -86,13 +86,15 @@ const Benchmark = ({ data }: Props) => {
           position: 'relative'
         }}>{data.score}</span>
       </div>}
-      {!isCompanyTab && <Grid container justify={"space-between"}
+      {!isCompanyTab && <Grid
+        container
+        justify={data.score >= 5 ? "space-between" : 'flex-end'}
         style={{
-          marginTop: (data.score && data.score !== 100) ? '-24px' : 0,
+          marginTop: (data.score && data.score !== 100) ? '-22px' : 0,
         }}
       >
-        <Grid item style={{ left: `0%` }}><span>0</span></Grid>
-        <Grid item style={{ left: `100%` }}><span>100</span></Grid>
+        {data.score >= 5 && <Grid item ><span>0</span></Grid>}
+        {data.score <= 95 && <Grid item ><span>100</span></Grid>}
       </Grid>}
     </div>
     {isCompanyTab && <div className={`${mrgTop50} ${containerRow} ${gap5}`}>

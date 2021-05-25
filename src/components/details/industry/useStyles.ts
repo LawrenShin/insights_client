@@ -12,6 +12,14 @@ const useStyles = makeStyles((theme: Theme) =>
       border: '1px solid #ccc',
       borderRadius: '5px'
     },
+    title: {
+      marginBottom: '20px',
+      '& span': {
+        fontWeight: 'bold',
+        fontSize: '1.1em',
+        color: 'black',
+      }
+    }
   }),
 );
 

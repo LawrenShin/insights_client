@@ -11,12 +11,13 @@ const renderBar = (key: string, data: {rating: string, score: number, strength: 
     <Grid
       item
       key={key + data.rating}
+      style={{ fontSize: '.8em' }}
     >
       <Grid container direction={'row'} alignContent={'center'}
         style={{ maxHeight: clearKeyLength <= 2 ? '30px' : '60px' }}
       >
         <Grid item sm={4}>
-          <span style={{ fontSize: '.8em' }}>{clearKey !== 'DI' ? keyTitle(clearKey) : clearKey}</span>
+          <span>{clearKey !== 'DI' ? keyTitle(clearKey) : clearKey}</span>
         </Grid>
         <Grid item sm={7} className={`${styles.flex} ${styles.padding10}`}>
           <div

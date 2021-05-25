@@ -15,7 +15,7 @@ export const Content = ({data}: any) => {
   if (!data) return null;
 
   return (
-    <Grid container spacing={3} style={{gap: '5px'}}>
+    <Grid container style={{gap: '5px'}}>
       <GeneralInfo data={data}/>
       {/* essentials */}
       <Grid item sm={12}>
