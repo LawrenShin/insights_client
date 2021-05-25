@@ -1,8 +1,9 @@
 import {RequestStatuses} from '../../api/requestTypes';
 import {takeLatest, put} from "redux-saga/effects";
-import {call} from "typed-redux-saga";
+import {call, select} from "typed-redux-saga";
 import {postRequest} from "../../api";
 import {CreateAction} from "../../store/actionType";
+import {getOptions} from "../results/duck";
 
 
 export enum SignInType {
@@ -26,6 +27,8 @@ export function* worker (action: any) {
 }
 
 export function* watcher () {
+  const options = yield select(getOptions);
+  // if (!options.length) yield put(CreateAction('DICTIONARIES_LOAD', {url: 'dictionaries'}));
   yield takeLatest(SignInType.SIGN_IN, worker);
 }
 

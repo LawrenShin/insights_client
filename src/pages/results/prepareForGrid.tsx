@@ -1,6 +1,7 @@
 import {Pagination as PaginationType} from "../../components/lookupSearch/duck";
 import {keyTitle} from "../../helpers";
-import {CompanyLookup, Industry, isCompanies, isIndustries} from "./duck";
+import {CompanyLookup, Industry, isIndustries} from "./duck";
+import {paintRating} from "../../components/charts/useStyles";
 
 export const paintRatingClass = (value: string): string => `dot rating${value}`;
 
@@ -23,10 +24,14 @@ export const setWidth = (key: string): number => WidthMatch[key] || 200;
 const ratingRenderProvider = (gridValid: any) => ({
 ...gridValid,
     renderCell: ({value}: any) => {
-    return <>
-      <div className={paintRatingClass(value)}> </div>
-      <span>{value}</span>
-    </>
+      const isNumber = typeof value === 'number';
+      return <>
+        <div
+          className={isNumber ? paintRatingClass(value) : ''}
+          style={{ background: isNumber ? paintRating(value) : '' }}
+        > </div>
+        <span>{value}</span>
+      </>
   }
 });
 

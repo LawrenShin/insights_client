@@ -5,12 +5,17 @@ import useStyles, {paintRating, setBarWidth} from "./useStyles";
 
 const renderBar = (key: string, data: {rating: string, score: number, strength: number}, styles: any) => {
   const clearKey = key.replace(/advanced|essential|score/gi, '');
+  const clearKeyLength = keyTitle(clearKey).split(' ').length;
+
   return (
     <Grid
       item
       key={key + data.rating}
+      style={{ fontSize: '.8em' }}
     >
-      <Grid container direction={'row'} alignContent={'center'}>
+      <Grid container direction={'row'} alignContent={'center'}
+        style={{ maxHeight: clearKeyLength <= 2 ? '30px' : '60px' }}
+      >
         <Grid item sm={4}>
           <span>{clearKey !== 'DI' ? keyTitle(clearKey) : clearKey}</span>
         </Grid>

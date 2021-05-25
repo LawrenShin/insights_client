@@ -16,8 +16,8 @@ export enum ResultsActionType {
   RESULTS_SET_TAB = 'RESULTS_SET_TAB',
 }
 // SELECTORS
-const getOptions = (state: RootState) => state.LookupSearch.data.options;
-const getPagination = (state: RootState) => state.LookupSearch.data.pagination;
+export const getOptions = (state: RootState) => state.LookupSearch.data.options;
+export const getPagination = (state: RootState) => state.LookupSearch.data.pagination;
 
 // SAGAS
 export function* worker (action: any) {

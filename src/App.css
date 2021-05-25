@@ -1,5 +1,11 @@
 body {
   overflow-x: hidden;
+  height: 100vh;
+  padding: 0;
+}
+html {
+  height: 100vh;
+  padding: 0;
 }
 .App {
   text-align: center;
@@ -9,7 +15,9 @@ body {
   height: 40vmin;
   pointer-events: none;
 }
-
+#root{
+  background: #F8F9FB;
+}
 .dot {
   height: 7px;
   width: 7px;

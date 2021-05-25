@@ -9,16 +9,12 @@ import {Dispatch} from "redux";
 import {CreateAction} from "../../store/actionType";
 import {DetailsActionType} from "./duck";
 import {RequestStatuses} from "../../api/requestTypes";
-import Research from "../../components/charts/Research";
 import BreadCrumbs from "../../components/breadCrumbs/breadCrumbs";
-import RatingWrapper, {WrapperModes} from "../../components/ratings/RatingWrapper";
-import GeneralInfo from "./GeneralInfo";
-import Essentials from "./Essentials";
-import RoseNList from "./RoseNList";
-import PieCharts from "./PieCharts";
-import EducationRating from "../../components/ratings/EducationRating";
-import Benchmark from "../../components/ratings/benchmark";
 import Error from '../../components/Error';
+import {Content as CompanyContent} from "../../components/details/company/content";
+import {Content as IndustryContent} from "../../components/details/industry/content";
+import {keyTitle} from "../../helpers";
+
 
 const Details = (props: any) => {
   const {
@@ -29,7 +25,7 @@ const Details = (props: any) => {
 
   const params = useParams() as {id: string};
   const styles = useStyles();
-  const isAdvanced = data?.mode === 'advanced';
+  const tab = localStorage.getItem('tab');
 
 
   useEffect(() => {
@@ -53,65 +49,11 @@ const Details = (props: any) => {
               {/* CRUMBS */}
               <BreadCrumbs crumbs={['mainSearch', 'results']}/>
               <Typography variant={'h5'}>
-                Company report
+                {tab && `${keyTitle(tab)} report`}
               </Typography>
             </div>
-            {/* TODO: refactor these in separate components */}
-            <Grid container spacing={3} style={{gap: '5px'}}>
-              <GeneralInfo data={data}/>
-              {/* essentials */}
-              <Grid item sm={12}>
-                <Essentials data={data} isAdvanced={isAdvanced}/>
-              </Grid>
-
-              {data?.ratingsWindRose && <Grid item sm={12} style={{padding: '0'}}>
-                <RoseNList data={data} isAdvanced={isAdvanced}/>
-              </Grid>}
-
-              {!isAdvanced && <Grid item sm={12} style={{padding: '0'}}>
-                <Grid direction={'row'} container style={{gap: '5px'}} wrap={'nowrap'}>
-                  <RatingWrapper
-                    mode={WrapperModes.advanced}
-                    title={'Research'}
-                    sm={8}
-                    style={{display: 'flex', flexDirection: 'column'}}
-                  >
-                    <Research/>
-                  </RatingWrapper>
-                </Grid>
-              </Grid>}
-              <Grid container style={{gap: '5px', padding: '0'}} wrap={'nowrap'}>
-                {data?.boardStats && <PieCharts
-                  height={'150px'}
-                  title={'Board'}
-                  data={data.boardStats}
-                />}
-                {data?.executivesStats && <PieCharts
-                  height={'150px'}
-                  title={'Executives'}
-                  data={data.executivesStats}
-                />}
-                {data?.educationSubjects?.subjects && <EducationRating
-                  height={'150px'}
-                  title={'Education'}
-                  data={data.educationSubjects.subjects}
-                />}
-              </Grid>
-              <Grid container style={{gap: '5px', padding: '0'}} wrap={'nowrap'}>
-                {data?.peerIndustryBenchmark && <RatingWrapper
-                  title={'Peer Benchmark: Industry'}
-                  sm={4}
-                >
-                  <Benchmark data={data.peerIndustryBenchmark}/>
-                </RatingWrapper>}
-                {data?.peerCountryBenchmark && <RatingWrapper
-                  title={'Peer Benchmark: Geography'}
-                  sm={4}
-                >
-                  <Benchmark data={data?.peerCountryBenchmark}/>
-                </RatingWrapper>}
-              </Grid>
-            </Grid>
+            {tab === 'company' && <CompanyContent data={data} />}
+            {tab === 'industry' && <IndustryContent data={data} />}
           </div>
         </div> : <CircularProgress className={styles.centerLoader}/>}
       </div>
@@ -128,7 +70,7 @@ const connector = () => connect(
   (dispatch: Dispatch) => ({
     loadDetails: (id: string) => dispatch(CreateAction(
       DetailsActionType.DETAILS_LOAD,
-      {url: 'company', params: id})
+      {url: localStorage.getItem('tab'), params: id})
     ),
   })
 )
