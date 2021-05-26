@@ -28,7 +28,12 @@ interface Props extends StateProps, DispatchProps, OwnProps {}
 // NOTE: were written with thought of sending request from here on click on show all results button.
 // but eventually if we select only options button in here stays disabled. So using this makes sence if we provide name
 // besides options for industries. It makes 2 places where we can initiate the request. (here and from indOptions)
-const getUrl = (tab: string) => tab === 'company' ? 'companiesLookup' : 'industries';
+const getUrl = (tab: string) => {
+  if (tab === 'company') return 'companiesLookup';
+  if (tab === 'industry') return 'industries';
+  if (tab === 'country') return 'countries';
+  return '';
+};
 
 const LookupSearch = ({
     incrementPageNumber,
@@ -112,7 +117,7 @@ const LookupSearch = ({
     <div className={styles.container}>
       <div className={styles.tabs}>
         {
-          ['Company Database', 'Industry Database'].map(item => {
+          ['Company Database', 'Industry Database', 'Country database'].map(item => {
             const tabName = item.split(' ')[0].toLowerCase();
             return (<div
               key={item}

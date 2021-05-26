@@ -30,7 +30,11 @@ const SearchCompanies = ({
         <div className={styles.searchContainer}>
           <LookupSearch tab={tab} saveTab={saveTab} />
         </div>
-        <div className={`${styles.searchSettingsContainer} ${tab === 'company' ? styles.centerContent : ''}`}>
+        <div
+          className={`
+          ${tab !== 'country' ? styles.searchSettingsContainer : ''} 
+          ${tab === 'company' ? styles.centerContent : ''}`
+        }>
           {/* TODO: some day reconsider this cas custom might also be on companies */}
           {tab !== 'company' && <CustomSearch tab={tab} saveTab={saveTab} />}
           {tab === 'company' && <Welcome classes={styles2} />}

@@ -1,6 +1,7 @@
 import React from 'react';
 import useStyles from "./useStyles";
 import IndustriesOptions from "./industriesOptions";
+import CountryOptions from "./CountryOptions";
 
 interface OwnProps {
   tab: string;
@@ -16,6 +17,7 @@ const CustomSearch  = ({ tab }: Props) => {
     <div className={styles.container}>
       {/* @ts-ignore*/}
       {tab === 'industry' && <IndustriesOptions />}
+      {tab === 'country' && <CountryOptions />}
     </div>
   )
 }

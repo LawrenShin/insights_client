@@ -1,5 +1,5 @@
 import {makeStyles} from "@material-ui/core";
-import {darkBlueBack, loaderContainer, main} from "../colorConstants";
+import {blue, darkBlueBack, loaderContainer, main} from "../colorConstants";
 
 
 export const useStyles = makeStyles({
@@ -59,6 +59,31 @@ export const useIndustruOptionStyles = makeStyles({
     border: `1px solid ${darkBlueBack}`,
     borderRadius: '5px',
     padding: '10px 20px',
+  }
+});
+
+export const useContryOptionsStyles = makeStyles({
+  ...loaderContainer,
+  searchCriteriasContainer: {
+    gap: '10px',
+    '& > div': {
+      padding: '10px',
+      background: 'white',
+      borderRadius: '5px',
+      border: `1px solid ${darkBlueBack}`,
+      minHeight: '60vh'
+    }
+  },
+  colTitle: {},
+  colSubTitle: {
+    fontSize: '.8em',
+    color: blue,
+  },
+  line: {
+    background: `${darkBlueBack}`,
+    width: 'calc(100% + 20px)',
+    marginLeft: '-10px',
+    height: '1px',
   }
 });
 
