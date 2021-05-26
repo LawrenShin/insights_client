@@ -1,30 +1,17 @@
 import React, {useEffect} from 'react';
-import {StyledCheckbox} from "../checkbox";
 import {RootState} from "../../store/rootReducer";
 import {connect} from "react-redux";
 import {State} from "../../store/createReducer";
 import {Dispatch} from "redux";
 import {CreateAction} from "../../store/actionType";
 import {RequestStatuses} from "../../api/requestTypes";
-import {Grid, LinearProgress} from "@material-ui/core";
+import {LinearProgress} from "@material-ui/core";
 import {useIndustruOptionStyles} from "./useStyles";
 import {Rounded} from "../button";
-import {LookupSearchActionType} from "../lookupSearch/duck";
 import {ResultsActionType} from "../../pages/results/duck";
 import {useHistory} from "react-router-dom";
+import {renderOptions} from "../../pages/details/helpers";
 
-// industry
-type IndustryOption = {
-  id: number,
-  name: string,
-  children?: IndustryOption[],
-}
-interface IndustryOptionProps {
-  industry: IndustryOption,
-  options: number[],
-  saveIndustryOptions: (checked: boolean, id: number) => void,
-}
-// industries
 interface StateProps {
   industries: State;
 }
@@ -33,47 +20,6 @@ interface DispatchProps {
   resultsRequest: () => void;
 }
 interface Props extends StateProps, DispatchProps {}
-
-
-const IndustryOption = connect(
-  (state: RootState) => ({
-    options: state.LookupSearch.data.options,
-  }),
-  (dispatch: Dispatch) => ({
-    saveIndustryOptions: (checked: boolean, id: number) =>
-      dispatch(CreateAction(LookupSearchActionType.SAVE_INDUSTRY_OPTIONS, {checked, id})),
-  })
-)(({
-   industry: {id, name, children},
-   saveIndustryOptions, options,
-}: IndustryOptionProps) => {
-  const styles = useIndustruOptionStyles();
-
-  const renderRow = (name: string) => <Grid
-    wrap={'nowrap'}
-    container
-    alignItems={'center'}
-    className={!children ? styles.marginLeft15 : styles.parent}
-  >
-    <div>
-      <StyledCheckbox
-        onChange={(e) => saveIndustryOptions(e.target.checked, id)}
-        checked={options.indexOf(id) > -1}
-      />
-    </div>
-    <div><span>{name}</span></div>
-  </Grid>
-
-  return <>
-    {renderRow(name)}
-    {children && renderOptions(children)}
-  </>
-});
-
-
-const renderOptions = (industries: IndustryOption[]) =>
-  industries.map(industry => <IndustryOption key={industry.id} industry={industry} />);
-
 
 const IndustriesOptions = (props: Props) => {
   const styles = useIndustruOptionStyles();

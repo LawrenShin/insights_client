@@ -3,6 +3,7 @@ import {keyTitle} from "../../helpers";
 import {paintRatingClass} from "../results/prepareForGrid";
 import React from "react";
 import {paintRating} from "../../components/charts/useStyles";
+import IndustryOption from "../../components/IndustryOption";
 
 // TODO: actually might be refactored into component
 
@@ -34,3 +35,12 @@ export const renderSingleProp = (key: string, value: string | number) => <Grid i
     }
   </Grid>
 </Grid>;
+
+
+export type IndustryOptionType = {
+  id: number,
+  name: string,
+  children?: IndustryOptionType[],
+}
+export const renderOptions = (industries: IndustryOptionType[]) =>
+  industries.map(industry => <IndustryOption key={industry.id} industry={industry} />);
