@@ -93,5 +93,9 @@ export default makeStyles({
   },
   pieChartContainer: {
     '& > span': { fontSize: '.8em' },
+  },
+  essentialContainerSpacing: {
+    maxWidth: '33%',
+    padding: '10px',
   }
 });

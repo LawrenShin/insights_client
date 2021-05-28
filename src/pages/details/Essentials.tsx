@@ -8,8 +8,12 @@ const Essentials = ({ data, isAdvanced }: any) => {
   const styles = useStyles();
 
   return (<>
-    {data && <Grid container spacing={3} style={{gap: '5px'}} wrap={'nowrap'}>
-      {data.essentialRating && <Grid sm={4} item className={styles.paintContainer} style={{maxWidth: '33%'}}>
+    {data && <Grid container style={{gap: '5px'}} wrap={'nowrap'}>
+      {data.essentialRating && <Grid
+        sm={4}
+        item
+        className={`${styles.paintContainer} ${styles.essentialContainerSpacing}`}
+      >
         <EssentialRadialRating
           title={'Essential Rating'}
           styles={styles}
@@ -17,22 +21,20 @@ const Essentials = ({ data, isAdvanced }: any) => {
           renderSingleProp={renderSingleProp}
         />
       </Grid>}
-      {(data.advancedTotalRating || data.essentialRatingDiversityScore) && <Grid sm={4} item
-                                                                                 className={styles.paintContainer}
-                                                                                 style={{maxWidth: '33%'}}
-      >
-        <EssentialRadialRating
-          title={isAdvanced ? 'Advanced Total Rating' : "Essential Diversity Rating"}
-          styles={styles}
-          data={data[isAdvanced ? 'advancedTotalRating' : 'essentialRatingDiversityScore']}
-          renderSingleProp={renderSingleProp}
-        />
-      </Grid>}
+      {(data.advancedTotalRating || data.essentialRatingDiversityScore) &&
+        <Grid sm={4} item className={`${styles.paintContainer} ${styles.essentialContainerSpacing}`}>
+          <EssentialRadialRating
+            title={isAdvanced ? 'Advanced Total Rating' : "Essential Diversity Rating"}
+            styles={styles}
+            data={data[isAdvanced ? 'advancedTotalRating' : 'essentialRatingDiversityScore']}
+            renderSingleProp={renderSingleProp}
+          />
+        </Grid>
+      }
       {(data.essentialRatingEquityAndInclusionScore || data.advancedForecastRating) && <Grid
         item
         sm={4}
-        className={`${styles.paintContainer}`}
-        style={{maxWidth: '33%'}}
+        className={`${styles.paintContainer} ${styles.essentialContainerSpacing}`}
       >
         <EssentialRadialRating
           title={isAdvanced ? 'Advanced Forecast Rating' : 'Essential Equity & Inclusion Rating'}

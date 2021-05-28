@@ -9,7 +9,7 @@ import {GeneralInfo as GeneralInfoCompany} from "../../components/details/compan
 
 const GeneralInfo = ({data}: any) => {
   const styles = useStyles();
-
+  console.log(data)
   return (<>
     <Grid item sm={12} className={styles.paintContainer}>
       <Grid direction={'row'} container >

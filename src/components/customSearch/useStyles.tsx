@@ -36,6 +36,9 @@ export const useStyles = makeStyles({
 export const useIndustruOptionStyles = makeStyles({
   ...loaderContainer,
   root: {
+    '& :hover': {
+      cursor: 'pointer',
+    }
   },
   list: {
     fontSize: '14px',
@@ -71,8 +74,13 @@ export const useContryOptionsStyles = makeStyles({
       background: 'white',
       borderRadius: '5px',
       border: `1px solid ${darkBlueBack}`,
-      minHeight: '60vh'
+      minHeight: '60vh',
+      maxWidth: '200px',
     }
+  },
+  regionsContainer: {
+    fontSize: '.8em',
+    '& > div': {padding: '0'}
   },
   colTitle: {},
   colSubTitle: {
@@ -84,7 +92,12 @@ export const useContryOptionsStyles = makeStyles({
     width: 'calc(100% + 20px)',
     marginLeft: '-10px',
     height: '1px',
-  }
+  },
+  arrowContainer: {
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'flex-end',
+  },
 });
 
 export default useStyles;

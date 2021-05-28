@@ -42,5 +42,9 @@ export type IndustryOptionType = {
   name: string,
   children?: IndustryOptionType[],
 }
-export const renderOptions = (industries: IndustryOptionType[]) =>
-  industries.map(industry => <IndustryOption key={industry.id} industry={industry} />);
+export const renderOptions = (
+  industries: IndustryOptionType[],
+  //
+  renderIcon?: () => JSX.Element,
+) =>
+  industries.map(industry => <IndustryOption key={industry.id} industry={industry} renderIcon={renderIcon} />);
