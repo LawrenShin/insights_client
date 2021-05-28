@@ -37,14 +37,20 @@ export const renderSingleProp = (key: string, value: string | number) => <Grid i
 </Grid>;
 
 
-export type IndustryOptionType = {
+export type OptionType = {
   id: number,
   name: string,
-  children?: IndustryOptionType[],
+  children?: OptionType[],
 }
+
 export const renderOptions = (
-  industries: IndustryOptionType[],
-  //
+  industries: OptionType[],
   renderIcon?: () => JSX.Element,
+  handleClick?: (id: number) => void,
 ) =>
-  industries.map(industry => <IndustryOption key={industry.id} industry={industry} renderIcon={renderIcon} />);
+  industries.map(industry => <IndustryOption
+    key={industry.id}
+    industry={industry}
+    renderIcon={renderIcon}
+    handleClick={handleClick}
+  />);

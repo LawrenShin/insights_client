@@ -62,6 +62,9 @@ export const useIndustruOptionStyles = makeStyles({
     border: `1px solid ${darkBlueBack}`,
     borderRadius: '5px',
     padding: '10px 20px',
+  },
+  selected: {
+    background: blue,
   }
 });
 

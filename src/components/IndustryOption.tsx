@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect} from "react-redux";
 import {RootState} from "../store/rootReducer";
 import {Dispatch} from "redux";
@@ -7,24 +7,31 @@ import {LookupSearchActionType} from "./lookupSearch/duck";
 import {useIndustruOptionStyles} from "./customSearch/useStyles";
 import {Grid} from "@material-ui/core";
 import {StyledCheckbox} from "./checkbox";
-import {renderOptions, IndustryOptionType} from "../pages/details/helpers";
+import {renderOptions, OptionType} from "../pages/details/helpers";
 
 
 interface IndustryOptionProps {
-  industry: IndustryOptionType,
+  industry: OptionType,
   options: number[],
   saveIndustryOptions: (checked: boolean, id: number, actionType: LookupSearchActionType) => void,
   renderIcon?: () => JSX.Element,
+  handleClick?: (id: number) => void,
 }
 
-const IndustryOption = ({
-     industry: {id, name, children},
-     saveIndustryOptions, options, renderIcon
-   }: IndustryOptionProps) => {
+const IndustryOption =
+  ({
+   industry: {id, name, children},
+   saveIndustryOptions, options, renderIcon, handleClick
+ }: IndustryOptionProps) => {
+  const [selected, setSelected] = useState<boolean>(false);
   const styles = useIndustruOptionStyles();
   const tab = localStorage.getItem('tab');
 
-  const renderRow = (name: string) => <Grid
+  const renderRow = (
+    id: number,
+    name: string,
+    handleClick?: (id: number) => void,
+  ) => <Grid
     wrap={'nowrap'}
     container
     alignItems={'center'}
@@ -33,7 +40,8 @@ const IndustryOption = ({
       ${styles.root}
     `}
     onClick={() => {
-    //  todo: should expand the children if a function provided. Otherwise doing so unconditionally
+      handleClick && handleClick(id);
+      setSelected(!selected);
     }}
   >
     <div>
@@ -51,7 +59,7 @@ const IndustryOption = ({
   </Grid>
 
   return <>
-    {renderRow(name)}
+    {renderRow(id, name, handleClick)}
     {children && renderOptions(children)}
   </>
 };
